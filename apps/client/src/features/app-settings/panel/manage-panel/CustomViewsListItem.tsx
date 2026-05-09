@@ -4,6 +4,7 @@ import { downloadCustomView } from '../../../../common/api/customViews';
 import { maybeAxiosError } from '../../../../common/api/utils';
 import IconButton from '../../../../common/components/buttons/IconButton';
 import { handleLinks } from '../../../../common/utils/linkUtils';
+import { useTranslation } from '../../../../translation/useTranslation';
 import * as Panel from '../../panel-utils/PanelUtils';
 import { getViewUrl } from './customViews.utils';
 
@@ -17,6 +18,8 @@ interface CustomViewsListItemProps {
 }
 
 export default function CustomViewsListItem({ slug, index, onDelete, onError }: CustomViewsListItemProps) {
+  const { getLocalizedString } = useTranslation();
+
   const handlePreview = () => {
     handleLinks(`external/${encodeURIComponent(slug)}/`);
   };
@@ -38,7 +41,7 @@ export default function CustomViewsListItem({ slug, index, onDelete, onError }: 
           <IconButton
             variant='ghosted-white'
             onClick={handlePreview}
-            aria-label='Preview custom view'
+            aria-label={getLocalizedString('settings.manage.custom_views.preview_aria')}
             data-testid={`custom-view__preview_${index}`}
           >
             <IoOpenOutline />
@@ -46,7 +49,7 @@ export default function CustomViewsListItem({ slug, index, onDelete, onError }: 
           <IconButton
             variant='ghosted-white'
             onClick={handleDownload}
-            aria-label='Download custom view'
+            aria-label={getLocalizedString('settings.manage.custom_views.download_aria')}
             data-testid={`custom-view__download_${index}`}
           >
             <IoDownloadOutline />
@@ -54,7 +57,7 @@ export default function CustomViewsListItem({ slug, index, onDelete, onError }: 
           <IconButton
             variant='ghosted-destructive'
             onClick={() => onDelete(slug)}
-            aria-label='Delete custom view'
+            aria-label={getLocalizedString('settings.manage.custom_views.delete_aria')}
             data-testid={`custom-view__delete_${index}`}
           >
             <IoTrash />

@@ -23,6 +23,7 @@ import ExternalLink from '../../../../../common/components/link/external-link/Ex
 import Modal from '../../../../../common/components/modal/Modal';
 import useRundown from '../../../../../common/hooks-query/useRundown';
 import { validateExcelImport } from '../../../../../common/utils/uploadUtils';
+import { useTranslation } from '../../../../../translation/useTranslation';
 import * as Panel from '../../../panel-utils/PanelUtils';
 import GSheetSetup from './GSheetSetup';
 import SheetImportEditor from './sheet-import/SheetImportEditor';
@@ -56,6 +57,7 @@ export default function SourcesPanel() {
 
   const { data: currentRundown } = useRundown();
   const { importRundown } = useSpreadsheetImport();
+  const { getLocalizedString } = useTranslation();
 
   const fileInputRef = useRef<HTMLInputElement>(null);
 
@@ -200,8 +202,10 @@ export default function SourcesPanel() {
   const showImportWorkspace = activeSource !== null && !closedByUser;
   const importModalTitle = (() => {
     if (!activeSource) return '';
-    if (activeSource.kind === 'excel') return 'Import spreadsheet';
-    return activeSource.title ? `Sync: ${activeSource.title}` : 'Synchronize with Google Sheet';
+    if (activeSource.kind === 'excel') return getLocalizedString('settings.manage.sources_panel.import_spreadsheet');
+    return activeSource.title
+      ? `${getLocalizedString('settings.manage.sources_panel.sync')}${activeSource.title}`
+      : getLocalizedString('settings.manage.sources_panel.sync_google_sheet');
   })();
   const sourceKey = (() => {
     if (!activeSource) return null;
@@ -212,18 +216,17 @@ export default function SourcesPanel() {
   return (
     <Panel.Section>
       <Panel.Card>
-        <Panel.SubHeader>Synchronize your rundown with an external source</Panel.SubHeader>
+        <Panel.SubHeader>{getLocalizedString('settings.manage.sources_panel.title')}</Panel.SubHeader>
         {error && <Panel.Error>{error}</Panel.Error>}
         {showInput && (
           <div className={style.introStack}>
             <Info>
-              <Info.Title>Choose between a quick file import or a live Google Sheet connection.</Info.Title>
-              <Info.Body>
-                Google Sheets sync needs a client secret and a one-time device authentication before you can load a
-                sheet by ID.
-              </Info.Body>
+              <Info.Title>{getLocalizedString('settings.manage.sources_panel.intro_title')}</Info.Title>
+              <Info.Body>{getLocalizedString('settings.manage.sources_panel.intro_body')}</Info.Body>
               <Info.Footer>
-                <ExternalLink href={googleSheetDocsUrl}>Read setup guide</ExternalLink>
+                <ExternalLink href={googleSheetDocsUrl}>
+                  {getLocalizedString('settings.manage.sources_panel.read_guide')}
+                </ExternalLink>
               </Info.Footer>
             </Info>
             <input
@@ -237,28 +240,36 @@ export default function SourcesPanel() {
             <div className={style.sourceGrid}>
               <section className={style.sourceCard}>
                 <div className={style.sourceHeader}>
-                  <h4 className={style.sourceTitle}>Import spreadsheet</h4>
+                  <h4 className={style.sourceTitle}>
+                    {getLocalizedString('settings.manage.sources_panel.import_spreadsheet')}
+                  </h4>
                 </div>
                 <p className={style.sourceDescription}>
-                  Bring in a one-off spreadsheet, review the mapping, and apply the data to the current rundown.
+                  {getLocalizedString('settings.manage.sources_panel.import_spreadsheet_desc')}
                 </p>
-                <div className={style.sourceMeta}>Accepts `.xlsx` files</div>
+                <div className={style.sourceMeta}>
+                  {getLocalizedString('settings.manage.sources_panel.import_spreadsheet_meta')}
+                </div>
                 <Button variant='primary' size='large' fluid onClick={handleUpload} loading={hasFile === 'loading'}>
                   <IoDownloadOutline />
-                  Import from spreadsheet
+                  {getLocalizedString('settings.manage.sources_panel.import_spreadsheet_btn')}
                 </Button>
               </section>
               <section className={style.sourceCard}>
                 <div className={style.sourceHeader}>
-                  <h4 className={style.sourceTitle}>Synchronize with Google</h4>
+                  <h4 className={style.sourceTitle}>
+                    {getLocalizedString('settings.manage.sources_panel.sync_google')}
+                  </h4>
                 </div>
                 <p className={style.sourceDescription}>
-                  Connect a Google account once, then load any sheet by ID and keep the import flow inside Ontime.
+                  {getLocalizedString('settings.manage.sources_panel.sync_google_desc')}
                 </p>
-                <div className={style.sourceMeta}>Requires Google OAuth client credentials</div>
+                <div className={style.sourceMeta}>
+                  {getLocalizedString('settings.manage.sources_panel.sync_google_meta')}
+                </div>
                 <Button variant='primary' size='large' fluid onClick={openGSheetFlow} disabled={hasFile !== 'none'}>
                   <IoCloudOutline />
-                  Synchronize with Google
+                  {getLocalizedString('settings.manage.sources_panel.sync_google_btn')}
                 </Button>
               </section>
             </div>
@@ -266,11 +277,17 @@ export default function SourcesPanel() {
         )}
         {showCompleted && (
           <div className={style.finishSection}>
-            <span className={style.finishBadge}>Import complete</span>
-            <div className={style.finishTitle}>Spreadsheet data applied.</div>
-            <div className={style.finishDescription}>You can close this flow or start another import.</div>
+            <span className={style.finishBadge}>
+              {getLocalizedString('settings.manage.sources_panel.import_complete')}
+            </span>
+            <div className={style.finishTitle}>
+              {getLocalizedString('settings.manage.sources_panel.import_applied')}
+            </div>
+            <div className={style.finishDescription}>
+              {getLocalizedString('settings.manage.sources_panel.import_close_info')}
+            </div>
             <Button variant='subtle-white' onClick={resetFlow}>
-              Reset flow
+              {getLocalizedString('settings.manage.sources_panel.reset_flow')}
             </Button>
           </div>
         )}

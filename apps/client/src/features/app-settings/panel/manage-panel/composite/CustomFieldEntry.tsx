@@ -6,6 +6,7 @@ import IconButton from '../../../../../common/components/buttons/IconButton';
 import CopyTag from '../../../../../common/components/copy-tag/CopyTag';
 import Swatch from '../../../../../common/components/input/colour-input/Swatch';
 import Tag from '../../../../../common/components/tag/Tag';
+import { useTranslation } from '../../../../../translation/useTranslation';
 import * as Panel from '../../../panel-utils/PanelUtils';
 import CustomFieldForm from './CustomFieldForm';
 
@@ -23,6 +24,7 @@ interface CustomFieldEntryProps {
 export default function CustomFieldEntry(props: CustomFieldEntryProps) {
   const { colour, label, fieldKey, type, onEdit, onDelete } = props;
   const [isEditing, setIsEditing] = useState(false);
+  const { getLocalizedString } = useTranslation();
 
   const handleEdit = async (patch: CustomField) => {
     await onEdit(fieldKey, patch);
@@ -61,10 +63,18 @@ export default function CustomFieldEntry(props: CustomFieldEntryProps) {
         </CopyTag>
       </td>
       <Panel.InlineElements relation='inner' as='td'>
-        <IconButton variant='ghosted-white' aria-label='Edit entry' onClick={() => setIsEditing(true)}>
+        <IconButton
+          variant='ghosted-white'
+          aria-label={getLocalizedString('settings.automations.trigger_form.edit_entry')}
+          onClick={() => setIsEditing(true)}
+        >
           <IoPencil />
         </IconButton>
-        <IconButton variant='ghosted-destructive' aria-label='Delete entry' onClick={() => onDelete(fieldKey)}>
+        <IconButton
+          variant='ghosted-destructive'
+          aria-label={getLocalizedString('settings.automations.trigger_form.delete_entry')}
+          onClick={() => onDelete(fieldKey)}
+        >
           <IoTrash />
         </IconButton>
       </Panel.InlineElements>

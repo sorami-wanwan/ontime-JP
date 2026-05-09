@@ -14,6 +14,7 @@ import CopyTag from '../../../../../common/components/copy-tag/CopyTag';
 import Input from '../../../../../common/components/input/input/Input';
 import Tag from '../../../../../common/components/tag/Tag';
 import { openLink } from '../../../../../common/utils/linkUtils';
+import { useTranslation } from '../../../../../translation/useTranslation';
 import * as Panel from '../../../panel-utils/PanelUtils';
 import { extractSheetId, getPersistedSheetId, persistSheetId } from './gsheetUtils';
 
@@ -31,6 +32,7 @@ export default function GSheetSetup(props: GSheetSetupProps) {
   const [file, setFile] = useState<File | null>(null);
   const [sheetId, setSheetId] = useState(getPersistedSheetId);
   const [authenticationStatus, setAuthenticationStatus] = useState<AuthenticationStatus>('not_authenticated');
+  const { getLocalizedString } = useTranslation();
   const [authKey, setAuthKey] = useState<string | null>(null);
   const [authLink, setAuthLink] = useState('');
   const [loading, setLoading] = useState<'' | 'cancel' | 'connect' | 'authenticate' | 'load-sheet'>('');
@@ -227,25 +229,29 @@ export default function GSheetSetup(props: GSheetSetupProps) {
   const isLoading = Boolean(loading);
   const isAuthenticated = authenticationStatus === 'authenticated';
   const isAuthenticating = authenticationStatus === 'pending';
-  const statusLabel = isAuthenticated ? 'Connected' : isAuthenticating ? 'Waiting for confirmation' : 'Not connected';
+  const statusLabel = isAuthenticated
+    ? getLocalizedString('settings.manage.gsheet_setup.connected')
+    : isAuthenticating
+      ? getLocalizedString('settings.manage.gsheet_setup.waiting')
+      : getLocalizedString('settings.manage.gsheet_setup.not_connected');
   const statusClass = isAuthenticated ? style.statusReady : isAuthenticating ? style.statusPending : style.statusIdle;
   const statusVariant = isAuthenticated ? 'default' : 'warning';
   const setupMessage = isAuthenticated
-    ? 'Load a spreadsheet by its Google Sheet ID.'
+    ? getLocalizedString('settings.manage.gsheet_setup.setup_connected')
     : canAuthenticate
-      ? 'Finish the device verification in your browser, then return here.'
-      : 'Upload your client secret and enter the sheet ID you want to access.';
+      ? getLocalizedString('settings.manage.gsheet_setup.setup_authenticate')
+      : getLocalizedString('settings.manage.gsheet_setup.setup_idle');
 
   return (
     <Panel.Section className={style.setupShell}>
       <Panel.Title>
-        Sync with Google Sheet (experimental)
+        {getLocalizedString('settings.manage.gsheet_setup.title')}
         {isAuthenticated ? (
           <Button onClick={handleRevoke} loading={loading === 'cancel'}>
-            Revoke Authentication
+            {getLocalizedString('settings.manage.gsheet_setup.revoke_auth')}
           </Button>
         ) : (
-          <Button onClick={handleCancelFlow}>Go Back</Button>
+          <Button onClick={handleCancelFlow}>{getLocalizedString('settings.manage.gsheet_setup.go_back')}</Button>
         )}
       </Panel.Title>
       <div className={style.setupIntro}>
@@ -259,7 +265,7 @@ export default function GSheetSetup(props: GSheetSetupProps) {
       </div>
       {!isAuthenticated && (
         <Panel.ListGroup className={style.setupBlock}>
-          <Panel.Description>Upload Client Secret provided by Google</Panel.Description>
+          <Panel.Description>{getLocalizedString('settings.manage.gsheet_setup.upload_secret')}</Panel.Description>
           <Panel.Error>{authError}</Panel.Error>
           <Input
             fluid
@@ -268,7 +274,7 @@ export default function GSheetSetup(props: GSheetSetupProps) {
             accept='.json'
             disabled={isLoading || canAuthenticate}
           />
-          <div className={style.setupHint}>Use the OAuth client JSON downloaded from your Google Cloud project.</div>
+          <div className={style.setupHint}>{getLocalizedString('settings.manage.gsheet_setup.upload_secret_hint')}</div>
         </Panel.ListGroup>
       )}
       {isAuthenticated && authError && (
@@ -277,52 +283,52 @@ export default function GSheetSetup(props: GSheetSetupProps) {
         </Panel.ListGroup>
       )}
       <Panel.ListGroup className={style.setupBlock}>
-        <Panel.Description>Enter ID of sheet to synchronize</Panel.Description>
+        <Panel.Description>{getLocalizedString('settings.manage.gsheet_setup.enter_id')}</Panel.Description>
         <Panel.Error>{worksheetError}</Panel.Error>
         <Input
           fluid
           value={sheetId}
-          placeholder='Sheet ID or Google Sheets URL'
+          placeholder={getLocalizedString('settings.manage.gsheet_setup.enter_id_placeholder')}
           onChange={(event) => {
             setWorksheetError('');
             setSheetId(extractSheetId(event.target.value));
           }}
           disabled={isLoading || canAuthenticate}
         />
-        <div className={style.setupHint}>Paste a Google Sheets URL or the sheet ID from the URL bar.</div>
+        <div className={style.setupHint}>{getLocalizedString('settings.manage.gsheet_setup.enter_id_hint')}</div>
       </Panel.ListGroup>
       {isAuthenticated ? (
         <Panel.ListGroup className={style.setupBlock}>
-          <Panel.Description>Load the current spreadsheet configuration</Panel.Description>
+          <Panel.Description>{getLocalizedString('settings.manage.gsheet_setup.load_config')}</Panel.Description>
           <Panel.InlineElements wrap='wrap' className={style.setupActions}>
             <Button onClick={handleLoadSheet} disabled={!canLoadSheet || isLoading} loading={loading === 'load-sheet'}>
               <IoCloudDownloadOutline />
-              Load sheet
+              {getLocalizedString('settings.manage.gsheet_setup.load_sheet')}
             </Button>
           </Panel.InlineElements>
         </Panel.ListGroup>
       ) : !canAuthenticate ? (
         <Panel.ListGroup className={style.setupBlock}>
-          <Panel.Description>Generate a Google device code</Panel.Description>
+          <Panel.Description>{getLocalizedString('settings.manage.gsheet_setup.generate_code')}</Panel.Description>
           <Panel.InlineElements wrap='wrap' className={style.setupActions}>
             <Button onClick={handleConnect} disabled={!canConnect || isLoading} loading={loading === 'connect'}>
               <IoCheckmark />
-              Connect
+              {getLocalizedString('settings.manage.gsheet_setup.connect')}
             </Button>
           </Panel.InlineElements>
         </Panel.ListGroup>
       ) : (
         <Panel.ListGroup className={style.setupBlock}>
-          <Panel.Description>Copy the device code, then authenticate with Google</Panel.Description>
+          <Panel.Description>{getLocalizedString('settings.manage.gsheet_setup.copy_code')}</Panel.Description>
           <Panel.InlineElements wrap='wrap' className={style.setupActions}>
-            {isAuthenticating && <span>Authenticating...</span>}
+            {isAuthenticating && <span>{getLocalizedString('settings.manage.gsheet_setup.authenticating')}</span>}
             <CopyTag copyValue={authKey ?? ''}>{authKey}</CopyTag>
             <Button onClick={handleAuthenticate} disabled={isLoading} loading={loading === 'authenticate'}>
               <IoShieldCheckmarkOutline />
-              Authenticate
+              {getLocalizedString('settings.manage.gsheet_setup.authenticate')}
             </Button>
           </Panel.InlineElements>
-          <div className={style.setupHint}>Copy the code, then open the browser prompt to complete the flow.</div>
+          <div className={style.setupHint}>{getLocalizedString('settings.manage.gsheet_setup.copy_code_hint')}</div>
         </Panel.ListGroup>
       )}
     </Panel.Section>

@@ -5,6 +5,7 @@ import { deleteCustomView } from '../../../../common/api/customViews';
 import { maybeAxiosError } from '../../../../common/api/utils';
 import Button from '../../../../common/components/buttons/Button';
 import Dialog from '../../../../common/components/dialog/Dialog';
+import { useTranslation } from '../../../../translation/useTranslation';
 import * as Panel from '../../panel-utils/PanelUtils';
 import CustomViewsListItem from './CustomViewsListItem';
 
@@ -20,6 +21,7 @@ interface CustomViewsListProps {
 export default function CustomViewsList({ views, onOpenUpload, onMutate, onError }: CustomViewsListProps) {
   const [targetSlug, setTargetSlug] = useState<string | null>(null);
   const [isDeleting, setIsDeleting] = useState(false);
+  const { getLocalizedString } = useTranslation();
 
   const openDelete = (slug: string) => {
     setTargetSlug(slug);
@@ -47,13 +49,18 @@ export default function CustomViewsList({ views, onOpenUpload, onMutate, onError
       <Panel.Table>
         <thead>
           <tr>
-            <th>Name</th>
-            <th>URL</th>
+            <th>{getLocalizedString('settings.manage.custom_views.table_name')}</th>
+            <th>{getLocalizedString('settings.manage.custom_views.table_url')}</th>
             <th className={style.actionsHeader} />
           </tr>
         </thead>
         <tbody>
-          {views.length === 0 && <Panel.TableEmpty handleClick={onOpenUpload} label='No custom views yet' />}
+          {views.length === 0 && (
+            <Panel.TableEmpty
+              handleClick={onOpenUpload}
+              label={getLocalizedString('settings.manage.custom_views.no_views')}
+            />
+          )}
           {views.map((view, index) => (
             <CustomViewsListItem
               key={view.slug}
@@ -68,17 +75,17 @@ export default function CustomViewsList({ views, onOpenUpload, onMutate, onError
       <Dialog
         isOpen={targetSlug !== null}
         onClose={() => setTargetSlug(null)}
-        title='Delete custom view'
+        title={getLocalizedString('settings.manage.custom_views.delete_title')}
         showBackdrop
         showCloseButton
-        bodyElements='You will permanently delete this file. Are you sure?'
+        bodyElements={getLocalizedString('settings.manage.custom_views.delete_confirm')}
         footerElements={
           <>
             <Button size='large' onClick={() => setTargetSlug(null)}>
-              Cancel
+              {getLocalizedString('common.cancel')}
             </Button>
             <Button variant='destructive' size='large' onClick={submitDelete} loading={isDeleting}>
-              Delete custom view
+              {getLocalizedString('settings.manage.custom_views.delete_button')}
             </Button>
           </>
         }

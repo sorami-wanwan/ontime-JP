@@ -5,6 +5,7 @@ import { IoAdd, IoTrash } from 'react-icons/io5';
 import Button from '../../../../../../common/components/buttons/Button';
 import IconButton from '../../../../../../common/components/buttons/IconButton';
 import Checkbox from '../../../../../../common/components/checkbox/Checkbox';
+import { useTranslation } from '../../../../../../translation/useTranslation';
 import * as Panel from '../../../../panel-utils/PanelUtils';
 import {
   type ImportFormValues,
@@ -39,6 +40,7 @@ export default function SheetImportMappingPane({
   removeCustomField,
   isBusy,
 }: SheetImportMappingPaneProps) {
+  const { getLocalizedString } = useTranslation();
   const listRef = useRef<HTMLDivElement>(null);
   const resolvedCustomFields = getResolvedCustomFields(values.custom);
 
@@ -50,11 +52,13 @@ export default function SheetImportMappingPane({
   return (
     <section className={style.mappingPane}>
       <Panel.InlineElements align='apart' className={style.mappingPaneHeader}>
-        <span className={style.mappingPaneTitle}>Column mapping</span>
+        <span className={style.mappingPaneTitle}>
+          {getLocalizedString('settings.manage.sheet_import.column_mapping')}
+        </span>
         <Panel.InlineElements relation='inner' className={style.mappingPaneActions}>
           <Button className={style.addColumnTrigger} onClick={handleAddCustomField} disabled={isBusy}>
             <IoAdd />
-            Add
+            {getLocalizedString('settings.manage.sheet_import.add')}
           </Button>
         </Panel.InlineElements>
       </Panel.InlineElements>
@@ -95,7 +99,7 @@ export default function SheetImportMappingPane({
                 </span>
                 <IconButton
                   variant='ghosted-destructive'
-                  aria-label={`Delete custom column ${resolvedCustomFields[index]?.ontimeName || values.custom[index]?.importName || `Custom ${index + 1}`}`}
+                  aria-label={`${getLocalizedString('settings.automations.trigger_form.delete_entry')} ${resolvedCustomFields[index]?.ontimeName || values.custom[index]?.importName || `Custom ${index + 1}`}`}
                   onClick={() => removeCustomField(index)}
                 >
                   <IoTrash />

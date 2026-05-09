@@ -16,11 +16,11 @@ test('imports spreadsheet and applies imported rundown to editor', async ({ page
   await page.getByRole('button', { name: 'Toggle settings' }).click();
   await page.getByRole('button', { name: 'Project settings' }).click();
   await page.getByRole('button', { name: 'Import spreadsheet' }).first().click();
-  await expect(page.getByText('Synchronize your rundown with an external source')).toBeVisible();
+  await expect(page.getByRole('heading', { name: 'Sources' })).toBeVisible();
 
   // upload the spreadsheet
   const fileChooserPromise = page.waitForEvent('filechooser');
-  await page.getByRole('button', { name: 'Import from spreadsheet', exact: true }).click();
+  await page.getByRole('button', { name: 'Start import', exact: true }).click();
   const fileChooser = await fileChooserPromise;
   await fileChooser.setFiles(fileToUpload);
   const worksheetSelect = page.getByRole('combobox', { name: 'Worksheet', exact: true });
@@ -32,9 +32,9 @@ test('imports spreadsheet and applies imported rundown to editor', async ({ page
   // apply import
   await page.getByRole('button', { name: 'Preview import' }).click();
   await page.getByRole('button', { name: 'Apply import' }).click();
-  await expect(page.getByText('Import complete')).toBeVisible();
-  await expect(page.getByText('Spreadsheet data applied.')).toBeVisible();
-  await page.getByRole('button', { name: 'Reset flow' }).click();
+  await expect(page.getByText('Import complete!')).toBeVisible();
+  await expect(page.getByText('Your imported data has been applied to the current rundown.')).toBeVisible();
+  await page.getByRole('button', { name: 'Start new import' }).click();
 
   // verify the data in the rundown
   await page.getByRole('button', { name: 'Close settings' }).scrollIntoViewIfNeeded();

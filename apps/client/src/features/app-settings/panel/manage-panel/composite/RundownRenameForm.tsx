@@ -6,6 +6,7 @@ import { maybeAxiosError } from '../../../../../common/api/utils';
 import Button from '../../../../../common/components/buttons/Button';
 import Input from '../../../../../common/components/input/input/Input';
 import { preventEscape } from '../../../../../common/utils/keyEvent';
+import { useTranslation } from '../../../../../translation/useTranslation';
 import * as Panel from '../../../panel-utils/PanelUtils';
 
 interface RundownRenameFormProps {
@@ -19,6 +20,7 @@ interface FormData {
 }
 
 export default function RundownRenameForm({ onSubmit, onCancel, initialTitle }: RundownRenameFormProps) {
+  const { getLocalizedString } = useTranslation();
   const {
     handleSubmit,
     register,
@@ -48,14 +50,18 @@ export default function RundownRenameForm({ onSubmit, onCancel, initialTitle }: 
   return (
     <Panel.Indent as='form' onSubmit={handleSubmit(setupSubmit)} onKeyDown={(event) => preventEscape(event, onCancel)}>
       <label>
-        <Panel.Description>Rundown title</Panel.Description>
+        <Panel.Description>{getLocalizedString('settings.manage.manage_rundowns.rundown_title')}</Panel.Description>
         <Input
           {...register('title', {
-            required: { value: true, message: 'Title is required' },
+            required: {
+              value: true,
+              message: getLocalizedString('settings.manage.manage_rundowns.error_title_required'),
+            },
             validate: (value) => {
-              if (value.trim().length === 0) return 'Title cannot be empty';
+              if (value.trim().length === 0)
+                return getLocalizedString('settings.manage.manage_rundowns.error_title_empty');
               if (checkRegex.isAlphanumericWithSpace(value) === false)
-                return 'Title can only contain alphanumeric characters, spaces and underscores';
+                return getLocalizedString('settings.manage.manage_rundowns.error_title_alphanumeric');
               return true;
             },
           })}
@@ -66,10 +72,10 @@ export default function RundownRenameForm({ onSubmit, onCancel, initialTitle }: 
       {errors.root && <Panel.Error>{errors.root.message}</Panel.Error>}
       <Panel.InlineElements relation='inner' align='end'>
         <Button variant='ghosted' onClick={onCancel}>
-          Cancel
+          {getLocalizedString('common.cancel')}
         </Button>
         <Button type='submit' variant='primary' disabled={!canSubmit} loading={isSubmitting}>
-          Save
+          {getLocalizedString('settings.manage.custom_fields.save')}
         </Button>
       </Panel.InlineElements>
     </Panel.Indent>

@@ -3,20 +3,22 @@ import { IoCheckmark } from 'react-icons/io5';
 
 import AutocompleteInput from '../../../../../../common/components/autocomplete-input/AutocompleteInput';
 import { cx } from '../../../../../../common/utils/styleUtils';
+import type { TranslationKey } from '../../../../../../translation/TranslationProvider';
+import { useTranslation } from '../../../../../../translation/useTranslation';
 import type { MappingWarning } from './importMapUtils';
 
 import style from './SheetImportEditor.module.scss';
 
-export function getWarningText(warning: MappingWarning): string {
+export function getWarningText(warning: MappingWarning, t: (key: TranslationKey) => string): string {
   switch (warning.kind) {
     case 'duplicate':
-      return 'Column mapped more than once';
+      return t('settings.manage.sheet_import.warning_duplicate');
     case 'missing':
-      return 'Column not in current headers, check preview';
+      return t('settings.manage.sheet_import.warning_missing');
     case 'invalid-name':
-      return 'Column cannot be converted into an Ontime field name';
+      return t('settings.manage.sheet_import.warning_invalid_name');
     case 'name-collision':
-      return 'Column name resolves to a duplicate Ontime field';
+      return t('settings.manage.sheet_import.warning_name_collision');
     default:
       return '';
   }
@@ -41,7 +43,8 @@ export default function MappingFieldRow({
   assigned,
   disabled = false,
 }: MappingFieldRowProps) {
-  const warningText = warning ? getWarningText(warning) : undefined;
+  const { getLocalizedString } = useTranslation();
+  const warningText = warning ? getWarningText(warning, getLocalizedString) : undefined;
 
   return (
     <div className={style.mappingField}>
@@ -53,7 +56,7 @@ export default function MappingFieldRow({
         options={options}
         openOnFocus
         trailingElement={(option) => (assigned.has(option) ? <IoCheckmark /> : null)}
-        placeholder='Spreadsheet column'
+        placeholder={getLocalizedString('settings.manage.sheet_import.spreadsheet_column')}
         disabled={disabled}
         title={warningText}
         value={value}
