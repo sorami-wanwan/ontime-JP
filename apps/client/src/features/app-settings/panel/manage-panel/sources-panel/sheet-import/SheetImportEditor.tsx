@@ -4,6 +4,7 @@ import { IoArrowUpOutline, IoEye } from 'react-icons/io5';
 
 import Button from '../../../../../../common/components/buttons/Button';
 import Select from '../../../../../../common/components/select/Select';
+import { useTranslation } from '../../../../../../translation/useTranslation';
 import * as Panel from '../../../../panel-utils/PanelUtils';
 import PreviewTable from './preview/PreviewTable';
 import SheetImportMappingPane from './SheetImportMappingPane';
@@ -32,6 +33,7 @@ export default function SheetImportEditor({
   onCancel,
   onExport,
 }: SheetImportEditorProps) {
+  const { getLocalizedString } = useTranslation();
   const {
     values,
     setValue,
@@ -66,7 +68,7 @@ export default function SheetImportEditor({
     <Panel.Section as='form' id='spreadsheet-import-workspace' className={style.editor} onSubmit={handlePreviewSubmit}>
       <Panel.InlineElements align='apart' wrap='wrap' className={style.editorToolbar}>
         <label className={style.worksheetControl}>
-          <span className={style.worksheetLabel}>Worksheet</span>
+          <span className={style.worksheetLabel}>{getLocalizedString('settings.manage.sheet_import.worksheet')}</span>
           <Select
             options={worksheetNames.map((name) => ({ value: name, label: name }))}
             value={values.worksheet}
@@ -93,7 +95,9 @@ export default function SheetImportEditor({
 
         <section className={style.previewPane}>
           <div className={style.previewPaneHeader}>
-            <span className={style.previewPaneTitle}>Import preview</span>
+            <span className={style.previewPaneTitle}>
+              {getLocalizedString('settings.manage.sheet_import.import_preview')}
+            </span>
           </div>
           <div className={style.tableShell}>
             <PreviewTable
@@ -109,12 +113,12 @@ export default function SheetImportEditor({
       {displayError && <Panel.Error>{displayError}</Panel.Error>}
       <Panel.InlineElements align='end' wrap='wrap' className={style.editorFooter}>
         <Button onClick={onCancel} disabled={isBusy}>
-          Cancel
+          {getLocalizedString('common.cancel')}
         </Button>
         {onExport && (
           <Button onClick={handleExportSubmit} disabled={!canPreview} loading={state.loading === 'export'}>
             <IoArrowUpOutline />
-            Export
+            {getLocalizedString('settings.manage.sheet_import.export')}
           </Button>
         )}
         <Button
@@ -124,7 +128,7 @@ export default function SheetImportEditor({
           loading={state.loading === 'preview'}
         >
           <IoEye />
-          Preview import
+          {getLocalizedString('settings.manage.sheet_import.preview_import')}
         </Button>
         <Button
           variant='primary'
@@ -132,7 +136,7 @@ export default function SheetImportEditor({
           disabled={!state.preview || isBusy}
           loading={state.loading === 'apply'}
         >
-          Apply import
+          {getLocalizedString('settings.manage.sheet_import.apply_import')}
         </Button>
       </Panel.InlineElements>
     </Panel.Section>

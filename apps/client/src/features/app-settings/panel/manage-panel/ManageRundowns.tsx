@@ -19,6 +19,7 @@ import { DropdownMenu } from '../../../../common/components/dropdown-menu/Dropdo
 import Tag from '../../../../common/components/tag/Tag';
 import { useMutateProjectRundowns, useProjectRundowns } from '../../../../common/hooks-query/useProjectRundowns';
 import { cx } from '../../../../common/utils/styleUtils';
+import { useTranslation } from '../../../../translation/useTranslation';
 import * as Panel from '../../panel-utils/PanelUtils';
 import RundownRenameForm from './composite/RundownRenameForm';
 import { ManageRundownForm } from './ManageRundownForm';
@@ -34,6 +35,7 @@ export default function ManageRundowns() {
   const [targetRundown, setTargetRundown] = useState('');
   const [renamingRundown, setRenamingRundown] = useState<string | null>(null);
   const [actionError, setActionError] = useState<string | null>(null);
+  const { getLocalizedString } = useTranslation();
 
   const openLoad = (id: string) => {
     setActionError(null);
@@ -56,7 +58,7 @@ export default function ManageRundowns() {
     try {
       await load(targetRundown);
     } catch (error) {
-      setActionError(`Failed to load rundown. ${maybeAxiosError(error)}`);
+      setActionError(`${getLocalizedString('settings.manage.manage_rundowns.failed_load')}${maybeAxiosError(error)}`);
     } finally {
       loadHandlers.close();
     }
@@ -70,7 +72,9 @@ export default function ManageRundowns() {
     try {
       await duplicate(id);
     } catch (error) {
-      setActionError(`Failed to duplicate rundown. ${maybeAxiosError(error)}`);
+      setActionError(
+        `${getLocalizedString('settings.manage.manage_rundowns.failed_duplicate')}${maybeAxiosError(error)}`,
+      );
     }
   };
 
@@ -79,7 +83,7 @@ export default function ManageRundowns() {
       await rename([id, newTitle]);
       setRenamingRundown(null);
     } catch (error) {
-      setActionError(`Failed to rename rundown. ${maybeAxiosError(error)}`);
+      setActionError(`${getLocalizedString('settings.manage.manage_rundowns.failed_rename')}${maybeAxiosError(error)}`);
     }
   };
 
@@ -87,7 +91,7 @@ export default function ManageRundowns() {
     try {
       await remove(targetRundown);
     } catch (error) {
-      setActionError(`Failed to delete rundown. ${maybeAxiosError(error)}`);
+      setActionError(`${getLocalizedString('settings.manage.manage_rundowns.failed_delete')}${maybeAxiosError(error)}`);
     } finally {
       deleteHandlers.close();
     }
@@ -102,7 +106,7 @@ export default function ManageRundowns() {
       <Panel.Section>
         <Panel.Card>
           <Panel.SubHeader>
-            Manage project rundowns
+            {getLocalizedString('settings.manage.manage_rundowns.title')}
             <Panel.InlineElements>
               <Button
                 onClick={() => {
@@ -110,7 +114,7 @@ export default function ManageRundowns() {
                   newHandlers.open();
                 }}
               >
-                New <IoAdd />
+                {getLocalizedString('settings.manage.custom_fields.new')} <IoAdd />
               </Button>
             </Panel.InlineElements>
           </Panel.SubHeader>
@@ -121,8 +125,8 @@ export default function ManageRundowns() {
             <Panel.Table>
               <thead>
                 <tr>
-                  <th># Entries</th>
-                  <th style={{ width: '100%' }}>Title</th>
+                  <th>{getLocalizedString('settings.manage.manage_rundowns.table_entries')}</th>
+                  <th style={{ width: '100%' }}>{getLocalizedString('settings.manage.manage_rundowns.table_title')}</th>
                   <th />
                 </tr>
               </thead>
@@ -149,7 +153,7 @@ export default function ManageRundowns() {
                     <tr key={id} className={cx([isLoaded && style.current])}>
                       <td>{numEntries}</td>
                       <td>
-                        {title} {isLoaded && <Tag>Loaded</Tag>}
+                        {title} {isLoaded && <Tag>{getLocalizedString('settings.manage.manage_rundowns.loaded')}</Tag>}
                       </td>
                       <td>
                         <DropdownMenu
@@ -158,33 +162,36 @@ export default function ManageRundowns() {
                             {
                               type: 'item',
                               icon: IoPencilOutline,
-                              label: 'Rename',
+                              label: getLocalizedString('settings.manage.manage_rundowns.rename'),
                               onClick: () => openRename(id),
                             },
                             {
                               type: 'item',
                               icon: IoDownloadOutline,
-                              label: 'Load',
+                              label: getLocalizedString('settings.manage.manage_rundowns.load'),
                               onClick: () => openLoad(id),
                               disabled: isLoaded,
                             },
                             {
                               type: 'item',
                               icon: IoDocumentOutline,
-                              label: 'Download .xlsx',
+                              label: getLocalizedString('settings.manage.manage_rundowns.download_xlsx'),
                               onClick: () => handleDownloadXlsx(id, title),
                             },
                             {
                               type: 'item',
                               icon: IoDuplicateOutline,
-                              label: 'Duplicate',
+                              label: getLocalizedString('settings.manage.manage_rundowns.duplicate'),
                               onClick: () => submitRundownDuplicate(id),
                             },
                             { type: 'divider' },
                             {
                               type: 'destructive',
                               icon: IoTrash,
-                              label: 'Delete',
+                              label: getLocalizedString('settings.manage.custom_fields.delete_title').replace(
+                                'の削除',
+                                '',
+                              ), // or create a specific key if needed, or use 'settings.automations.trigger_form.delete_entry'
                               onClick: () => openDelete(id),
                               disabled: isLoaded,
                             },
@@ -204,21 +211,21 @@ export default function ManageRundowns() {
       <Dialog
         isOpen={isOpenDelete}
         onClose={deleteHandlers.close}
-        title='Delete rundown'
+        title={getLocalizedString('settings.manage.manage_rundowns.delete_title')}
         showBackdrop
         showCloseButton
         bodyElements={
-          <>
-            You will lose all data in your rundown. <br /> Are you sure?
-          </>
+          <span
+            dangerouslySetInnerHTML={{ __html: getLocalizedString('settings.manage.manage_rundowns.delete_confirm') }}
+          />
         }
         footerElements={
           <>
             <Button size='large' onClick={deleteHandlers.close}>
-              Cancel
+              {getLocalizedString('settings.manage.custom_views.cancel')}
             </Button>
             <Button variant='destructive' size='large' onClick={submitRundownDelete}>
-              Delete rundown
+              {getLocalizedString('settings.manage.manage_rundowns.delete_button')}
             </Button>
           </>
         }
@@ -226,21 +233,21 @@ export default function ManageRundowns() {
       <Dialog
         isOpen={isOpenLoad}
         onClose={loadHandlers.close}
-        title='Load rundown'
+        title={getLocalizedString('settings.manage.manage_rundowns.load_title')}
         showBackdrop
         showCloseButton
         bodyElements={
-          <>
-            The current playback will be stopped. <br /> Are you sure?
-          </>
+          <span
+            dangerouslySetInnerHTML={{ __html: getLocalizedString('settings.manage.manage_rundowns.load_confirm') }}
+          />
         }
         footerElements={
           <>
             <Button size='large' onClick={loadHandlers.close}>
-              Cancel
+              {getLocalizedString('settings.manage.custom_views.cancel')}
             </Button>
             <Button variant='primary' size='large' onClick={submitRundownLoad}>
-              Load rundown
+              {getLocalizedString('settings.manage.manage_rundowns.load_button')}
             </Button>
           </>
         }

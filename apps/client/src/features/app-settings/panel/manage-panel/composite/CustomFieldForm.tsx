@@ -11,6 +11,7 @@ import Input from '../../../../../common/components/input/input/Input';
 import RadioGroup from '../../../../../common/components/radio-group/RadioGroup';
 import useCustomFields from '../../../../../common/hooks-query/useCustomFields';
 import { preventEscape } from '../../../../../common/utils/keyEvent';
+import { useTranslation } from '../../../../../translation/useTranslation';
 import * as Panel from '../../../panel-utils/PanelUtils';
 
 import style from '../ManagePanel.module.scss';
@@ -35,6 +36,7 @@ export default function CustomFieldForm({
   initialType,
 }: CustomFieldsFormProps) {
   const { data } = useCustomFields();
+  const { getLocalizedString } = useTranslation();
 
   // we use this to force an update
   const [_, setColour] = useState(initialColour || '');
@@ -87,37 +89,42 @@ export default function CustomFieldForm({
   return (
     <Panel.Indent as='form' onSubmit={handleSubmit(setupSubmit)} onKeyDown={(event) => preventEscape(event, onCancel)}>
       <Info>
-        Please note that images can quickly deteriorate your app&apos;s performance.
+        {getLocalizedString('settings.manage.custom_fields.performance_warning_1')}
         <br />
-        Prefer using small, and compressed images.
+        {getLocalizedString('settings.manage.custom_fields.performance_warning_2')}
       </Info>
       <div>
-        <Panel.Description>Type</Panel.Description>
+        <Panel.Description>{getLocalizedString('settings.manage.custom_fields.type')}</Panel.Description>
         <RadioGroup
           orientation='horizontal'
           disabled={isEditMode}
           onValueChange={(value) => setValue('type', value, { shouldDirty: true })}
           value={watch('type')}
           items={[
-            { value: 'text', label: 'Text' },
-            { value: 'image', label: 'Image' },
+            { value: 'text', label: getLocalizedString('settings.manage.custom_fields.type_text') },
+            { value: 'image', label: getLocalizedString('settings.manage.custom_fields.type_image') },
           ]}
         />
       </div>
       <div className={style.twoCols}>
         <label>
-          <Panel.Description>Label (only alphanumeric characters are allowed)</Panel.Description>
+          <Panel.Description>{getLocalizedString('settings.manage.custom_fields.label')}</Panel.Description>
           {errors.label && <Panel.Error>{errors.label.message}</Panel.Error>}
           <Input
             {...register('label', {
-              required: { value: true, message: 'Required field' },
+              required: {
+                value: true,
+                message: getLocalizedString('settings.automations.trigger_form.required_field'),
+              },
               onChange: () => setValue('key', customFieldLabelToKey(getValues('label')) ?? 'N/A'),
               validate: (value) => {
-                if (value.trim().length === 0) return 'Required field';
+                if (value.trim().length === 0)
+                  return getLocalizedString('settings.automations.trigger_form.required_field');
                 if (!checkRegex.isAlphanumericWithSpace(value))
-                  return 'Only alphanumeric characters and space are allowed';
+                  return getLocalizedString('settings.manage.custom_fields.error_alphanumeric');
                 if (!isEditMode) {
-                  if (isEditMode && Object.keys(data).includes(value)) return 'Custom fields must be unique';
+                  if (isEditMode && Object.keys(data).includes(value))
+                    return getLocalizedString('settings.manage.custom_fields.error_unique');
                 }
                 return true;
               },
@@ -127,21 +134,21 @@ export default function CustomFieldForm({
         </label>
 
         <label>
-          <Panel.Description>Key (use in Integrations and API)</Panel.Description>
+          <Panel.Description>{getLocalizedString('settings.manage.custom_fields.key_description')}</Panel.Description>
           <Input {...register('key')} variant='ghosted' readOnly fluid />
         </label>
       </div>
       <label>
-        <Panel.Description>Colour</Panel.Description>
+        <Panel.Description>{getLocalizedString('settings.manage.custom_fields.colour')}</Panel.Description>
         <SwatchSelect name='colour' value={colour} handleChange={(_field, value) => handleSelectColour(value)} />
       </label>
       {errors.root && <Panel.Error>{errors.root.message}</Panel.Error>}
       <Panel.InlineElements relation='inner' align='end'>
         <Button variant='ghosted' onClick={onCancel}>
-          Cancel
+          {getLocalizedString('settings.manage.custom_views.cancel')}
         </Button>
         <Button type='submit' variant='primary' disabled={!canSubmit} loading={isSubmitting}>
-          Save
+          {getLocalizedString('settings.manage.custom_fields.save')}
         </Button>
       </Panel.InlineElements>
     </Panel.Indent>
