@@ -1,4 +1,5 @@
 import useScrollIntoView from '../../../../common/hooks/useScrollIntoView';
+import { useTranslation } from '../../../../translation/useTranslation';
 import type { PanelBaseProps } from '../../panel-list/PanelList';
 import * as Panel from '../../panel-utils/PanelUtils';
 import QuickStart from '../../quick-start/QuickStart';
@@ -10,6 +11,7 @@ interface ProjectPanelProps extends PanelBaseProps {
 }
 
 export default function ProjectPanel({ location, setLocation }: ProjectPanelProps) {
+  const { getLocalizedString } = useTranslation();
   const manageProjectsRef = useScrollIntoView<HTMLDivElement>('list', location);
 
   const handleQuickClose = () => {
@@ -18,7 +20,7 @@ export default function ProjectPanel({ location, setLocation }: ProjectPanelProp
 
   return (
     <>
-      <Panel.Header>Project</Panel.Header>
+      <Panel.Header>{getLocalizedString('settings.project.panel_title')}</Panel.Header>
       <QuickStart isOpen={location === 'create'} onClose={handleQuickClose} />
       <div ref={manageProjectsRef}>
         <ManageProjects />

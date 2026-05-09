@@ -9,6 +9,7 @@ import IconButton from '../../../../common/components/buttons/IconButton';
 import Info from '../../../../common/components/info/Info';
 import Tag from '../../../../common/components/tag/Tag';
 import useAutomationSettings from '../../../../common/hooks-query/useAutomationSettings';
+import { useTranslation } from '../../../../translation/useTranslation';
 import * as Panel from '../../panel-utils/PanelUtils';
 import AutomationForm from './AutomationForm';
 
@@ -25,6 +26,7 @@ interface AutomationsListProps {
 }
 
 export default function AutomationsList(props: AutomationsListProps) {
+  const { getLocalizedString } = useTranslation();
   const { automations, enabledAutomations } = props;
   const { refetch } = useAutomationSettings();
   const [automationFormData, setAutomationFormData] = useState<AutomationDTO | null>(null);
@@ -46,23 +48,20 @@ export default function AutomationsList(props: AutomationsListProps) {
   return (
     <Panel.Card>
       <Panel.SubHeader>
-        Manage automations
+        {getLocalizedString('settings.automations.manage_automations.title')}
         <Button
           type='submit'
           disabled={Boolean(automationFormData)}
           onClick={() => setAutomationFormData(automationPlaceholder)}
         >
-          New <IoAdd />
+          {getLocalizedString('settings.automations.manage_automations.new')} <IoAdd />
         </Button>
       </Panel.SubHeader>
 
       <Panel.Divider />
 
       {enabledAutomations === false && (
-        <Info>
-          Automations are disabled. You can still manage automation definitions here, but they will not run until
-          enabled.
-        </Info>
+        <Info>{getLocalizedString('settings.automations.manage_automations.disabled_info')}</Info>
       )}
 
       {automationFormData !== null && (
@@ -72,10 +71,14 @@ export default function AutomationsList(props: AutomationsListProps) {
       <Panel.Table>
         <thead>
           <tr>
-            <th style={{ width: '45%' }}>Title</th>
-            <th style={{ width: '15%' }}>Trigger rule</th>
-            <th style={{ width: '15%' }}>Filters</th>
-            <th style={{ width: '15%' }}>Outputs</th>
+            <th style={{ width: '45%' }}>
+              {getLocalizedString('settings.automations.manage_automations.table_title')}
+            </th>
+            <th style={{ width: '15%' }}>
+              {getLocalizedString('settings.automations.manage_automations.trigger_rule')}
+            </th>
+            <th style={{ width: '15%' }}>{getLocalizedString('settings.automations.manage_automations.filters')}</th>
+            <th style={{ width: '15%' }}>{getLocalizedString('settings.automations.manage_automations.outputs')}</th>
             <th />
           </tr>
         </thead>

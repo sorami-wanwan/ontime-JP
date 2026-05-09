@@ -8,12 +8,14 @@ import useReport from '../../../../common/hooks-query/useReport';
 import useRundown from '../../../../common/hooks-query/useRundown';
 import { cx } from '../../../../common/utils/styleUtils';
 import { formatTime } from '../../../../common/utils/time';
+import { useTranslation } from '../../../../translation/useTranslation';
 import * as Panel from '../../panel-utils/PanelUtils';
 import { CombinedReport, getCombinedReport, makeReportCSV } from './reportSettings.utils';
 
 import style from './ReportSettings.module.scss';
 
 export default function ReportSettings() {
+  const { getLocalizedString } = useTranslation();
   const { data: reportData } = useReport();
   const { data } = useRundown();
 
@@ -34,19 +36,19 @@ export default function ReportSettings() {
   return (
     <Panel.Section>
       <Panel.Card>
-        <Panel.SubHeader>Report</Panel.SubHeader>
+        <Panel.SubHeader>{getLocalizedString('settings.features.report.title')}</Panel.SubHeader>
         <Panel.Divider />
         <Panel.Section>
           <Panel.Title>
-            Manage report
+            {getLocalizedString('settings.features.report.manage')}
             <Panel.InlineElements>
               <Button onClick={() => downloadCSV(combinedReport)} disabled={combinedReport.length === 0}>
                 <IoTrashBin />
-                Export CSV
+                {getLocalizedString('settings.features.report.export_csv')}
               </Button>
               <Button variant='subtle-destructive' onClick={clearReport} disabled={combinedReport.length === 0}>
                 <IoTrashBin />
-                Clear All
+                {getLocalizedString('settings.features.report.clear_all')}
               </Button>
             </Panel.InlineElements>
           </Panel.Title>
@@ -56,17 +58,17 @@ export default function ReportSettings() {
             <thead>
               <tr>
                 <th>#</th>
-                <th>Cue</th>
-                <th>Title</th>
-                <th>Scheduled Start</th>
-                <th>Actual Start</th>
-                <th>Scheduled End</th>
-                <th>Actual End</th>
+                <th>{getLocalizedString('settings.features.report.cue')}</th>
+                <th>{getLocalizedString('settings.features.report.table_title')}</th>
+                <th>{getLocalizedString('settings.features.report.scheduled_start')}</th>
+                <th>{getLocalizedString('settings.features.report.actual_start')}</th>
+                <th>{getLocalizedString('settings.features.report.scheduled_end')}</th>
+                <th>{getLocalizedString('settings.features.report.actual_end')}</th>
               </tr>
             </thead>
             <tbody>
               {combinedReport.length === 0 && (
-                <Panel.TableEmpty label='Reports are generated when running through the show.' />
+                <Panel.TableEmpty label={getLocalizedString('settings.features.report.empty_label')} />
               )}
 
               {combinedReport.map((entry) => {

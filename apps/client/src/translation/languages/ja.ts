@@ -1,10 +1,11 @@
 import { TranslationObject } from 'ontime-types';
 
-export const langJa: TranslationObject = {
+export const langJa: Partial<TranslationObject> = {
+  // ===== common =====
   'common.expected_finish': '完了見込み',
   'common.minutes': '分',
   'common.seconds': '秒',
-  'common.now': '今',
+  'common.now': '現在',
   'common.next': '次',
   'common.scheduled_start': '開始予定',
   'common.scheduled_end': '終了予定',
@@ -16,7 +17,9 @@ export const langJa: TranslationObject = {
   'common.started_at': '開始時刻',
   'common.time_now': '現在時刻',
   'common.no_data': 'データなし',
-  'countdown.ended': '終了:',
+
+  // ===== countdown =====
+  'countdown.ended': 'イベント終了:',
   'countdown.running': '進行中',
   'countdown.loaded': 'スタンバイ',
   'countdown.select_event': '表示するイベントを選択',
@@ -24,17 +27,25 @@ export const langJa: TranslationObject = {
   'countdown.waiting': '開始待ち',
   'countdown.overtime': '超過',
   'countdown.all_have_finished': 'すべてのイベントが終了しました',
+
+  // ===== timeline =====
   'timeline.live': 'ライブ',
   'timeline.done': '終了',
   'timeline.due': '予定',
   'timeline.followedby': '次:',
+
+  // ===== project =====
   'project.title': 'タイトル',
   'project.description': '説明',
   'project.info': 'プロジェクト情報',
   'project.url': 'プロジェクトURL',
+
+  // ===== settings (common) =====
   'settings.save': '保存',
   'settings.revert_to_saved': '保存した状態に戻す',
   'settings.title': '設定',
+
+  // ===== settings.general =====
   'settings.general.title': '一般設定',
   'settings.general.language_info': 'ビュー言語の変更はエディタ画面には影響しません',
   'settings.general.editor_pin_code': 'エディタPINコード',
@@ -48,6 +59,8 @@ export const langJa: TranslationObject = {
   'settings.general.views_language': 'ビュー言語',
   'settings.general.views_language_description': 'ビューに表示する言語',
   'settings.general.edit_custom_translation': 'カスタム翻訳を編集',
+
+  // ===== settings.view =====
   'settings.view.title': 'ビュー設定',
   'settings.view.css_info': 'カスタムCSSルールを追加して、Ontimeビューのスタイルをカスタマイズできます。',
   'settings.view.see_docs': 'ドキュメントを見る',
@@ -62,6 +75,8 @@ export const langJa: TranslationObject = {
   'settings.view.warning_colour_description': '警告モード時のタイマーカラー',
   'settings.view.danger_colour': '危険カラー',
   'settings.view.danger_colour_description': '危険モード時のタイマーカラー',
+
+  // ===== settings.project (settings panel) =====
   'settings.project.title': 'プロジェクトデータ',
   'settings.project.project_title': 'プロジェクト名',
   'settings.project.project_title_placeholder': 'プロジェクト名は本番ビューに表示されます',
@@ -75,19 +90,248 @@ export const langJa: TranslationObject = {
   'settings.project.add': '追加',
   'settings.project.custom_title': 'タイトル',
   'settings.project.custom_title_placeholder': 'カスタムデータのタイトル',
-  'settings.project.field_required': '入力必須です',
+  'settings.project.field_required': '必須項目です',
   'settings.project.custom_text': 'テキスト',
   'settings.project.custom_text_placeholder': 'カスタムデータのテキスト',
   'settings.project.image_url': '画像URL（任意）',
   'settings.project.image_url_placeholder': '画像URLを入力（任意）',
+
+  // ===== settings.port =====
   'settings.port.title': 'サーバーポート',
   'settings.port.load_failed': 'サーバーポートの読み込みに失敗しました',
   'settings.port.port_range': 'ポートは 1024 ～ 65535 の範囲で指定してください',
   'settings.port.pending_restart': 'ポートの変更は次回再起動時に適用されます。',
   'settings.port.server_port': 'Ontimeサーバーポート',
   'settings.port.server_port_description': 'Ontimeサーバーのリスニングポート。デフォルト: 4001（アプリの再起動が必要）',
-  'settings.port.required': '入力必須です',
+  'settings.port.required': '必須項目です',
   'settings.port.numeric': '数値を入力してください',
+
+  // ===== settings.automations (top-level, used by AutomationPanel) =====
+  'settings.automations.title': 'オートメーション設定',
+
+  // ===== settings.automations.automation_settings (AutomationSettingsForm) =====
+  'settings.automations.automation_settings.title': 'オートメーション設定',
+  'settings.automations.automation_settings.revert': '保存した状態に戻す',
+  'settings.automations.automation_settings.info_1':
+    'Ontimeを制御し、ワークフロー内の外部システムとデータを共有します。',
+  'settings.automations.automation_settings.info_2':
+    'オートメーションを使用すると、Ontimeはライフサイクルトリガーでデータを送信できます。',
+  'settings.automations.automation_settings.info_3': 'OSC入力は、Ontimeに特定のポートのメッセージをリッスンさせます。',
+  'settings.automations.automation_settings.automation': 'オートメーション',
+  'settings.automations.automation_settings.enable_automations': 'オートメーションを有効にする',
+  'settings.automations.automation_settings.off': 'OFF',
+  'settings.automations.automation_settings.automations_off':
+    'オートメーションはOFFです。トリガーの設定は維持されますが、Ontimeはメッセージを送信しません。',
+  'settings.automations.automation_settings.allow_ontime':
+    'ライフサイクルトリガーでOntimeによるメッセージ送信を許可します',
+  'settings.automations.automation_settings.osc_input': 'OSC入力',
+  'settings.automations.automation_settings.osc_cloud_warning':
+    'セキュリティ上の理由から、OSC連携はクラウドサービスでは利用できません。',
+  'settings.automations.automation_settings.osc_input_label': 'OSC入力',
+  'settings.automations.automation_settings.osc_off':
+    'OSC入力はOFFです。Ontimeは受信OSC制御メッセージをリッスンしません。',
+  'settings.automations.automation_settings.allow_control': 'OSCによるOntimeの制御を許可します',
+  'settings.automations.automation_settings.listen_port': 'リッスンポート',
+  'settings.automations.automation_settings.port_default': '受信OSC用のポート。デフォルト: 8888',
+  'settings.automations.automation_settings.port_range': 'ポートは 1024 ～ 65535 の範囲で指定してください',
+  'settings.automations.automation_settings.value_numeric': '数値を入力してください',
+
+  // ===== settings.automations.manage_automations (AutomationsList) =====
+  'settings.automations.manage_automations.title': 'オートメーションの管理',
+  'settings.automations.manage_automations.new': '新規',
+  'settings.automations.manage_automations.disabled_info':
+    'オートメーションは無効になっています。ここではオートメーションの定義を管理できますが、有効にするまで実行されません。',
+  'settings.automations.manage_automations.table_title': 'タイトル',
+  'settings.automations.manage_automations.trigger_rule': 'トリガールール',
+  'settings.automations.manage_automations.filters': 'フィルター',
+  'settings.automations.manage_automations.outputs': '出力',
+
+  // ===== settings.automations.automation_form (AutomationForm) =====
+  'settings.automations.automation_form.edit_automation': 'オートメーションの編集',
+  'settings.automations.automation_form.create_automation': 'オートメーションの作成',
+  'settings.automations.automation_form.automation_options': 'オートメーションのオプション',
+  'settings.automations.automation_form.title': 'タイトル',
+  'settings.automations.automation_form.load_preset': 'プリセットを読み込む',
+  'settings.automations.automation_form.filters_optional': 'フィルター（任意）',
+  'settings.automations.automation_form.trigger_outputs_if': '出力の実行条件',
+  'settings.automations.automation_form.all_filters_pass': 'すべてのフィルターが通過',
+  'settings.automations.automation_form.any_filter_passes': 'いずれかのフィルターが通過',
+  'settings.automations.automation_form.runtime_data_source': 'ランタイムデータソース',
+  'settings.automations.automation_form.event_field': 'イベントフィールド',
+  'settings.automations.automation_form.matching_condition': '一致条件',
+  'settings.automations.automation_form.operator_equals': '等しい',
+  'settings.automations.automation_form.operator_not_equals': '等しくない',
+  'settings.automations.automation_form.operator_contains': '含む',
+  'settings.automations.automation_form.operator': '演算子',
+  'settings.automations.automation_form.value_to_match': '一致させる値',
+  'settings.automations.automation_form.value_placeholder': '<空 / 値なし>',
+  'settings.automations.automation_form.delete': '削除',
+  'settings.automations.automation_form.add_filter': 'フィルターの追加',
+  'settings.automations.automation_form.outputs': '出力',
+  'settings.automations.automation_form.outputs_info':
+    'オートメーションの出力は、Ontimeから外部ソフトウェアにデータを送信したり、<br />Ontime自体のプロパティを変更するために使用できます。',
+  'settings.automations.automation_form.see_docs_templates': 'テンプレートのドキュメントを見る',
+  'settings.automations.automation_form.target_ip': 'ターゲットIP',
+  'settings.automations.automation_form.target_port': 'ターゲットポート',
+  'settings.automations.automation_form.address': 'アドレス',
+  'settings.automations.automation_form.arguments': '引数',
+  'settings.automations.automation_form.test': 'テスト',
+  'settings.automations.automation_form.target_url': 'ターゲットURL',
+  'settings.automations.automation_form.http_error':
+    'HTTPメッセージのターゲットは http:// または https:// である必要があります',
+  'settings.automations.automation_form.ontime_action_tag': 'Ontimeアクション',
+  'settings.automations.automation_form.ontime_action': 'Ontimeアクション',
+  'settings.automations.automation_form.cancel': 'キャンセル',
+
+  // ===== settings.automations.ontime_action_form (OntimeActionForm) =====
+  'settings.automations.ontime_action_form.action': 'アクション',
+  'settings.automations.ontime_action_form.actions.aux1_pause': 'Aux 1: 一時停止',
+  'settings.automations.ontime_action_form.actions.aux1_start': 'Aux 1: 開始',
+  'settings.automations.ontime_action_form.actions.aux1_stop': 'Aux 1: 停止',
+  'settings.automations.ontime_action_form.actions.aux1_set': 'Aux 1: 設定',
+  'settings.automations.ontime_action_form.actions.aux2_pause': 'Aux 2: 一時停止',
+  'settings.automations.ontime_action_form.actions.aux2_start': 'Aux 2: 開始',
+  'settings.automations.ontime_action_form.actions.aux2_stop': 'Aux 2: 停止',
+  'settings.automations.ontime_action_form.actions.aux2_set': 'Aux 2: 設定',
+  'settings.automations.ontime_action_form.actions.aux3_pause': 'Aux 3: 一時停止',
+  'settings.automations.ontime_action_form.actions.aux3_start': 'Aux 3: 開始',
+  'settings.automations.ontime_action_form.actions.aux3_stop': 'Aux 3: 停止',
+  'settings.automations.ontime_action_form.actions.aux3_set': 'Aux 3: 設定',
+  'settings.automations.ontime_action_form.actions.playback_start': 'プレイバック: 開始',
+  'settings.automations.ontime_action_form.actions.playback_stop': 'プレイバック: 停止',
+  'settings.automations.ontime_action_form.actions.playback_pause': 'プレイバック: 一時停止',
+  'settings.automations.ontime_action_form.actions.playback_roll': 'プレイバック: ロール',
+  'settings.automations.ontime_action_form.actions.message_set': 'メインメッセージ: 設定',
+  'settings.automations.ontime_action_form.actions.message_secondary': 'サブメッセージ: ソース',
+  'settings.automations.ontime_action_form.new_time': '新しい時間',
+  'settings.automations.ontime_action_form.new_time_placeholder': '例: 10m5s',
+  'settings.automations.ontime_action_form.text_empty': 'テキスト（変更しない場合は空のまま）',
+  'settings.automations.ontime_action_form.text_placeholder': '例: タイマー終了',
+  'settings.automations.ontime_action_form.visibility': '表示状態',
+  'settings.automations.ontime_action_form.visibility_untouched': '変更しない',
+  'settings.automations.ontime_action_form.visibility_show': '表示',
+  'settings.automations.ontime_action_form.visibility_hide': '非表示',
+  'settings.automations.ontime_action_form.timer_secondary_source': 'タイマーサブソース',
+  'settings.automations.ontime_action_form.secondary_source.select': 'サブソースの選択',
+  'settings.automations.ontime_action_form.secondary_source.aux1': 'Auxタイマー 1',
+  'settings.automations.ontime_action_form.secondary_source.aux2': 'Auxタイマー 2',
+  'settings.automations.ontime_action_form.secondary_source.aux3': 'Auxタイマー 3',
+  'settings.automations.ontime_action_form.secondary_source.secondary': 'サブ',
+  'settings.automations.ontime_action_form.secondary_source.none': 'なし',
+
+  // ===== settings.automations.manage_triggers (TriggersList) =====
+  'settings.automations.manage_triggers.title': 'トリガーの管理',
+  'settings.automations.manage_triggers.new': '新規',
+  'settings.automations.manage_triggers.disabled_info':
+    'オートメーションは無効になっています。ここではトリガーを管理できますが、有効にするまで実行されません。',
+  'settings.automations.manage_triggers.duplicate_error':
+    '同じトリガーとオートメーション間に複数のリンクを作成しており、パフォーマンスの問題を引き起こす可能性があります。',
+  'settings.automations.manage_triggers.table_title': 'タイトル',
+  'settings.automations.manage_triggers.lifecycle_trigger': 'ライフサイクルトリガー',
+  'settings.automations.manage_triggers.automation': 'オートメーション',
+  'settings.automations.manage_triggers.empty_label': 'トリガーを割り当てるオートメーションを作成してください',
+
+  // ===== settings.automations.trigger_form (TriggerForm, TriggersListItem) =====
+  'settings.automations.trigger_form.edit_entry': 'エントリーの編集',
+  'settings.automations.trigger_form.delete_entry': 'エントリーの削除',
+  'settings.automations.trigger_form.edit_trigger': 'トリガーの編集',
+  'settings.automations.trigger_form.create_trigger': 'トリガーの作成',
+  'settings.automations.trigger_form.title': 'タイトル',
+  'settings.automations.trigger_form.required_field': '必須項目です',
+  'settings.automations.trigger_form.lifecycle_trigger': 'ライフサイクルトリガー',
+  'settings.automations.trigger_form.automation_title': 'オートメーションのタイトル',
+  'settings.automations.trigger_form.cancel': 'キャンセル',
+  'settings.automations.trigger_form.failed_edit_trigger': 'トリガーの編集に失敗しました',
+  'settings.automations.trigger_form.failed_add_trigger': 'トリガーの追加に失敗しました',
+
+  // ===== settings.features =====
+  'settings.features.panel_title': '共有とレポート',
+  'settings.features.share_link': 'Ontimeリンクの共有',
+  'settings.features.network_interfaces': 'Ontimeは以下のネットワークインターフェースで配信されています',
+
+  // ===== settings.features.url_presets =====
+  'settings.features.url_presets.title': 'URLプリセット',
+  'settings.features.url_presets.new': '新規',
+  'settings.features.url_presets.info_1': 'URLプリセットは、Ontime URLに対するユーザー定義のエイリアス（別名）です。',
+  'settings.features.url_presets.info_2':
+    'このURLには、パラメーターを含む完全な設定を含めることも、特定のビューにルーティングすることもできます。',
+  'settings.features.url_presets.info_3':
+    '最も簡単な始め方は、ブラウザからURLをコピーしてフォームに貼り付けることです。',
+  'settings.features.url_presets.see_docs': 'ドキュメントを見る',
+  'settings.features.url_presets.enabled': '有効',
+  'settings.features.url_presets.target_view': 'ターゲットビュー',
+  'settings.features.url_presets.alias': 'エイリアス',
+  'settings.features.url_presets.form.step1': '1. URLを入力してOntimeにプリセットオプションを生成させる',
+  'settings.features.url_presets.form.alias': 'エイリアス',
+  'settings.features.url_presets.form.alias_required': 'エイリアスは必須です',
+  'settings.features.url_presets.form.alias_pattern': 'URLに使用可能な文字（a-z、0-9、_、-）のみ入力できます',
+  'settings.features.url_presets.form.generate_options': 'オプションの生成（URLを貼り付けてオプションを生成）',
+  'settings.features.url_presets.form.paste_url': 'URLを貼り付け',
+  'settings.features.url_presets.form.generate': '生成',
+  'settings.features.url_presets.form.or': 'または',
+  'settings.features.url_presets.form.step2': '2. ビューとそのパラメーターを選択する',
+  'settings.features.url_presets.form.target': 'ターゲット',
+  'settings.features.url_presets.form.target_required': 'ターゲットは必須です',
+  'settings.features.url_presets.form.parameters': 'パラメーター',
+  'settings.features.url_presets.form.invalid_params': '無効なURLパラメーターです',
+  'settings.features.url_presets.form.cancel': 'キャンセル',
+
+  // ===== settings.features.report =====
+  'settings.features.report.title': 'レポート',
+  'settings.features.report.manage': 'レポートの管理',
+  'settings.features.report.export_csv': 'CSVエクスポート',
+  'settings.features.report.clear_all': 'すべてクリア',
+  'settings.features.report.empty_label': 'レポートはショーの進行中に自動生成されます。',
+  'settings.features.report.cue': 'キュー',
+  'settings.features.report.table_title': 'タイトル',
+  'settings.features.report.scheduled_start': '開始予定',
+  'settings.features.report.actual_start': '実際の開始',
+  'settings.features.report.scheduled_end': '終了予定',
+  'settings.features.report.actual_end': '実際の終了',
+
+  // ===== settings.project (project panel) =====
+  'settings.project.panel_title': 'プロジェクト',
+  'settings.project.manage': 'プロジェクトの管理',
+  'settings.project.import': 'インポート',
+  'settings.project.new': '新規',
+  'settings.project.error_uploading': 'ファイルのアップロードエラー: {{error}}',
+  'settings.project.performance_warning':
+    '{{numProjects}}個のプロジェクトがあります。パフォーマンス向上のため、使用していないプロジェクトの削除を検討してください。',
+  'settings.project.file_name': 'ファイル名',
+  'settings.project.last_used': '最終使用',
+  'settings.project.create.title': '新しいプロジェクトの作成',
+  'settings.project.create.cancel': 'キャンセル',
+  'settings.project.create.submit': 'プロジェクトを作成',
+  'settings.project.create.project_title': 'プロジェクト名',
+  'settings.project.create.project_title_placeholder': 'プロジェクトの名前',
+  'settings.project.list.filename_blank': 'ファイル名は空白にできません',
+  'settings.project.list.currently_loaded': '現在使用中',
+  'settings.project.list.delete_title': 'プロジェクトの削除',
+  'settings.project.list.delete_body': 'このプロジェクトファイルを完全に削除します。よろしいですか？',
+  'settings.project.list.cancel': 'キャンセル',
+  'settings.project.list.delete_confirm': '削除する',
+  'settings.project.list.menu_load': '読み込み',
+  'settings.project.list.menu_partial_load': '部分的に読み込み',
+  'settings.project.list.menu_rename': '名前の変更',
+  'settings.project.list.menu_duplicate': '複製',
+  'settings.project.list.menu_download': 'ダウンロード',
+  'settings.project.list.menu_delete': '削除',
+  'settings.project.form.enter_new_name': '新しい名前を入力',
+  'settings.project.form.cancel': 'キャンセル',
+  'settings.project.merge.title': 'プロジェクトの部分的なマージ',
+  'settings.project.merge.cancel': 'キャンセル',
+  'settings.project.merge.submit': 'マージ',
+  'settings.project.merge.at_least_one_option': '少なくとも1つのオプションを選択する必要があります',
+  'settings.project.merge.older_version_error':
+    'マージしようとしているプロジェクトは古いバージョンのため、先に移行が必要です',
+  'settings.project.merge.description': '"{{0}}" からデータを現在のプロジェクトにマージします。',
+  'settings.project.merge.warning_1': 'このプロセスは取り消しできず、データが失われる可能性があります。',
+  'settings.project.merge.warning_2': '事前にバックアップを作成しておくことをお勧めします。',
+  'settings.project.merge.project_data': 'プロジェクトデータ',
+  'settings.project.merge.rundown_custom_fields': 'ランダウン + カスタムフィールド',
+  'settings.project.merge.view_settings': 'ビュー設定',
+  'settings.project.merge.url_presets': 'URLプリセット',
+  'settings.project.merge.automation_settings': 'オートメーション設定',
   'control.message.timer_message_label': 'タイマーメッセージ',
   'control.message.timer_message_placeholder': 'ステージタイマーに全画面で表示されるメッセージ',
   'control.message.timer_message_visibility': 'タイマーメッセージの表示を切り替え',

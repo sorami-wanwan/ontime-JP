@@ -1,6 +1,6 @@
 import { TranslationObject } from 'ontime-types';
 
-export const langDe: TranslationObject = {
+export const langDe: Partial<TranslationObject> = {
   'common.expected_finish': 'Erwartetes Ende',
   'common.minutes': 'min',
   'common.seconds': 'sek',

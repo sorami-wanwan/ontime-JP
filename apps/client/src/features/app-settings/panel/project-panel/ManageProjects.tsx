@@ -6,11 +6,13 @@ import { uploadProjectFile } from '../../../../common/api/db';
 import { invalidateAllCaches, maybeAxiosError } from '../../../../common/api/utils';
 import Button from '../../../../common/components/buttons/Button';
 import { validateProjectFile } from '../../../../common/utils/uploadUtils';
+import { useTranslation } from '../../../../translation/useTranslation';
 import * as Panel from '../../panel-utils/PanelUtils';
 import ProjectCreateForm from './ProjectCreateForm';
 import ProjectList from './ProjectList';
 
 export default function ManageProjects() {
+  const { getLocalizedString } = useTranslation();
   const [searchParams, setSearchParams] = useSearchParams();
   const [error, setError] = useState('');
   const [loading, setLoading] = useState<'import' | null>(null);
@@ -41,7 +43,7 @@ export default function ManageProjects() {
       await uploadProjectFile(selectedFile);
     } catch (error) {
       const errorMessage = maybeAxiosError(error);
-      setError(`Error uploading file: ${errorMessage}`);
+      setError(getLocalizedString('settings.project.error_uploading').replace('{{error}}', errorMessage));
     } finally {
       await invalidateAllCaches();
     }
@@ -66,17 +68,17 @@ export default function ManageProjects() {
       />
       <Panel.Card>
         <Panel.SubHeader>
-          Manage projects
+          {getLocalizedString('settings.project.manage')}
           <Panel.InlineElements>
             <Button
               onClick={handleSelectFile}
               disabled={Boolean(loading) || isCreatingProject}
               loading={loading === 'import'}
             >
-              Import
+              {getLocalizedString('settings.project.import')}
             </Button>
             <Button onClick={handleToggleCreate} disabled={Boolean(loading) || isCreatingProject}>
-              New <IoAdd />
+              {getLocalizedString('settings.project.new')} <IoAdd />
             </Button>
           </Panel.InlineElements>
         </Panel.SubHeader>

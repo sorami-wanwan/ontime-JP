@@ -10,6 +10,7 @@ import Switch from '../../../../common/components/switch/Switch';
 import Tag from '../../../../common/components/tag/Tag';
 import useUrlPresets, { useUpdateUrlPreset } from '../../../../common/hooks-query/useUrlPresets';
 import { handleLinks } from '../../../../common/utils/linkUtils';
+import { useTranslation } from '../../../../translation/useTranslation';
 import * as Panel from '../../panel-utils/PanelUtils';
 import URLPresetForm from './composite/URLPresetForm';
 
@@ -21,6 +22,7 @@ type FormState = {
 const urlPresetsDocs = 'https://docs.getontime.no/features/url-presets/';
 
 export default function URLPresets() {
+  const { getLocalizedString } = useTranslation();
   const [formState, setFormState] = useState<FormState>({ isOpen: false, preset: undefined });
   const { data, status } = useUrlPresets();
   const { deletePreset, isMutating } = useUpdateUrlPreset();
@@ -33,21 +35,23 @@ export default function URLPresets() {
     <Panel.Section>
       <Panel.Card>
         <Panel.SubHeader>
-          URL presets
+          {getLocalizedString('settings.features.url_presets.title')}
           <Button onClick={openNewForm}>
-            New <IoAdd />
+            {getLocalizedString('settings.features.url_presets.new')} <IoAdd />
           </Button>
         </Panel.SubHeader>
         <Panel.Divider />
         <Panel.Section>
           <Info>
-            URL presets are user pre-defined aliases to Ontime URLs.
+            {getLocalizedString('settings.features.url_presets.info_1')}
             <br />
-            This URL can contain full configuration including parameters, or simply route to a specific view.
+            {getLocalizedString('settings.features.url_presets.info_2')}
             <br />
             <br />
-            The easiest way to get started is to copy an URL from your browser and paste it into the form.
-            <ExternalLink href={urlPresetsDocs}>See the docs</ExternalLink>
+            {getLocalizedString('settings.features.url_presets.info_3')}
+            <ExternalLink href={urlPresetsDocs}>
+              {getLocalizedString('settings.features.url_presets.see_docs')}
+            </ExternalLink>
           </Info>
         </Panel.Section>
         <Panel.Section>
@@ -56,9 +60,9 @@ export default function URLPresets() {
           <Panel.Table>
             <thead>
               <tr>
-                <th>Enabled</th>
-                <th>Target view</th>
-                <th>Alias</th>
+                <th>{getLocalizedString('settings.features.url_presets.enabled')}</th>
+                <th>{getLocalizedString('settings.features.url_presets.target_view')}</th>
+                <th>{getLocalizedString('settings.features.url_presets.alias')}</th>
                 <th />
               </tr>
             </thead>

@@ -8,6 +8,7 @@ import Button from '../../../../common/components/buttons/Button';
 import Input from '../../../../common/components/input/input/Input';
 import Select from '../../../../common/components/select/Select';
 import { preventEscape } from '../../../../common/utils/keyEvent';
+import { useTranslation } from '../../../../translation/useTranslation';
 import * as Panel from '../../panel-utils/PanelUtils';
 import { cycles } from './automationUtils';
 
@@ -30,6 +31,7 @@ export default function TriggerForm({
   onCancel,
   postSubmit,
 }: TriggerFormProps) {
+  const { getLocalizedString } = useTranslation();
   const {
     handleSubmit,
     register,
@@ -61,7 +63,12 @@ export default function TriggerForm({
         await editTrigger(initialId, { id: initialId, ...values });
         postSubmit();
       } catch (error) {
-        setError('root', { message: `Failed to save changes to trigger ${maybeAxiosError(error)}` });
+        setError('root', {
+          message: getLocalizedString('settings.automations.trigger_form.failed_edit_trigger').replace(
+            '{{error}}',
+            maybeAxiosError(error),
+          ),
+        });
       }
       return;
     }
@@ -71,7 +78,12 @@ export default function TriggerForm({
       await addTrigger(values);
       postSubmit();
     } catch (error) {
-      setError('root', { message: `Failed to save trigger ${maybeAxiosError(error)}` });
+      setError('root', {
+        message: getLocalizedString('settings.automations.trigger_form.failed_add_trigger').replace(
+          '{{error}}',
+          maybeAxiosError(error),
+        ),
+      });
     }
   };
 
@@ -91,18 +103,24 @@ export default function TriggerForm({
       onSubmit={handleSubmit(onSubmit)}
       onKeyDown={(event) => preventEscape(event, onCancel)}
     >
-      <Panel.SubHeader>{initialId ? 'Edit trigger' : 'Create trigger'}</Panel.SubHeader>
+      <Panel.SubHeader>
+        {initialId
+          ? getLocalizedString('settings.automations.trigger_form.edit_trigger')
+          : getLocalizedString('settings.automations.trigger_form.create_trigger')}
+      </Panel.SubHeader>
       <label>
-        Title
+        {getLocalizedString('settings.automations.trigger_form.title')}
         <Input
-          {...register('title', { required: { value: true, message: 'Required field' } })}
+          {...register('title', {
+            required: { value: true, message: getLocalizedString('settings.automations.trigger_form.required_field') },
+          })}
           fluid
           defaultValue={initialTitle}
         />
         <Panel.Error>{errors.title?.message}</Panel.Error>
       </label>
       <label>
-        Lifecycle trigger
+        {getLocalizedString('settings.automations.trigger_form.lifecycle_trigger')}
         <Select
           value={watch('trigger')}
           onValueChange={(value) => {
@@ -110,12 +128,12 @@ export default function TriggerForm({
             setValue('trigger', value as TimerLifeCycle, { shouldDirty: true });
           }}
           options={cycles.map((cycle) => ({ value: cycle.value, label: cycle.label }))}
-          aria-label='Lifecycle trigger'
+          aria-label={getLocalizedString('settings.automations.trigger_form.lifecycle_trigger')}
         />
         <Panel.Error>{errors.trigger?.message}</Panel.Error>
       </label>
       <label>
-        Automation title
+        {getLocalizedString('settings.automations.trigger_form.automation_title')}
         <Select
           value={watch('automationId')}
           onValueChange={(value: string | null) => {
@@ -123,16 +141,16 @@ export default function TriggerForm({
             setValue('automationId', value, { shouldDirty: true });
           }}
           options={automationSelect}
-          aria-label='Automation title'
+          aria-label={getLocalizedString('settings.automations.trigger_form.automation_title')}
         />
         <Panel.Error>{errors.automationId?.message}</Panel.Error>
       </label>
       <Panel.InlineElements align='end'>
         <Button disabled={isSubmitting} onClick={onCancel}>
-          Cancel
+          {getLocalizedString('settings.automations.trigger_form.cancel')}
         </Button>
         <Button type='submit' variant='primary' disabled={!canSubmit} loading={isSubmitting}>
-          Save
+          {getLocalizedString('settings.save')}
         </Button>
       </Panel.InlineElements>
     </Panel.Indent>
