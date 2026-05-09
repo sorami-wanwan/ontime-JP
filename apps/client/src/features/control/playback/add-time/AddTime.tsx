@@ -5,6 +5,7 @@ import { IoAdd, IoRemove } from 'react-icons/io5';
 
 import TimeInput from '../../../../common/components/input/time-input/TimeInput';
 import { setPlayback } from '../../../../common/hooks/useSocket';
+import { useTranslation } from '../../../../translation/TranslationProvider';
 import TapButton from '../tap-button/TapButton';
 
 import style from './AddTime.module.scss';
@@ -16,6 +17,7 @@ interface AddTimeProps {
 export default function AddTime(props: AddTimeProps) {
   const { playback } = props;
   const [timeInMs, setTime] = useLocalStorage({ key: 'add-time', defaultValue: 300_000 }); // 5 minutes
+  const { getLocalizedString } = useTranslation();
 
   const handleTimeChange = (_field: string, value: string) => {
     const newTimeInMs = parseUserTime(value);
@@ -37,7 +39,12 @@ export default function AddTime(props: AddTimeProps) {
 
   return (
     <div className={style.addTime}>
-      <TimeInput name='addtime' submitHandler={handleTimeChange} time={timeInMs} placeholder='Add time' />
+      <TimeInput
+        name='addtime'
+        submitHandler={handleTimeChange}
+        time={timeInMs}
+        placeholder={getLocalizedString('control.playback.add_time.placeholder')}
+      />
       <div className={style.addButtons}>
         <TapButton onClick={() => handleAddTime('remove')} disabled={doDisableButtons} className={style.tallButtons}>
           <IoRemove />

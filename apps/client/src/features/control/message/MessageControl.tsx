@@ -6,6 +6,7 @@ import {
   useExternalMessageInput as useSecondaryMessageInput,
   useTimerMessageInput,
 } from '../../../common/hooks/useSocket';
+import { useTranslation } from '../../../translation/TranslationProvider';
 import InputRow from './InputRow';
 import TimerControlsPreview from './TimerViewControl';
 
@@ -21,17 +22,18 @@ export default function MessageControl() {
 
 function TimerMessageInput() {
   const { text, visible } = useTimerMessageInput();
+  const { getLocalizedString } = useTranslation();
 
   return (
     <InputRow
-      label='Timer Message'
-      placeholder='Message shown fullscreen in stage timer'
+      label={getLocalizedString('control.message.timer_message_label')}
+      placeholder={getLocalizedString('control.message.timer_message_placeholder')}
       text={text}
       visible={visible}
       changeHandler={(newValue) => setMessage.timerText(newValue)}
     >
       <IconButton
-        aria-label='Toggle timer message visibility'
+        aria-label={getLocalizedString('control.message.timer_message_visibility')}
         onClick={() => setMessage.timerVisible(!visible)}
         variant={visible ? 'primary' : 'subtle'}
       >
@@ -43,6 +45,7 @@ function TimerMessageInput() {
 
 function SecondaryInput() {
   const { text, visible } = useSecondaryMessageInput();
+  const { getLocalizedString } = useTranslation();
 
   const toggleSecondary = () => {
     if (visible) {
@@ -54,14 +57,14 @@ function SecondaryInput() {
 
   return (
     <InputRow
-      label='Secondary Message'
-      placeholder='Message shown as secondary text in stage timer'
+      label={getLocalizedString('control.message.secondary_message_label')}
+      placeholder={getLocalizedString('control.message.secondary_message_placeholder')}
       text={text}
       visible={visible}
       changeHandler={(newValue) => setMessage.secondaryMessage(newValue)}
     >
       <IconButton
-        aria-label='Toggle secondary message visibility'
+        aria-label={getLocalizedString('control.message.secondary_message_visibility')}
         onClick={toggleSecondary}
         variant={visible ? 'primary' : 'subtle'}
       >
