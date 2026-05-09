@@ -13,13 +13,11 @@ import useProjectData, { useUpdateProjectData } from '../../../../common/hooks-q
 import { preventEscape } from '../../../../common/utils/keyEvent';
 import { validateLogo } from '../../../../common/utils/uploadUtils';
 import { documentationUrl } from '../../../../externals';
-import { useTranslation } from '../../../../translation/TranslationProvider';
 import * as Panel from '../../panel-utils/PanelUtils';
 
 import style from './SettingsPanel.module.scss';
 
 export default function ProjectData() {
-  const { getLocalizedString } = useTranslation();
   const { data, status } = useProjectData();
   const { updateProjectData } = useUpdateProjectData();
 
@@ -115,13 +113,13 @@ export default function ProjectData() {
     <Panel.Section as='form' onSubmit={handleSubmit(onSubmit)} onKeyDown={(event) => preventEscape(event, onReset)}>
       <Panel.Card>
         <Panel.SubHeader>
-          {getLocalizedString('settings.project.title')}
+          Project data
           <Panel.InlineElements>
             <Button onClick={onReset} disabled={isSubmitting || !isDirty}>
-              {getLocalizedString('settings.revert_to_saved')}
+              Revert to saved
             </Button>
             <Button variant='primary' type='submit' disabled={!isDirty || !isValid} loading={isSubmitting}>
-              {getLocalizedString('settings.save')}
+              Save
             </Button>
           </Panel.InlineElements>
         </Panel.SubHeader>
@@ -129,17 +127,17 @@ export default function ProjectData() {
         <Panel.Section>
           <Panel.Loader isLoading={isLoading} />
           <label>
-            {getLocalizedString('settings.project.project_title')}
+            Project title
             <Input
               fluid
               maxLength={50}
-              placeholder={getLocalizedString('settings.project.project_title_placeholder')}
+              placeholder='Project title is shown in production views'
               {...register('title')}
             />
           </label>
           <Panel.Section style={{ marginTop: 0 }}>
             <label>
-              {getLocalizedString('settings.project.project_logo')}
+              Project logo
               <input
                 type='file'
                 style={{ display: 'none' }}
@@ -161,13 +159,13 @@ export default function ProjectData() {
                       onClick={handleDeleteLogo}
                     >
                       <IoTrash />
-                      {getLocalizedString('settings.project.delete')}
+                      Delete
                     </Button>
                   </>
                 ) : (
                   <Button disabled={isSubmitting} onClick={handleClickUpload} type='button'>
                     <IoDownloadOutline />
-                    {getLocalizedString('settings.project.upload_logo')}
+                    Upload logo
                   </Button>
                 )}
                 {errors?.logo?.message && <Panel.Error>{errors.logo.message}</Panel.Error>}
@@ -176,11 +174,11 @@ export default function ProjectData() {
           </Panel.Section>
 
           <label>
-            {getLocalizedString('settings.project.project_description')}
+            Project description
             <Input fluid maxLength={100} placeholder='Euro Love, Malmö 2024' {...register('description')} />
           </label>
           <label>
-            {getLocalizedString('settings.project.project_info')}
+            Project info
             <Textarea
               fluid
               maxLength={150}
@@ -190,14 +188,14 @@ export default function ProjectData() {
             />
           </label>
           <label>
-            {getLocalizedString('settings.project.project_qr_url')}
+            Project QR code URL
             <Input fluid placeholder={documentationUrl} {...register('url')} />
           </label>
           <Panel.Section style={{ marginTop: 0 }}>
             <Panel.ListItem>
-              <Panel.Field title={getLocalizedString('settings.project.custom_data')} description='' />
+              <Panel.Field title='Custom data' description='' />
               <Button onClick={handleAddCustom}>
-                {getLocalizedString('settings.project.add')} <IoAdd />
+                Add <IoAdd />
               </Button>
             </Panel.ListItem>
             {fields.length > 0 &&
@@ -212,43 +210,43 @@ export default function ProjectData() {
                   <div key={field.id} className={style.customDataItem}>
                     <div className={style.titleRow}>
                       <label className={style.title}>
-                        {getLocalizedString('settings.project.custom_title')}
+                        Title
                         <Input
                           fluid
                           defaultValue={field.title}
-                          placeholder={getLocalizedString('settings.project.custom_title_placeholder')}
+                          placeholder='Title of your custom data'
                           {...register(`custom.${idx}.title`, {
-                            required: { value: true, message: getLocalizedString('settings.project.field_required') },
+                            required: { value: true, message: 'Field cannot be empty' },
                           })}
                         />
                       </label>
                       <Button variant='subtle-destructive' onClick={() => remove(idx)}>
                         <IoTrash />
-                        {getLocalizedString('settings.project.delete')}
+                        Delete
                       </Button>
                     </div>
                     {rowErrors?.title?.message && <Panel.Error>{rowErrors.title.message}</Panel.Error>}
                     <label>
-                      {getLocalizedString('settings.project.custom_text')}
+                      Text
                       <Textarea
                         fluid
                         rows={3}
                         resize='vertical'
                         defaultValue={field.value}
-                        placeholder={getLocalizedString('settings.project.custom_text_placeholder')}
+                        placeholder='Text of your custom data'
                         {...register(`custom.${idx}.value`, {
-                          required: { value: true, message: getLocalizedString('settings.project.field_required') },
+                          required: { value: true, message: 'Field cannot be empty' },
                         })}
                       />
                       {rowErrors?.value?.message && <Panel.Error>{rowErrors.value.message}</Panel.Error>}
                     </label>
                     <label>
-                      {getLocalizedString('settings.project.image_url')}
+                      Image URL (optional)
                       <div className={style.customImage}>
                         <Input
                           fluid
                           defaultValue={field.url}
-                          placeholder={getLocalizedString('settings.project.image_url_placeholder')}
+                          placeholder='Paste image URL (optional)'
                           {...register(`custom.${idx}.url`)}
                         />
                         <div className={style.imageContainer}>
