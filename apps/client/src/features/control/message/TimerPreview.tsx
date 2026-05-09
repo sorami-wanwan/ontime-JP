@@ -1,4 +1,5 @@
 import { TimerPhase, TimerType } from 'ontime-types';
+import { TranslationObject } from 'ontime-types';
 import { IoArrowDown, IoArrowUp, IoBan, IoTime } from 'react-icons/io5';
 import { LuArrowDownToLine } from 'react-icons/lu';
 
@@ -8,29 +9,31 @@ import useViewSettings from '../../../common/hooks-query/useViewSettings';
 import { useMessagePreview } from '../../../common/hooks/useSocket';
 import { handleLinks } from '../../../common/utils/linkUtils';
 import { cx, timerPlaceholder } from '../../../common/utils/styleUtils';
+import { useTranslation } from '../../../translation/TranslationProvider';
 import PipRoot from '../../../views/editor/pip-timer/PipRoot';
 
 import style from './TimerPreview.module.scss';
 
-const secondarySourceLabels: Record<string, string> = {
-  aux1: 'Aux 1',
-  aux2: 'Aux 2',
-  aux3: 'Aux 3',
-  secondary: 'Secondary message',
+const secondarySourceLabels: Record<string, keyof TranslationObject> = {
+  aux1: 'control.message.preview.aux1',
+  aux2: 'control.message.preview.aux2',
+  aux3: 'control.message.preview.aux3',
+  secondary: 'control.message.preview.secondary',
 };
 
 export default function TimerPreview() {
   const { blink, blackout, countToEnd, phase, secondarySource, showTimerMessage, timerType } = useMessagePreview();
   const { data } = useViewSettings();
+  const { getLocalizedString } = useTranslation();
 
   const main = (() => {
-    if (showTimerMessage) return 'Message';
+    if (showTimerMessage) return getLocalizedString('control.message.preview.message');
     if (timerType === TimerType.None) return timerPlaceholder;
-    if (phase === TimerPhase.Pending) return 'Standby to start';
-    if (phase === TimerPhase.Overtime) return 'Timer Overtime';
-    if (timerType === TimerType.Clock) return 'Clock';
-    if (countToEnd) return 'Count to End';
-    return 'Timer';
+    if (phase === TimerPhase.Pending) return getLocalizedString('control.message.preview.standby');
+    if (phase === TimerPhase.Overtime) return getLocalizedString('control.message.preview.overtime');
+    if (timerType === TimerType.Clock) return getLocalizedString('control.message.preview.clock');
+    if (countToEnd) return getLocalizedString('control.message.preview.count_to_end');
+    return getLocalizedString('control.message.preview.timer');
   })();
 
   const secondary = (() => {
@@ -38,7 +41,7 @@ export default function TimerPreview() {
     if (showTimerMessage || !secondarySource) return null;
 
     // we need to check aux first since it takes priority
-    return secondarySourceLabels[secondarySource];
+    return getLocalizedString(secondarySourceLabels[secondarySource]);
   })();
 
   const overrideColour = (() => {
@@ -66,7 +69,7 @@ export default function TimerPreview() {
       </div>
       <div className={style.eventStatus}>
         <Tooltip
-          text='Time type: Count down'
+          text={getLocalizedString('control.message.preview.type_countdown')}
           render={<span />}
           className={style.statusIcon}
           data-active={timerType === TimerType.CountDown}
@@ -74,7 +77,7 @@ export default function TimerPreview() {
           <IoArrowDown />
         </Tooltip>
         <Tooltip
-          text='Time type: Count up'
+          text={getLocalizedString('control.message.preview.type_countup')}
           render={<span />}
           className={style.statusIcon}
           data-active={timerType === TimerType.CountUp}
@@ -82,7 +85,7 @@ export default function TimerPreview() {
           <IoArrowUp />
         </Tooltip>
         <Tooltip
-          text='Time type: Clock'
+          text={getLocalizedString('control.message.preview.type_clock')}
           render={<span />}
           className={style.statusIcon}
           data-active={timerType === TimerType.Clock}
@@ -90,7 +93,7 @@ export default function TimerPreview() {
           <IoTime />
         </Tooltip>
         <Tooltip
-          text='Time type: None'
+          text={getLocalizedString('control.message.preview.type_none')}
           render={<span />}
           className={style.statusIcon}
           data-active={timerType === TimerType.None}
@@ -98,7 +101,11 @@ export default function TimerPreview() {
           <IoBan />
         </Tooltip>
         <Tooltip
-          text={countToEnd ? 'Count to end' : 'Count duration'}
+          text={
+            countToEnd
+              ? getLocalizedString('control.message.preview.count_to_end')
+              : getLocalizedString('control.message.preview.count_duration')
+          }
           render={<span />}
           className={style.statusIcon}
           data-active={countToEnd}

@@ -7,17 +7,18 @@ import Tooltip from '../../../../common/components/tooltip/Tooltip';
 import useReport from '../../../../common/hooks-query/useReport';
 import { useTimer } from '../../../../common/hooks/useSocket';
 import { formatDuration } from '../../../../common/utils/time';
+import { useTranslation } from '../../../../translation/TranslationProvider';
 import TimerDisplay from '../timer-display/TimerDisplay';
 
 import style from './PlaybackTimer.module.scss';
 
-function resolveAddedTimeLabel(addedTime: number) {
+function resolveAddedTimeLabel(addedTime: number, getLocalizedString: (key: any) => string) {
   if (addedTime > 0) {
-    return `Added ${formatDuration(addedTime, false)}`;
+    return `${getLocalizedString('control.playback.timer.added')} ${formatDuration(addedTime, false)}`;
   }
 
   if (addedTime < 0) {
-    return `Removed ${formatDuration(Math.abs(addedTime), false)}`;
+    return `${getLocalizedString('control.playback.timer.removed')} ${formatDuration(Math.abs(addedTime), false)}`;
   }
 
   return '';
@@ -25,15 +26,16 @@ function resolveAddedTimeLabel(addedTime: number) {
 
 export default function PlaybackTimer({ children }: PropsWithChildren) {
   const timer = useTimer();
+  const { getLocalizedString } = useTranslation();
 
   const isRolling = timer.playback === Playback.Roll;
   const isWaiting = timer.phase === TimerPhase.Pending;
   const isOvertime = timer.phase === TimerPhase.Overtime;
   const hasAddedTime = Boolean(timer.addedTime);
 
-  const rollLabel = isRolling ? 'Roll mode active' : '';
+  const rollLabel = isRolling ? getLocalizedString('control.playback.timer.roll_active') : '';
 
-  const addedTimeLabel = resolveAddedTimeLabel(timer.addedTime);
+  const addedTimeLabel = resolveAddedTimeLabel(timer.addedTime, getLocalizedString);
 
   return (
     <div className={style.timeContainer}>
@@ -49,7 +51,7 @@ export default function PlaybackTimer({ children }: PropsWithChildren) {
       />
       <div className={style.status}>
         {isWaiting ? (
-          <span className={style.rolltag}>Roll: Countdown to start</span>
+          <span className={style.rolltag}>{getLocalizedString('control.playback.timer.roll_countdown')}</span>
         ) : (
           <RunningStatus startedAt={timer.startedAt} expectedFinish={timer.expectedFinish} playback={timer.playback} />
         )}
@@ -65,6 +67,8 @@ interface RunningStatusProps {
   playback: Playback;
 }
 function RunningStatus({ startedAt, expectedFinish, playback }: RunningStatusProps) {
+  const { getLocalizedString } = useTranslation();
+
   if (playback === Playback.Stop) {
     return <StoppedStatus />;
   }
@@ -76,11 +80,11 @@ function RunningStatus({ startedAt, expectedFinish, playback }: RunningStatusPro
   return (
     <>
       <span className={style.start}>
-        <span className={style.tag}>Started at</span>
+        <span className={style.tag}>{getLocalizedString('control.playback.timer.started_at')}</span>
         <span className={style.time}>{started}</span>
       </span>
       <span className={style.finish}>
-        <span className={style.tag}>Expect end</span>
+        <span className={style.tag}>{getLocalizedString('control.playback.timer.expect_end')}</span>
         <span className={style.time}>{finish}</span>
       </span>
     </>
@@ -89,10 +93,13 @@ function RunningStatus({ startedAt, expectedFinish, playback }: RunningStatusPro
 
 function StoppedStatus() {
   const { data } = useReport();
+  const { getLocalizedString } = useTranslation();
   const hasReport = Object.keys(data).length > 0;
 
   if (hasReport) {
-    return <AppLink search='settings=sharing__report'>Go to report management</AppLink>;
+    return (
+      <AppLink search='settings=sharing__report'>{getLocalizedString('control.playback.timer.go_to_report')}</AppLink>
+    );
   }
 
   return null;
