@@ -5,6 +5,7 @@ import * as Editor from '../../../common/components/editor-utils/EditorUtils';
 import AppLink from '../../../common/components/link/app-link/AppLink';
 import { useEntryActionsContext } from '../../../common/context/EntryActionsContext';
 import useCustomFields from '../../../common/hooks-query/useCustomFields';
+import { useTranslation } from '../../../translation/useTranslation';
 import EntryEditorCustomFields from './composite/EventEditorCustomFields';
 import EventEditorTimes from './composite/EventEditorTimes';
 import EventEditorTitles from './composite/EventEditorTitles';
@@ -22,6 +23,7 @@ interface EventEditorProps {
 export default function EventEditor({ event }: EventEditorProps) {
   const { data: customFields } = useCustomFields();
   const { updateEntry } = useEntryActionsContext();
+  const { getLocalizedString } = useTranslation();
 
   const isEditor = window.location.pathname.includes('editor');
 
@@ -65,15 +67,21 @@ export default function EventEditor({ event }: EventEditorProps) {
       />
       <div className={style.column}>
         <Editor.Title>
-          Custom Fields
-          {isEditor && <AppLink search='settings=manage__custom'>Manage Custom Fields</AppLink>}
+          {getLocalizedString('rundown.editor.custom_fields')}
+          {isEditor && (
+            <AppLink search='settings=manage__custom'>
+              {getLocalizedString('rundown.editor.manage_custom_fields')}
+            </AppLink>
+          )}
         </Editor.Title>
         <EntryEditorCustomFields fields={customFields} handleSubmit={handleSubmit} entry={event} />
       </div>
       <div className={style.column}>
         <Editor.Title>
-          Automations
-          {isEditor && <AppLink search='settings=automation'>Manage Automations</AppLink>}
+          {getLocalizedString('rundown.editor.automations')}
+          {isEditor && (
+            <AppLink search='settings=automation'>{getLocalizedString('rundown.editor.manage_automations')}</AppLink>
+          )}
         </Editor.Title>
         <EventEditorTriggers triggers={event.triggers} eventId={event.id} />
       </div>

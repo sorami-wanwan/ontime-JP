@@ -5,6 +5,7 @@ import { IoAdd } from 'react-icons/io5';
 import IconButton from '../../../../common/components/buttons/IconButton';
 import { DropdownMenu } from '../../../../common/components/dropdown-menu/DropdownMenu';
 import { useEntryActionsContext } from '../../../../common/context/EntryActionsContext';
+import { useTranslation } from '../../../../translation/useTranslation';
 
 import style from './QuickAddInline.module.scss';
 
@@ -17,6 +18,7 @@ interface QuickAddInlineProps {
 export default memo(QuickAddInline);
 function QuickAddInline({ referenceEntryId, parentGroup, placement }: QuickAddInlineProps) {
   const { addEntry } = useEntryActionsContext();
+  const { getLocalizedString } = useTranslation();
 
   const handleAddEntry = (type: SupportedEntry) => {
     if (placement === 'before') {
@@ -41,18 +43,28 @@ function QuickAddInline({ referenceEntryId, parentGroup, placement }: QuickAddIn
     <div className={style.quickAdd} data-testid='quick-add-inline'>
       <DropdownMenu
         items={[
-          { type: 'item', icon: IoAdd, label: 'Add Event', onClick: () => handleAddEntry(SupportedEntry.Event) },
-          { type: 'item', icon: IoAdd, label: 'Add Delay', onClick: () => handleAddEntry(SupportedEntry.Delay) },
           {
             type: 'item',
             icon: IoAdd,
-            label: 'Add Milestone',
+            label: getLocalizedString('rundown.editor.add_event'),
+            onClick: () => handleAddEntry(SupportedEntry.Event),
+          },
+          {
+            type: 'item',
+            icon: IoAdd,
+            label: getLocalizedString('rundown.editor.add_delay'),
+            onClick: () => handleAddEntry(SupportedEntry.Delay),
+          },
+          {
+            type: 'item',
+            icon: IoAdd,
+            label: getLocalizedString('rundown.editor.add_milestone'),
             onClick: () => handleAddEntry(SupportedEntry.Milestone),
           },
           {
             type: 'item',
             icon: IoAdd,
-            label: 'Add Group',
+            label: getLocalizedString('rundown.editor.add_group'),
             onClick: () => handleAddEntry(SupportedEntry.Group),
             disabled: parentGroup !== null,
           },

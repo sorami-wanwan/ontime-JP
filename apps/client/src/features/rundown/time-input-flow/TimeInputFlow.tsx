@@ -8,6 +8,7 @@ import * as Editor from '../../../common/components/editor-utils/EditorUtils';
 import TimeInput from '../../../common/components/input/time-input/TimeInput';
 import Tooltip from '../../../common/components/tooltip/Tooltip';
 import { useEntryActionsContext } from '../../../common/context/EntryActionsContext';
+import { useTranslation } from '../../../translation/useTranslation';
 import TimeInputGroup from './TimeInputGroup';
 
 import style from './TimeInputFlow.module.scss';
@@ -37,6 +38,7 @@ function TimeInputFlow({
   showLabels,
 }: TimeInputFlowProps) {
   const { updateEntry, updateTimer } = useEntryActionsContext();
+  const { getLocalizedString } = useTranslation();
 
   // In sync with EventEditorTimes
   const handleSubmit = (field: TimeField, value: string) => {
@@ -53,11 +55,11 @@ function TimeInputFlow({
 
   const warnings = [];
   if (timeStart + duration > dayInMs) {
-    warnings.push('Over midnight');
+    warnings.push(getLocalizedString('rundown.editor.over_midnight'));
   }
 
   if (countToEnd) {
-    warnings.push('Count to End');
+    warnings.push(getLocalizedString('rundown.editor.count_to_end'));
   }
 
   const hasDelay = delay !== 0;
@@ -67,20 +69,22 @@ function TimeInputFlow({
   return (
     <>
       <div className={style.inputWrapper}>
-        {showLabels && <Editor.Label className={style.sectionTitle}>Start time</Editor.Label>}
-        <Editor.Label className={style.hoverLabel}>Start</Editor.Label>
+        {showLabels && (
+          <Editor.Label className={style.sectionTitle}>{getLocalizedString('rundown.editor.start_time')}</Editor.Label>
+        )}
+        <Editor.Label className={style.hoverLabel}>{getLocalizedString('common.start')}</Editor.Label>
         <TimeInputGroup hasDelay={hasDelay}>
           <TimeInput
             name='timeStart'
             submitHandler={handleSubmit}
             time={timeStart}
-            placeholder='Start'
+            placeholder={getLocalizedString('common.start')}
             align='left'
             disabled={linkStart}
             shouldFormat
           />
           <Tooltip
-            text='Link start to previous end'
+            text={getLocalizedString('rundown.editor.link_start')}
             onClick={() => handleLink(!linkStart)}
             render={<IconButton variant='subtle-white' className={linkStart ? style.active : style.inactive} />}
           >
@@ -90,20 +94,20 @@ function TimeInputFlow({
       </div>
 
       <div className={style.inputWrapper}>
-        {showLabels && <Editor.Label>End time</Editor.Label>}
-        <Editor.Label className={style.hoverLabel}>End</Editor.Label>
+        {showLabels && <Editor.Label>{getLocalizedString('rundown.editor.end_time')}</Editor.Label>}
+        <Editor.Label className={style.hoverLabel}>{getLocalizedString('common.end')}</Editor.Label>
         <TimeInputGroup hasDelay={hasDelay}>
           <TimeInput
             name='timeEnd'
             submitHandler={handleSubmit}
             time={timeEnd}
-            placeholder='End'
+            placeholder={getLocalizedString('common.end')}
             align='left'
             disabled={isLockedDuration}
             shouldFormat
           />
           <Tooltip
-            text='Lock end'
+            text={getLocalizedString('rundown.editor.lock_end')}
             render={<IconButton variant='subtle-white' className={isLockedEnd ? style.active : style.inactive} />}
             onClick={() => handleChangeStrategy(TimeStrategy.LockEnd)}
             data-testid='lock__end'
@@ -114,19 +118,19 @@ function TimeInputFlow({
       </div>
 
       <div className={style.inputWrapper}>
-        {showLabels && <Editor.Label>Duration</Editor.Label>}
-        <Editor.Label className={style.hoverLabel}>Duration</Editor.Label>
+        {showLabels && <Editor.Label>{getLocalizedString('common.duration')}</Editor.Label>}
+        <Editor.Label className={style.hoverLabel}>{getLocalizedString('common.duration')}</Editor.Label>
         <TimeInputGroup hasDelay={hasDelay}>
           <TimeInput
             name='duration'
             submitHandler={handleSubmit}
             time={duration}
-            placeholder='Duration'
+            placeholder={getLocalizedString('common.duration')}
             align='left'
             disabled={isLockedEnd}
           />
           <Tooltip
-            text='Lock duration'
+            text={getLocalizedString('rundown.editor.lock_duration')}
             render={<IconButton variant='subtle-white' className={isLockedDuration ? style.active : style.inactive} />}
             onClick={() => handleChangeStrategy(TimeStrategy.LockDuration)}
             data-testid='lock__duration'

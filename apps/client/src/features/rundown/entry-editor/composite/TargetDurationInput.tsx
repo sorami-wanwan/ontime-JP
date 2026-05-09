@@ -6,6 +6,7 @@ import * as Editor from '../../../../common/components/editor-utils/EditorUtils'
 import NullableTimeInput from '../../../../common/components/input/time-input/NullableTimeInput';
 import Tooltip from '../../../../common/components/tooltip/Tooltip';
 import { cx, enDash } from '../../../../common/utils/styleUtils';
+import { useTranslation } from '../../../../translation/useTranslation';
 import TimeInputGroup from '../../time-input-flow/TimeInputGroup';
 
 import style from '../EntryEditor.module.scss';
@@ -18,10 +19,11 @@ interface TargetDurationInputProps {
 
 export default function TargetDurationInput({ duration, targetDuration, submitHandler }: TargetDurationInputProps) {
   const isLocked = targetDuration !== null;
+  const { getLocalizedString } = useTranslation();
 
   return (
     <div>
-      <Editor.Label htmlFor='targetDuration'>Target duration</Editor.Label>
+      <Editor.Label htmlFor='targetDuration'>{getLocalizedString('rundown.editor.target_duration')}</Editor.Label>
       <TimeInputGroup hasDelay={isLocked && targetDuration !== duration}>
         <NullableTimeInput
           name='targetDuration'
@@ -31,7 +33,7 @@ export default function TargetDurationInput({ duration, targetDuration, submitHa
           className={isLocked ? '' : style.inactive}
         />
         <Tooltip
-          text='Lock to target duration'
+          text={getLocalizedString('rundown.editor.lock_to_target_duration')}
           className={cx([style.timeAction, isLocked && style.active])}
           onClick={() => submitHandler('targetDuration', isLocked ? null : duration)}
           data-testid='lock__duration'

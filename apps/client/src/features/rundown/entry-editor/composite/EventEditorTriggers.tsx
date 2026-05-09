@@ -10,6 +10,7 @@ import Info from '../../../../common/components/info/Info';
 import Select from '../../../../common/components/select/Select';
 import { useEntryActionsContext } from '../../../../common/context/EntryActionsContext';
 import useAutomationSettings from '../../../../common/hooks-query/useAutomationSettings';
+import { useTranslation } from '../../../../translation/useTranslation';
 import { eventTriggerOptions } from './eventTrigger.constants';
 
 import style from './EventEditorTriggers.module.scss';
@@ -21,22 +22,21 @@ interface EventEditorTriggersProps {
 
 export default function EventEditorTriggers({ triggers, eventId }: EventEditorTriggersProps) {
   const { data: automationSettings, status: automationStatus } = useAutomationSettings();
+  const { getLocalizedString } = useTranslation();
   const automationsEnabled = automationStatus === 'pending' ? undefined : automationSettings.enabledAutomations;
   const showTriggers = triggers.length > 0;
 
   return (
     <div className={style.triggers}>
-      {automationsEnabled === false && (
-        <Info>Automations are disabled. Event triggers stay configured, but they will not run until enabled.</Info>
-      )}
+      {automationsEnabled === false && <Info>{getLocalizedString('rundown.editor.automations_disabled')}</Info>}
       {showTriggers && (
         <div className={style.section}>
-          <div className={style.sectionTitle}>Applied automations</div>
+          <div className={style.sectionTitle}>{getLocalizedString('rundown.editor.applied_automations')}</div>
           <ExistingEventTriggers triggers={triggers} eventId={eventId} automations={automationSettings.automations} />
         </div>
       )}
       <Editor.Panel className={style.formSection}>
-        <div className={style.sectionTitle}>Add automation</div>
+        <div className={style.sectionTitle}>{getLocalizedString('rundown.editor.add_automation')}</div>
         <EventTriggerForm triggers={triggers} eventId={eventId} automations={automationSettings.automations} />
       </Editor.Panel>
     </div>
@@ -51,6 +51,7 @@ interface EventTriggerFormProps {
 
 function EventTriggerForm({ eventId, triggers, automations }: EventTriggerFormProps) {
   const { updateEntry } = useEntryActionsContext();
+  const { getLocalizedString } = useTranslation();
   const [automationId, setAutomationId] = useState<string | undefined>(undefined);
   const [cycleValue, setCycleValue] = useState(TimerLifeCycle.onStart);
 
@@ -63,43 +64,43 @@ function EventTriggerForm({ eventId, triggers, automations }: EventTriggerFormPr
 
   const getValidationError = (cycle: TimerLifeCycle, automationId?: string): string | undefined => {
     if (automationId === undefined) {
-      return 'Select an automation';
+      return getLocalizedString('rundown.editor.validation_select_automation');
     }
     if (!Object.keys(automations).includes(automationId)) {
-      return 'This automation does not exist';
+      return getLocalizedString('rundown.editor.validation_automation_not_exist');
     }
     if (triggers === undefined) {
       return;
     }
     return Object.values(triggers).some((t) => t.automationId === automationId && t.trigger === cycle)
-      ? 'Automation can only be used once'
+      ? getLocalizedString('rundown.editor.validation_automation_used')
       : undefined;
   };
 
   const validationError = getValidationError(cycleValue, automationId);
-  const validationLabel = validationError ?? 'Ready to add automation';
+  const validationLabel = validationError ?? getLocalizedString('rundown.editor.validation_ready_to_add');
 
   const triggerOptions = useMemo(
     () => [
-      { value: null, label: 'Select lifecycle' },
+      { value: null, label: getLocalizedString('rundown.editor.select_lifecycle') },
       ...eventTriggerOptions.map((cycle) => ({ value: cycle, label: cycle })),
     ],
-    [], // eventTriggerOptions is a constant, no need for dependency
+    [getLocalizedString], // eventTriggerOptions is a constant, getLocalizedString is needed as dependency
   );
 
   const automationOptions = useMemo(
     () => [
-      { value: null, label: 'Select Automation' },
+      { value: null, label: getLocalizedString('rundown.editor.select_automation') },
       ...Object.values(automations).map(({ id, title }) => ({ value: id, label: title })),
     ],
-    [automations], // This needs to be a dependency as it can change
+    [automations, getLocalizedString], // This needs to be a dependency as it can change
   );
 
   return (
     <div className={style.triggerForm}>
       <div className={style.formFields}>
         <div>
-          <Editor.Label>Lifecycle</Editor.Label>
+          <Editor.Label>{getLocalizedString('rundown.editor.lifecycle')}</Editor.Label>
           <Select
             value={cycleValue}
             onValueChange={(value) => {
@@ -110,7 +111,7 @@ function EventTriggerForm({ eventId, triggers, automations }: EventTriggerFormPr
         </div>
 
         <div>
-          <Editor.Label>Automation</Editor.Label>
+          <Editor.Label>{getLocalizedString('rundown.editor.automation')}</Editor.Label>
           <Select
             value={automationId ?? null}
             onValueChange={(value) => {
@@ -130,7 +131,7 @@ function EventTriggerForm({ eventId, triggers, automations }: EventTriggerFormPr
           disabled={validationError !== undefined}
           onClick={() => automationId && handleSubmit(cycleValue, automationId)}
         >
-          Add automation
+          {getLocalizedString('rundown.editor.add_automation')}
         </Button>
       </div>
     </div>
@@ -145,6 +146,7 @@ interface ExistingEventTriggersProps {
 
 function ExistingEventTriggers({ eventId, triggers, automations }: ExistingEventTriggersProps) {
   const { updateEntry } = useEntryActionsContext();
+  const { getLocalizedString } = useTranslation();
 
   const handleDelete = useCallback(
     (triggerId: string) => {
@@ -170,15 +172,16 @@ function ExistingEventTriggers({ eventId, triggers, automations }: ExistingEvent
         <Fragment key={triggerLifeCycle}>
           {triggerGroup.map((trigger) => {
             const { id, automationId } = trigger;
-            const automationTitle = automations[automationId]?.title ?? '<MISSING AUTOMATION>';
+            const automationTitle =
+              automations[automationId]?.title ?? getLocalizedString('rundown.editor.missing_automation');
             return (
               <div key={id} className={style.trigger}>
                 <div className={style.triggerMeta}>
-                  <div className={style.metaLabel}>Lifecycle</div>
+                  <div className={style.metaLabel}>{getLocalizedString('rundown.editor.lifecycle')}</div>
                   <div>{triggerLifeCycle}</div>
                 </div>
                 <div className={style.triggerMeta}>
-                  <div className={style.metaLabel}>Automation</div>
+                  <div className={style.metaLabel}>{getLocalizedString('rundown.editor.automation')}</div>
                   <div className={style.automationTitle}>{automationTitle}</div>
                 </div>
                 <IconButton variant='ghosted-destructive' onClick={() => handleDelete(id)}>

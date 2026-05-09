@@ -8,6 +8,7 @@ import useReport from '../../../../common/hooks-query/useReport';
 import { usePlayback } from '../../../../common/hooks/useSocket';
 import { cx } from '../../../../common/utils/styleUtils';
 import { formatDuration, useTimeUntilExpectedStart } from '../../../../common/utils/time';
+import { useTranslation } from '../../../../translation/useTranslation';
 
 import style from './RundownEventChip.module.scss';
 
@@ -37,6 +38,7 @@ export default function RundownEventChip({
   isLinkedToLoaded,
 }: RundownEventChipProps) {
   const playback = usePlayback();
+  const { getLocalizedString } = useTranslation();
 
   if (isLoaded) {
     return null;
@@ -51,7 +53,11 @@ export default function RundownEventChip({
   if (playbackActive) {
     // we extracted the component to avoid unnecessary calculations and re-renders
     return (
-      <Tooltip text='Expected time until start' render={<span />} className={className}>
+      <Tooltip
+        text={getLocalizedString('rundown.editor.expected_time_until_start')}
+        render={<span />}
+        className={className}
+      >
         <EventUntil
           timeStart={timeStart}
           delay={delay}
@@ -75,10 +81,13 @@ interface EventUntilProps {
 }
 
 function EventUntil({ timeStart, delay, dayOffset, totalGap, isLinkedToLoaded }: EventUntilProps) {
+  const { getLocalizedString } = useTranslation();
   const timeUntil = useTimeUntilExpectedStart({ timeStart, delay, dayOffset }, { totalGap, isLinkedToLoaded });
   const isDue = timeUntil < MILLIS_PER_SECOND;
 
-  const timeUntilString = isDue ? 'DUE' : `${formatDuration(Math.abs(timeUntil), timeUntil > 2 * MILLIS_PER_MINUTE)}`;
+  const timeUntilString = isDue
+    ? getLocalizedString('rundown.editor.due')
+    : `${formatDuration(Math.abs(timeUntil), timeUntil > 2 * MILLIS_PER_MINUTE)}`;
 
   return <div className={cx([style.chip, isDue && style.due])}>{timeUntilString}</div>;
 }
@@ -90,6 +99,7 @@ interface EventReportProps {
 }
 
 function EventReport(props: EventReportProps) {
+  const { getLocalizedString } = useTranslation();
   const { className, id, duration } = props;
   const { data } = useReport();
   const currentReport = data[id];
@@ -109,18 +119,20 @@ function EventReport(props: EventReportProps) {
     const absDifference = Math.abs(difference);
 
     if (absDifference < MILLIS_PER_SECOND) {
-      return ['ontime', 'under', 'Event finished on time'];
+      return ['ontime', 'under', getLocalizedString('rundown.editor.event_finished_on_time')];
     }
 
     const isOver = difference > 0;
 
     const fullTimeValue = millisToString(absDifference);
 
-    const tooltip = `Event ran ${isOver ? 'over' : 'under'} time by ${fullTimeValue}`;
+    const tooltip = isOver
+      ? getLocalizedString('rundown.editor.event_ran_over').replace('{{0}}', fullTimeValue)
+      : getLocalizedString('rundown.editor.event_ran_under').replace('{{0}}', fullTimeValue);
 
     const value = `${isOver ? '+' : '-'}${formatDuration(absDifference, absDifference > 2 * MILLIS_PER_MINUTE)}`;
     return [value, isOver ? 'over' : 'under', tooltip];
-  }, [currentReport, duration]);
+  }, [currentReport, duration, getLocalizedString]);
 
   if (!value) {
     return null;

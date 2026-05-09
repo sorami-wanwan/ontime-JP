@@ -5,6 +5,7 @@ import SwatchSelect from '../../../../common/components/input/colour-input/Swatc
 import Input from '../../../../common/components/input/input/Input';
 import Switch from '../../../../common/components/switch/Switch';
 import { useEntryActionsContext } from '../../../../common/context/EntryActionsContext';
+import { useTranslation } from '../../../../translation/useTranslation';
 import EventTextArea from './EventTextArea';
 import EntryEditorTextInput from './EventTextInput';
 
@@ -22,6 +23,7 @@ interface EventEditorTitlesProps {
 export default memo(EventEditorTitles);
 function EventEditorTitles({ eventId, cue, flag, title, note, colour }: EventEditorTitlesProps) {
   const { updateEntry } = useEntryActionsContext();
+  const { getLocalizedString } = useTranslation();
 
   const flagSubmitHandler = (newValue: boolean) => {
     updateEntry({ id: eventId, flag: newValue });
@@ -33,33 +35,43 @@ function EventEditorTitles({ eventId, cue, flag, title, note, colour }: EventEdi
 
   return (
     <div className={style.column}>
-      <Editor.Title>Event Data</Editor.Title>
+      <Editor.Title>{getLocalizedString('rundown.editor.event_data')}</Editor.Title>
       <div className={style.splitThree}>
         <div>
-          <Editor.Label htmlFor='eventId'>Event ID (read only)</Editor.Label>
+          <Editor.Label htmlFor='eventId'>{getLocalizedString('rundown.editor.event_id')}</Editor.Label>
           <Input id='eventId' data-testid='input-textfield' value={eventId} readOnly fluid />
         </div>
         <EntryEditorTextInput
           field='cue'
-          label='Cue'
+          label={getLocalizedString('common.cue')}
           initialValue={cue}
           submitHandler={textSubmitHandler}
           maxLength={10}
         />
         <div>
-          <Editor.Label htmlFor='flag'>Flag</Editor.Label>
+          <Editor.Label htmlFor='flag'>{getLocalizedString('rundown.editor.flag')}</Editor.Label>
           <Editor.Label className={style.switchLabel}>
             <Switch id='flag' checked={flag} onCheckedChange={flagSubmitHandler} />
-            {flag ? 'On' : 'Off'}
+            {flag ? getLocalizedString('common.on') : getLocalizedString('common.off')}
           </Editor.Label>
         </div>
       </div>
       <div>
-        <Editor.Label>Colour</Editor.Label>
+        <Editor.Label>{getLocalizedString('rundown.editor.colour')}</Editor.Label>
         <SwatchSelect name='colour' value={colour} handleChange={textSubmitHandler} />
       </div>
-      <EntryEditorTextInput field='title' label='Title' initialValue={title} submitHandler={textSubmitHandler} />
-      <EventTextArea field='note' label='Note' initialValue={note} submitHandler={textSubmitHandler} />
+      <EntryEditorTextInput
+        field='title'
+        label={getLocalizedString('common.title')}
+        initialValue={title}
+        submitHandler={textSubmitHandler}
+      />
+      <EventTextArea
+        field='note'
+        label={getLocalizedString('common.note')}
+        initialValue={note}
+        submitHandler={textSubmitHandler}
+      />
     </div>
   );
 }
