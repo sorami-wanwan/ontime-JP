@@ -1,4 +1,5 @@
 import { TimerPhase, TimerType } from 'ontime-types';
+import { TranslationObject } from 'ontime-types';
 import { IoArrowDown, IoArrowUp, IoBan, IoTime } from 'react-icons/io5';
 import { LuArrowDownToLine } from 'react-icons/lu';
 
@@ -12,8 +13,6 @@ import { useTranslation } from '../../../translation/TranslationProvider';
 import PipRoot from '../../../views/editor/pip-timer/PipRoot';
 
 import style from './TimerPreview.module.scss';
-
-import { TranslationObject } from 'ontime-types';
 
 const secondarySourceLabels: Record<string, keyof TranslationObject> = {
   aux1: 'control.message.preview.aux1',
@@ -102,7 +101,11 @@ export default function TimerPreview() {
           <IoBan />
         </Tooltip>
         <Tooltip
-          text={countToEnd ? getLocalizedString('control.message.preview.count_to_end') : getLocalizedString('control.message.preview.count_duration')}
+          text={
+            countToEnd
+              ? getLocalizedString('control.message.preview.count_to_end')
+              : getLocalizedString('control.message.preview.count_duration')
+          }
           render={<span />}
           className={style.statusIcon}
           data-active={countToEnd}

@@ -97,7 +97,9 @@ function StoppedStatus() {
   const hasReport = Object.keys(data).length > 0;
 
   if (hasReport) {
-    return <AppLink search='settings=sharing__report'>{getLocalizedString('control.playback.timer.go_to_report')}</AppLink>;
+    return (
+      <AppLink search='settings=sharing__report'>{getLocalizedString('control.playback.timer.go_to_report')}</AppLink>
+    );
   }
 
   return null;

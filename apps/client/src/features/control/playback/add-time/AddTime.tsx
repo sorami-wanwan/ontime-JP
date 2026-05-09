@@ -39,7 +39,12 @@ export default function AddTime(props: AddTimeProps) {
 
   return (
     <div className={style.addTime}>
-      <TimeInput name='addtime' submitHandler={handleTimeChange} time={timeInMs} placeholder={getLocalizedString('control.playback.add_time.placeholder')} />
+      <TimeInput
+        name='addtime'
+        submitHandler={handleTimeChange}
+        time={timeInMs}
+        placeholder={getLocalizedString('control.playback.add_time.placeholder')}
+      />
       <div className={style.addButtons}>
         <TapButton onClick={() => handleAddTime('remove')} disabled={doDisableButtons} className={style.tallButtons}>
           <IoRemove />

@@ -73,7 +73,12 @@ function AuxTimerInput({ index, isActive }: AuxTimerInputProps) {
   }
 
   return (
-    <TimeInput submitHandler={handleTimeUpdate} name={`aux${index}`} time={newTimeInMs} placeholder={getLocalizedString(`control.message.preview.aux${index}` as any)} />
+    <TimeInput
+      submitHandler={handleTimeUpdate}
+      name={`aux${index}`}
+      time={newTimeInMs}
+      placeholder={getLocalizedString(`control.message.preview.aux${index}` as any)}
+    />
   );
 }
 
