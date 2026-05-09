@@ -8,8 +8,8 @@ import { langDe } from './languages/de';
 import { langEs } from './languages/es';
 import { langFr } from './languages/fr';
 import { langIt } from './languages/it';
-import { langPt } from './languages/pt';
 import { langJa } from './languages/ja';
+import { langPt } from './languages/pt';
 
 const translationsList = {
   en: langEn,
