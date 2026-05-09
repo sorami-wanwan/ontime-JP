@@ -5,12 +5,14 @@ import Button from '../../../common/components/buttons/Button';
 import * as Editor from '../../../common/components/editor-utils/EditorUtils';
 import Select from '../../../common/components/select/Select';
 import { setMessage, useTimerViewControl } from '../../../common/hooks/useSocket';
+import { useTranslation } from '../../../translation/TranslationProvider';
 import TimerPreview from './TimerPreview';
 
 import style from './TimerViewControl.module.scss';
 
 export default function TimerControlsPreview() {
   const { blackout, blink } = useTimerViewControl();
+  const { getLocalizedString } = useTranslation();
 
   return (
     <div className={style.previewContainer}>
@@ -26,7 +28,7 @@ export default function TimerControlsPreview() {
           onClick={() => setMessage.timerBlink(!blink)}
           data-testid='toggle timer blink'
         >
-          Blink
+          {getLocalizedString('control.message.timer_view.blink')}
         </Button>
         <Button
           variant={blackout ? 'primary' : 'subtle'}
@@ -34,7 +36,7 @@ export default function TimerControlsPreview() {
           onClick={() => setMessage.timerBlackout(!blackout)}
           data-testid='toggle timer blackout'
         >
-          Blackout screen
+          {getLocalizedString('control.message.timer_view.blackout')}
         </Button>
       </div>
     </div>
@@ -44,6 +46,7 @@ export default function TimerControlsPreview() {
 function SecondarySourceControl() {
   const { secondarySource } = useTimerViewControl();
   const [value, setValue] = useState<SecondarySource>('aux1');
+  const { getLocalizedString } = useTranslation();
 
   // sync secondary source with external changes
   useEffect(() => {
@@ -65,10 +68,10 @@ function SecondarySourceControl() {
       <Select
         value={value}
         options={[
-          { value: 'aux1', label: 'Aux 1' },
-          { value: 'aux2', label: 'Aux 2' },
-          { value: 'aux3', label: 'Aux 3' },
-          { value: 'secondary', label: 'Secondary message' },
+          { value: 'aux1', label: getLocalizedString('control.message.preview.aux1') },
+          { value: 'aux2', label: getLocalizedString('control.message.preview.aux2') },
+          { value: 'aux3', label: getLocalizedString('control.message.preview.aux3') },
+          { value: 'secondary', label: getLocalizedString('control.message.preview.secondary') },
         ]}
         onValueChange={(value: SecondarySource | null) => {
           if (value === null) return;
@@ -85,7 +88,7 @@ function SecondarySourceControl() {
         onClick={toggleSecondary}
         data-testid='toggle secondary'
       >
-        Show secondary
+        {getLocalizedString('control.message.timer_view.show_secondary')}
       </Button>
     </>
   );

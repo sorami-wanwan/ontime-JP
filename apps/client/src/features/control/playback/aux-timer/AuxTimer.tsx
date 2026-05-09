@@ -4,6 +4,7 @@ import { IoArrowDown, IoArrowUp, IoPause, IoPlay, IoStop } from 'react-icons/io5
 
 import TimeInput from '../../../../common/components/input/time-input/TimeInput';
 import { setAuxTimer, useAuxTimerControl, useAuxTimerTime } from '../../../../common/hooks/useSocket';
+import { useTranslation } from '../../../../translation/TranslationProvider';
 import TapButton from '../tap-button/TapButton';
 
 import style from './AuxTimer.module.scss';
@@ -14,6 +15,7 @@ interface AuxTimerProps {
 
 export function AuxTimer({ index }: AuxTimerProps) {
   const { playback, direction } = useAuxTimerControl(index);
+  const { getLocalizedString } = useTranslation();
 
   const { stop, setDirection } = setAuxTimer;
 
@@ -27,7 +29,7 @@ export function AuxTimer({ index }: AuxTimerProps) {
 
   return (
     <label className={style.label}>
-      Aux Timer {index}
+      {getLocalizedString('control.playback.aux.title')} {index}
       <div className={style.controls}>
         <div className={style.input}>
           <AuxTimerInput index={index} isActive={isActive} />
@@ -55,6 +57,7 @@ interface AuxTimerInputProps {
 function AuxTimerInput({ index, isActive }: AuxTimerInputProps) {
   const newTimeInMs = useAuxTimerTime(index);
   const { setDuration } = setAuxTimer;
+  const { getLocalizedString } = useTranslation();
 
   const handleTimeUpdate = (_field: string, value: string) => {
     const newTimeInMs = parseUserTime(value);
@@ -70,7 +73,7 @@ function AuxTimerInput({ index, isActive }: AuxTimerInputProps) {
   }
 
   return (
-    <TimeInput submitHandler={handleTimeUpdate} name={`aux${index}`} time={newTimeInMs} placeholder={`Aux ${index}`} />
+    <TimeInput submitHandler={handleTimeUpdate} name={`aux${index}`} time={newTimeInMs} placeholder={getLocalizedString(`control.message.preview.aux${index}` as any)} />
   );
 }
 
