@@ -4,6 +4,7 @@ import { IoPencil, IoTrash, IoWarningOutline } from 'react-icons/io5';
 
 import IconButton from '../../../../common/components/buttons/IconButton';
 import Tag from '../../../../common/components/tag/Tag';
+import { useTranslation } from '../../../../translation/useTranslation';
 import * as Panel from '../../panel-utils/PanelUtils';
 import { cycles } from './automationUtils';
 import AutomationForm from './TriggerForm';
@@ -20,6 +21,7 @@ interface TriggersListItemProps {
 }
 
 export default function TriggersListItem(props: TriggersListItemProps) {
+  const { getLocalizedString } = useTranslation();
   const { automations, id, title, trigger, automationId, duplicate, handleDelete, postSubmit } = props;
   const [isEditing, setIsEditing] = useState(false);
 
@@ -61,10 +63,18 @@ export default function TriggersListItem(props: TriggersListItemProps) {
         <Tag>{automations?.[automationId]?.title}</Tag>
       </td>
       <Panel.InlineElements align='end' relation='inner' as='td'>
-        <IconButton variant='ghosted-white' aria-label='Edit entry' onClick={() => setIsEditing(true)}>
+        <IconButton
+          variant='ghosted-white'
+          aria-label={getLocalizedString('settings.automations.trigger_form.edit_entry')}
+          onClick={() => setIsEditing(true)}
+        >
           <IoPencil />
         </IconButton>
-        <IconButton variant='ghosted-destructive' aria-label='Delete entry' onClick={handleDelete}>
+        <IconButton
+          variant='ghosted-destructive'
+          aria-label={getLocalizedString('settings.automations.trigger_form.delete_entry')}
+          onClick={handleDelete}
+        >
           <IoTrash />
         </IconButton>
       </Panel.InlineElements>

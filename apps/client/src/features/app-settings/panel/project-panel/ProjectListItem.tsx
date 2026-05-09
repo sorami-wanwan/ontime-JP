@@ -21,6 +21,7 @@ import IconButton from '../../../../common/components/buttons/IconButton';
 import Dialog from '../../../../common/components/dialog/Dialog';
 import { DropdownMenu } from '../../../../common/components/dropdown-menu/DropdownMenu';
 import { cx } from '../../../../common/utils/styleUtils';
+import { useTranslation } from '../../../../translation/useTranslation';
 import * as Panel from '../../panel-utils/PanelUtils';
 import ProjectForm, { ProjectFormValues } from './ProjectForm';
 import ProjectMergeForm from './ProjectMergeForm';
@@ -50,6 +51,7 @@ export default function ProjectListItem({
   onSubmit,
   onToggleEditMode,
 }: ProjectListItemProps) {
+  const { getLocalizedString } = useTranslation();
   const [submitError, setSubmitError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
   const [isDeleteOpen, setDeleteOpen] = useState(false);
@@ -60,7 +62,7 @@ export default function ProjectListItem({
       setSubmitError(null);
       try {
         if (!values.filename) {
-          setSubmitError('Filename cannot be blank');
+          setSubmitError(getLocalizedString('settings.project.list.filename_blank'));
           return;
         }
         const action = actionType === 'rename' ? renameProject : duplicateProject;
@@ -143,7 +145,11 @@ export default function ProjectListItem({
         ) : (
           <>
             <td className={style.containCell}>{filename}</td>
-            <td>{current ? 'Currently loaded' : new Date(updatedAt).toLocaleString()}</td>
+            <td>
+              {current
+                ? getLocalizedString('settings.project.list.currently_loaded')
+                : new Date(updatedAt).toLocaleString()}
+            </td>
             <td>
               <ActionMenu
                 current={current}
@@ -168,17 +174,17 @@ export default function ProjectListItem({
       <Dialog
         isOpen={isDeleteOpen}
         onClose={() => setDeleteOpen(false)}
-        title='Delete project'
+        title={getLocalizedString('settings.project.list.delete_title')}
         showBackdrop
         showCloseButton
-        bodyElements='You will permanently remove this project file. Are you sure?'
+        bodyElements={getLocalizedString('settings.project.list.delete_body')}
         footerElements={
           <>
             <Button size='large' onClick={() => setDeleteOpen(false)}>
-              Cancel
+              {getLocalizedString('settings.project.list.cancel')}
             </Button>
             <Button variant='destructive' size='large' onClick={submitDelete} loading={loading}>
-              Delete project
+              {getLocalizedString('settings.project.list.delete_confirm')}
             </Button>
           </>
         }
@@ -198,6 +204,8 @@ interface ActionMenuProps {
 }
 function ActionMenu(props: ActionMenuProps) {
   const { current, filename, isDisabled, onChangeEditMode, onDelete, onLoad, onMerge } = props;
+
+  const { getLocalizedString } = useTranslation();
 
   const handleRename = () => {
     onChangeEditMode('rename', filename);
@@ -219,22 +227,43 @@ function ActionMenu(props: ActionMenuProps) {
         {
           type: 'item',
           icon: IoDownloadOutline,
-          label: 'Load',
+          label: getLocalizedString('settings.project.list.menu_load'),
           onClick: () => onLoad(filename),
           disabled: current,
         },
         {
           type: 'item',
           icon: IoDownloadOutline,
-          label: 'Partial Load',
+          label: getLocalizedString('settings.project.list.menu_partial_load'),
           onClick: () => onMerge(filename),
           disabled: current,
         },
-        { type: 'item', icon: IoPencilOutline, label: 'Rename', onClick: handleRename },
-        { type: 'item', icon: IoCopyOutline, label: 'Duplicate', onClick: handleDuplicate },
-        { type: 'item', icon: IoDocumentOutline, label: 'Download', onClick: handleDownload },
+        {
+          type: 'item',
+          icon: IoPencilOutline,
+          label: getLocalizedString('settings.project.list.menu_rename'),
+          onClick: handleRename,
+        },
+        {
+          type: 'item',
+          icon: IoCopyOutline,
+          label: getLocalizedString('settings.project.list.menu_duplicate'),
+          onClick: handleDuplicate,
+        },
+        {
+          type: 'item',
+          icon: IoDocumentOutline,
+          label: getLocalizedString('settings.project.list.menu_download'),
+          onClick: handleDownload,
+        },
         { type: 'divider' },
-        { type: 'item', icon: IoTrash, label: 'Delete', onClick: onDelete, disabled: current },
+        {
+          type: 'item',
+          icon: IoTrash,
+          label: getLocalizedString('settings.project.list.menu_delete'),
+          onClick: onDelete,
+          disabled: current,
+        },
       ]}
     >
       <IoEllipsisHorizontal />

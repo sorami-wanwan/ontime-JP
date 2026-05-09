@@ -7,6 +7,7 @@ import { maybeAxiosError } from '../../../../common/api/utils';
 import Button from '../../../../common/components/buttons/Button';
 import Info from '../../../../common/components/info/Info';
 import useAutomationSettings from '../../../../common/hooks-query/useAutomationSettings';
+import { useTranslation } from '../../../../translation/useTranslation';
 import * as Panel from '../../panel-utils/PanelUtils';
 import { checkDuplicates } from './automationUtils';
 import AutomationForm from './TriggerForm';
@@ -19,6 +20,7 @@ interface TriggersListProps {
 }
 
 export default function TriggersList(props: TriggersListProps) {
+  const { getLocalizedString } = useTranslation();
   const { triggers, automations, enabledAutomations } = props;
   const [showForm, setShowForm] = useState(false);
   const { refetch } = useAutomationSettings();
@@ -47,22 +49,18 @@ export default function TriggersList(props: TriggersListProps) {
   return (
     <Panel.Card>
       <Panel.SubHeader>
-        Manage triggers
+        {getLocalizedString('settings.automations.manage_triggers.title')}
         <Button type='submit' form='trigger-form' disabled={!canAdd} loading={false} onClick={() => setShowForm(true)}>
-          New <IoAdd />
+          {getLocalizedString('settings.automations.manage_triggers.new')} <IoAdd />
         </Button>
       </Panel.SubHeader>
       <Panel.Divider />
       <Panel.Section>
         {enabledAutomations === false && (
-          <Info>
-            Automations are disabled. You can still manage triggers here, but they will not run until enabled.
-          </Info>
+          <Info>{getLocalizedString('settings.automations.manage_triggers.disabled_info')}</Info>
         )}
         {duplicates && (
-          <Panel.Error>
-            You have created multiple links between the same trigger and automation which can performance issues.
-          </Panel.Error>
+          <Panel.Error>{getLocalizedString('settings.automations.manage_triggers.duplicate_error')}</Panel.Error>
         )}
         {showForm && (
           <AutomationForm automations={automations} onCancel={() => setShowForm(false)} postSubmit={postSubmit} />
@@ -70,16 +68,18 @@ export default function TriggersList(props: TriggersListProps) {
         <Panel.Table>
           <thead>
             <tr>
-              <th style={{ width: '35%' }}>Title</th>
-              <th style={{ width: '25%' }}>Lifecycle trigger</th>
-              <th style={{ width: '25%' }}>Automation</th>
+              <th style={{ width: '35%' }}>{getLocalizedString('settings.automations.manage_triggers.table_title')}</th>
+              <th style={{ width: '25%' }}>
+                {getLocalizedString('settings.automations.manage_triggers.lifecycle_trigger')}
+              </th>
+              <th style={{ width: '25%' }}>{getLocalizedString('settings.automations.manage_triggers.automation')}</th>
               <th />
             </tr>
           </thead>
           <tbody>
             {!showForm && triggers.length === 0 && (
               <Panel.TableEmpty
-                label='Create an automation to attach triggers to'
+                label={getLocalizedString('settings.automations.manage_triggers.empty_label')}
                 handleClick={canAdd ? () => setShowForm(true) : undefined}
               />
             )}

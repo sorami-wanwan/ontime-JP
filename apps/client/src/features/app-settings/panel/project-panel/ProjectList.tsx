@@ -3,6 +3,7 @@ import { IoArrowDown, IoArrowUp } from 'react-icons/io5';
 
 import Info from '../../../../common/components/info/Info';
 import { ProjectSortMode, useOrderedProjectList } from '../../../../common/hooks-query/useProjectList';
+import { useTranslation } from '../../../../translation/useTranslation';
 import * as Panel from '../../panel-utils/PanelUtils';
 import ProjectListItem, { EditMode } from './ProjectListItem';
 
@@ -11,6 +12,7 @@ import style from './ProjectPanel.module.scss';
 type SortParameter = 'alphabetical' | 'modified';
 
 export default function ProjectList() {
+  const { getLocalizedString } = useTranslation();
   const [editingMode, setEditingMode] = useState<EditMode | null>(null);
   const [editingFilename, setEditingFilename] = useState<string | null>(null);
   const [sortMode, setSortMode] = useState<ProjectSortMode>('modified-desc');
@@ -52,7 +54,10 @@ export default function ProjectList() {
     <>
       {numProjects > 20 && (
         <Info className={style.warningInfo} type='warning'>
-          You have {numProjects} projects. Consider deleting unused projects to improve performance.
+          {getLocalizedString('settings.project.performance_warning').replace(
+            '{{numProjects}}',
+            numProjects.toString(),
+          )}
         </Info>
       )}
       <Panel.Table>
@@ -60,13 +65,13 @@ export default function ProjectList() {
           <tr>
             <th className={style.containCell} onClick={() => handleSort('alphabetical')}>
               <span className={style.sortableHeader}>
-                File Name
+                {getLocalizedString('settings.project.file_name')}
                 <SortIcon sortMode={sortMode} type='alphabetical' />
               </span>
             </th>
             <th onClick={() => handleSort('modified')}>
               <span className={style.sortableHeader}>
-                Last Used
+                {getLocalizedString('settings.project.last_used')}
                 <SortIcon sortMode={sortMode} type='modified' />
               </span>
             </th>

@@ -1,5 +1,6 @@
 import useAutomationSettings from '../../../../common/hooks-query/useAutomationSettings';
 import useScrollIntoView from '../../../../common/hooks/useScrollIntoView';
+import { useTranslation } from '../../../../translation/useTranslation';
 import type { PanelBaseProps } from '../../panel-list/PanelList';
 import * as Panel from '../../panel-utils/PanelUtils';
 import AutomationSettingsForm from './AutomationSettingsForm';
@@ -7,6 +8,7 @@ import AutomationsList from './AutomationsList';
 import TriggersList from './TriggersList';
 
 export default function AutomationPanel({ location }: PanelBaseProps) {
+  const { getLocalizedString } = useTranslation();
   const { data, status } = useAutomationSettings();
   const settingsRef = useScrollIntoView<HTMLDivElement>('settings', location);
   const triggersRef = useScrollIntoView<HTMLDivElement>('triggers', location);
@@ -18,7 +20,7 @@ export default function AutomationPanel({ location }: PanelBaseProps) {
 
   return (
     <>
-      <Panel.Header>Automation</Panel.Header>
+      <Panel.Header>{getLocalizedString('settings.automations.title')}</Panel.Header>
       <Panel.Section>
         <Panel.Loader isLoading={isLoading} />
         <div ref={settingsRef}>

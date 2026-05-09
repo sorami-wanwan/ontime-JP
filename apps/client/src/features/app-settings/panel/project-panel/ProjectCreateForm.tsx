@@ -6,6 +6,7 @@ import { maybeAxiosError } from '../../../../common/api/utils';
 import Button from '../../../../common/components/buttons/Button';
 import Input from '../../../../common/components/input/input/Input';
 import { preventEscape } from '../../../../common/utils/keyEvent';
+import { useTranslation } from '../../../../translation/useTranslation';
 import * as Panel from '../../panel-utils/PanelUtils';
 
 import style from './ProjectPanel.module.scss';
@@ -23,6 +24,7 @@ type ProjectCreateFormValues = {
 };
 
 export default function ProjectCreateForm({ onClose }: ProjectCreateFromProps) {
+  const { getLocalizedString } = useTranslation();
   const [error, setError] = useState<string | null>(null);
 
   const {
@@ -64,20 +66,24 @@ export default function ProjectCreateForm({ onClose }: ProjectCreateFromProps) {
       onKeyDown={(event) => preventEscape(event, onClose)}
     >
       <Panel.Title>
-        Create new project
+        {getLocalizedString('settings.project.create.title')}
         <Panel.InlineElements>
           <Button onClick={onClose} variant='ghosted' disabled={isSubmitting}>
-            Cancel
+            {getLocalizedString('settings.project.create.cancel')}
           </Button>
           <Button disabled={!isValid} type='submit' loading={isSubmitting} variant='primary'>
-            Create project
+            {getLocalizedString('settings.project.create.submit')}
           </Button>
         </Panel.InlineElements>
       </Panel.Title>
       {error && <Panel.Error>{error}</Panel.Error>}
       <Panel.Section className={style.innerColumn}>
-        <Panel.Description>Project title</Panel.Description>
-        <Input fluid placeholder='Your project name' {...register('title')} />
+        <Panel.Description>{getLocalizedString('settings.project.create.project_title')}</Panel.Description>
+        <Input
+          fluid
+          placeholder={getLocalizedString('settings.project.create.project_title_placeholder')}
+          {...register('title')}
+        />
       </Panel.Section>
     </Panel.Indent>
   );

@@ -4,6 +4,7 @@ import { UseFormRegister, UseFormSetValue, UseFormWatch } from 'react-hook-form'
 
 import Input from '../../../../common/components/input/input/Input';
 import Select from '../../../../common/components/select/Select';
+import { useTranslation } from '../../../../translation/useTranslation';
 import * as Panel from '../../panel-utils/PanelUtils';
 
 import style from './AutomationForm.module.scss';
@@ -32,6 +33,7 @@ export default function OntimeActionForm({
   children,
   watch,
 }: PropsWithChildren<OntimeActionFormProps>) {
+  const { getLocalizedString } = useTranslation();
   const [selectedAction, setSelectedAction] = useState<string>(value);
 
   const handleSetAction = (value: OntimeActionKey) => {
@@ -42,7 +44,7 @@ export default function OntimeActionForm({
   return (
     <div className={style.actionSection}>
       <label>
-        Action
+        {getLocalizedString('settings.automations.ontime_action_form.action')}
         <Select
           onValueChange={(value: OntimeActionKey | null) => {
             if (value === null) return;
@@ -50,29 +52,83 @@ export default function OntimeActionForm({
           }}
           value={watch(`outputs.${index}.action`)}
           options={[
-            { value: 'aux1-pause', label: 'Aux 1: pause' },
-            { value: 'aux2-pause', label: 'Aux 2: pause' },
-            { value: 'aux3-pause', label: 'Aux 3: pause' },
+            {
+              value: 'aux1-pause',
+              label: getLocalizedString('settings.automations.ontime_action_form.actions.aux1_pause'),
+            },
+            {
+              value: 'aux2-pause',
+              label: getLocalizedString('settings.automations.ontime_action_form.actions.aux2_pause'),
+            },
+            {
+              value: 'aux3-pause',
+              label: getLocalizedString('settings.automations.ontime_action_form.actions.aux3_pause'),
+            },
 
-            { value: 'aux1-start', label: 'Aux 1: start' },
-            { value: 'aux2-start', label: 'Aux 2: start' },
-            { value: 'aux3-start', label: 'Aux 3: start' },
+            {
+              value: 'aux1-start',
+              label: getLocalizedString('settings.automations.ontime_action_form.actions.aux1_start'),
+            },
+            {
+              value: 'aux2-start',
+              label: getLocalizedString('settings.automations.ontime_action_form.actions.aux2_start'),
+            },
+            {
+              value: 'aux3-start',
+              label: getLocalizedString('settings.automations.ontime_action_form.actions.aux3_start'),
+            },
 
-            { value: 'aux1-stop', label: 'Aux 1: stop' },
-            { value: 'aux2-stop', label: 'Aux 2: stop' },
-            { value: 'aux3-stop', label: 'Aux 3: stop' },
+            {
+              value: 'aux1-stop',
+              label: getLocalizedString('settings.automations.ontime_action_form.actions.aux1_stop'),
+            },
+            {
+              value: 'aux2-stop',
+              label: getLocalizedString('settings.automations.ontime_action_form.actions.aux2_stop'),
+            },
+            {
+              value: 'aux3-stop',
+              label: getLocalizedString('settings.automations.ontime_action_form.actions.aux3_stop'),
+            },
 
-            { value: 'aux1-set', label: 'Aux 1: set' },
-            { value: 'aux2-set', label: 'Aux 2: set' },
-            { value: 'aux3-set', label: 'Aux 3: set' },
+            {
+              value: 'aux1-set',
+              label: getLocalizedString('settings.automations.ontime_action_form.actions.aux1_set'),
+            },
+            {
+              value: 'aux2-set',
+              label: getLocalizedString('settings.automations.ontime_action_form.actions.aux2_set'),
+            },
+            {
+              value: 'aux3-set',
+              label: getLocalizedString('settings.automations.ontime_action_form.actions.aux3_set'),
+            },
 
-            { value: 'playback-start', label: 'Playback: start' },
-            { value: 'playback-stop', label: 'Playback: stop' },
-            { value: 'playback-pause', label: 'Playback: pause' },
-            { value: 'playback-roll', label: 'Playback: roll' },
+            {
+              value: 'playback-start',
+              label: getLocalizedString('settings.automations.ontime_action_form.actions.playback_start'),
+            },
+            {
+              value: 'playback-stop',
+              label: getLocalizedString('settings.automations.ontime_action_form.actions.playback_stop'),
+            },
+            {
+              value: 'playback-pause',
+              label: getLocalizedString('settings.automations.ontime_action_form.actions.playback_pause'),
+            },
+            {
+              value: 'playback-roll',
+              label: getLocalizedString('settings.automations.ontime_action_form.actions.playback_roll'),
+            },
 
-            { value: 'message-set', label: 'Primary Message: set' },
-            { value: 'message-secondary', label: 'Secondary Message: source' },
+            {
+              value: 'message-set',
+              label: getLocalizedString('settings.automations.ontime_action_form.actions.message_set'),
+            },
+            {
+              value: 'message-secondary',
+              label: getLocalizedString('settings.automations.ontime_action_form.actions.message_secondary'),
+            },
           ]}
         />
         <Panel.Error>{rowErrors?.action?.message}</Panel.Error>
@@ -80,13 +136,16 @@ export default function OntimeActionForm({
 
       {selectedAction.startsWith('aux') && selectedAction.endsWith('set') && (
         <label>
-          New time
+          {getLocalizedString('settings.automations.ontime_action_form.new_time')}
           <Input
             {...register(`outputs.${index}.time`, {
-              required: { value: true, message: 'Required field' },
+              required: {
+                value: true,
+                message: getLocalizedString('settings.automations.trigger_form.required_field'),
+              },
             })}
             fluid
-            placeholder='eg: 10m5s'
+            placeholder={getLocalizedString('settings.automations.ontime_action_form.new_time_placeholder')}
           />
           <Panel.Error>{rowErrors?.time?.message}</Panel.Error>
         </label>
@@ -95,12 +154,16 @@ export default function OntimeActionForm({
       {selectedAction === 'message-set' && (
         <>
           <label>
-            Text (leave empty for no change)
-            <Input {...register(`outputs.${index}.text`)} fluid placeholder='eg: Timer is finished' />
+            {getLocalizedString('settings.automations.ontime_action_form.text_empty')}
+            <Input
+              {...register(`outputs.${index}.text`)}
+              fluid
+              placeholder={getLocalizedString('settings.automations.ontime_action_form.text_placeholder')}
+            />
             <Panel.Error>{rowErrors?.text?.message}</Panel.Error>
           </label>
           <label>
-            Visibility
+            {getLocalizedString('settings.automations.ontime_action_form.visibility')}
             <Select
               onValueChange={(value) => {
                 // we need to translate the null to undefined so it becomes 'untouched'
@@ -109,9 +172,12 @@ export default function OntimeActionForm({
               }}
               value={watch(`outputs.${index}.visible`)}
               options={[
-                { value: null, label: 'Untouched' },
-                { value: true, label: 'Show' },
-                { value: false, label: 'Hide' },
+                {
+                  value: null,
+                  label: getLocalizedString('settings.automations.ontime_action_form.visibility_untouched'),
+                },
+                { value: true, label: getLocalizedString('settings.automations.ontime_action_form.visibility_show') },
+                { value: false, label: getLocalizedString('settings.automations.ontime_action_form.visibility_hide') },
               ]}
             />
             <Panel.Error>{rowErrors?.visible?.message}</Panel.Error>
@@ -121,7 +187,7 @@ export default function OntimeActionForm({
 
       {selectedAction === 'message-secondary' && (
         <label>
-          Timer secondary source
+          {getLocalizedString('settings.automations.ontime_action_form.timer_secondary_source')}
           <Select<SecondarySource | 'null' | null>
             onValueChange={(value) => {
               // null -> no selection
@@ -135,12 +201,30 @@ export default function OntimeActionForm({
             }}
             value={watch(`outputs.${index}.secondarySource`)}
             options={[
-              { value: null, label: 'Select secondary source' },
-              { value: 'aux1', label: 'Auxiliary timer 1' },
-              { value: 'aux2', label: 'Auxiliary timer 2' },
-              { value: 'aux3', label: 'Auxiliary timer 3' },
-              { value: 'secondary', label: 'Secondary' },
-              { value: 'null', label: 'None' }, // allow the user to clear the secondary source
+              {
+                value: null,
+                label: getLocalizedString('settings.automations.ontime_action_form.secondary_source.select'),
+              },
+              {
+                value: 'aux1',
+                label: getLocalizedString('settings.automations.ontime_action_form.secondary_source.aux1'),
+              },
+              {
+                value: 'aux2',
+                label: getLocalizedString('settings.automations.ontime_action_form.secondary_source.aux2'),
+              },
+              {
+                value: 'aux3',
+                label: getLocalizedString('settings.automations.ontime_action_form.secondary_source.aux3'),
+              },
+              {
+                value: 'secondary',
+                label: getLocalizedString('settings.automations.ontime_action_form.secondary_source.secondary'),
+              },
+              {
+                value: 'null',
+                label: getLocalizedString('settings.automations.ontime_action_form.secondary_source.none'),
+              }, // allow the user to clear the secondary source
             ]}
           />
           <Panel.Error>{rowErrors?.secondarySource?.message}</Panel.Error>

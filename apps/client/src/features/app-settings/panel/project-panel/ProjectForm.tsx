@@ -4,6 +4,7 @@ import { useForm } from 'react-hook-form';
 import Button from '../../../../common/components/buttons/Button';
 import Input from '../../../../common/components/input/input/Input';
 import { preventEscape } from '../../../../common/utils/keyEvent';
+import { useTranslation } from '../../../../translation/useTranslation';
 import * as Panel from '../../panel-utils/PanelUtils';
 
 import style from './ProjectPanel.module.scss';
@@ -20,6 +21,7 @@ interface ProjectFormProps {
 }
 
 export default function ProjectForm({ action, filename, onSubmit, onCancel }: ProjectFormProps) {
+  const { getLocalizedString } = useTranslation();
   const {
     handleSubmit,
     register,
@@ -37,6 +39,13 @@ export default function ProjectForm({ action, filename, onSubmit, onCancel }: Pr
     setFocus('filename');
   }, [setFocus]);
 
+  const actionTranslationKey =
+    action === 'duplicate'
+      ? 'settings.project.list.menu_duplicate'
+      : action === 'rename'
+        ? 'settings.project.list.menu_rename'
+        : 'settings.project.merge.submit';
+
   return (
     <form
       onSubmit={handleSubmit(onSubmit)}
@@ -46,12 +55,12 @@ export default function ProjectForm({ action, filename, onSubmit, onCancel }: Pr
       <Input
         className={style.formInput}
         id='filename'
-        placeholder='Enter new name'
+        placeholder={getLocalizedString('settings.project.form.enter_new_name')}
         {...register('filename', { required: true })}
       />
       <Panel.InlineElements relation='inner'>
         <Button onClick={onCancel} variant='ghosted' disabled={isSubmitting}>
-          Cancel
+          {getLocalizedString('settings.project.form.cancel')}
         </Button>
         <Button
           variant='primary'
@@ -59,7 +68,7 @@ export default function ProjectForm({ action, filename, onSubmit, onCancel }: Pr
           type='submit'
           className={style.saveButton}
         >
-          {action}
+          {getLocalizedString(actionTranslationKey)}
         </Button>
       </Panel.InlineElements>
     </form>

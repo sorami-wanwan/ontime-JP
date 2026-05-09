@@ -12,6 +12,7 @@ import { preventEscape } from '../../../../../common/utils/keyEvent';
 import { isUrlSafe } from '../../../../../common/utils/regex';
 import { enDash } from '../../../../../common/utils/styleUtils';
 import { generateUrlPresetOptions } from '../../../../../common/utils/urlPresets';
+import { useTranslation } from '../../../../../translation/useTranslation';
 import * as Panel from '../../../panel-utils/PanelUtils';
 
 import style from './URLPresetForm.module.scss';
@@ -40,6 +41,7 @@ interface URLPresetFormProps {
 }
 
 export default function URLPresetForm({ urlPreset, onClose }: URLPresetFormProps) {
+  const { getLocalizedString } = useTranslation();
   const { addPreset, updatePreset, isMutating } = useUpdateUrlPreset();
 
   const {
@@ -96,7 +98,7 @@ export default function URLPresetForm({ urlPreset, onClose }: URLPresetFormProps
       new URLSearchParams(value);
       return true;
     } catch (error) {
-      return unwrapError(error) || 'Invalid URL parameters';
+      return unwrapError(error) || getLocalizedString('settings.features.url_presets.form.invalid_params');
     }
   };
 
@@ -109,38 +111,48 @@ export default function URLPresetForm({ urlPreset, onClose }: URLPresetFormProps
     >
       <input hidden name='enabled' value='true' />
 
-      <div>1. Enter URL and let Ontime generate the preset options</div>
+      <div>{getLocalizedString('settings.features.url_presets.form.step1')}</div>
       <Panel.InlineElements>
         <div>
-          <Panel.Description>Alias</Panel.Description>
+          <Panel.Description>{getLocalizedString('settings.features.url_presets.form.alias')}</Panel.Description>
           <Input
             {...register('alias', {
-              required: 'Alias is required',
+              required: getLocalizedString('settings.features.url_presets.form.alias_required'),
               pattern: {
                 value: isUrlSafe,
-                message: 'Field can only contain URL safe characters (a-z, 0-9, _ and -)',
+                message: getLocalizedString('settings.features.url_presets.form.alias_pattern'),
               },
             })}
           />
         </div>
         <div className={style.expand}>
-          <Panel.Description>Generate options (paste URL to generate options)</Panel.Description>
+          <Panel.Description>
+            {getLocalizedString('settings.features.url_presets.form.generate_options')}
+          </Panel.Description>
           <Panel.InlineElements>
-            <Input placeholder='Paste URL' fluid ref={urlRef} />
-            <Button onClick={generateOptions}>Generate</Button>
+            <Input
+              placeholder={getLocalizedString('settings.features.url_presets.form.paste_url')}
+              fluid
+              ref={urlRef}
+            />
+            <Button onClick={generateOptions}>
+              {getLocalizedString('settings.features.url_presets.form.generate')}
+            </Button>
           </Panel.InlineElements>
         </div>
       </Panel.InlineElements>
       {errors.alias?.message && <Panel.Error>{errors.alias.message}</Panel.Error>}
       <div>
-        {enDash} or {enDash}
+        {enDash} {getLocalizedString('settings.features.url_presets.form.or')} {enDash}
       </div>
-      <div>2. Choose a view and its parameters</div>
+      <div>{getLocalizedString('settings.features.url_presets.form.step2')}</div>
       <div>
-        <Panel.Description>Target</Panel.Description>
+        <Panel.Description>{getLocalizedString('settings.features.url_presets.form.target')}</Panel.Description>
         <Select
           options={targetOptions}
-          {...register('target', { required: 'Target is required' })}
+          {...register('target', {
+            required: getLocalizedString('settings.features.url_presets.form.target_required'),
+          })}
           value={watch('target')}
           onValueChange={(value: OntimeViewPresettable | null) => {
             if (value === null) return;
@@ -149,7 +161,7 @@ export default function URLPresetForm({ urlPreset, onClose }: URLPresetFormProps
         />
       </div>
       <div>
-        <Panel.Description>Parameters</Panel.Description>
+        <Panel.Description>{getLocalizedString('settings.features.url_presets.form.parameters')}</Panel.Description>
         <Textarea
           fluid
           rows={3}
@@ -162,9 +174,9 @@ export default function URLPresetForm({ urlPreset, onClose }: URLPresetFormProps
       <div>
         <Panel.Error>{errors.root?.message}</Panel.Error>
         <Panel.InlineElements align='end'>
-          <Button onClick={onClose}>Cancel</Button>
+          <Button onClick={onClose}>{getLocalizedString('settings.features.url_presets.form.cancel')}</Button>
           <Button variant='primary' type='submit' disabled={!isValid || !isDirty} loading={isSubmitting || isMutating}>
-            Save
+            {getLocalizedString('settings.save')}
           </Button>
         </Panel.InlineElements>
       </div>

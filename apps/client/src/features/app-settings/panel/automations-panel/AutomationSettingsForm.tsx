@@ -11,6 +11,7 @@ import Tag from '../../../../common/components/tag/Tag';
 import { preventEscape } from '../../../../common/utils/keyEvent';
 import { isOnlyNumbers } from '../../../../common/utils/regex';
 import { isOntimeCloud } from '../../../../externals';
+import { useTranslation } from '../../../../translation/useTranslation';
 import * as Panel from '../../panel-utils/PanelUtils';
 
 const oscApiDocsUrl = 'https://docs.getontime.no/api/protocols/osc/';
@@ -30,6 +31,7 @@ export default function AutomationSettingsForm({
   automationState,
   oscInputState,
 }: AutomationSettingsProps) {
+  const { getLocalizedString } = useTranslation();
   const {
     handleSubmit,
     reset,
@@ -67,10 +69,10 @@ export default function AutomationSettingsForm({
   return (
     <Panel.Card>
       <Panel.SubHeader>
-        Automation settings
+        {getLocalizedString('settings.automations.automation_settings.title')}
         <Panel.InlineElements>
           <Button variant='ghosted' onClick={onReset} disabled={!canSubmit}>
-            Revert to saved
+            {getLocalizedString('settings.automations.automation_settings.revert')}
           </Button>
           <Button
             variant='primary'
@@ -79,7 +81,7 @@ export default function AutomationSettingsForm({
             disabled={!canSubmit}
             loading={isSubmitting}
           >
-            Save
+            {getLocalizedString('settings.save')}
           </Button>
         </Panel.InlineElements>
       </Panel.SubHeader>
@@ -89,11 +91,13 @@ export default function AutomationSettingsForm({
 
       <Panel.Section>
         <Info>
-          <p>Control Ontime and share its data with external systems in your workflow.</p>
-          <p>- Automations allow Ontime to send its data on lifecycle triggers.</p>
-          <p>- OSC Input tells Ontime to listen to messages on the specific port.</p>
+          <p>{getLocalizedString('settings.automations.automation_settings.info_1')}</p>
+          <p>- {getLocalizedString('settings.automations.automation_settings.info_2')}</p>
+          <p>- {getLocalizedString('settings.automations.automation_settings.info_3')}</p>
           <br />
-          <ExternalLink href={oscApiDocsUrl}>See the docs</ExternalLink>
+          <ExternalLink href={oscApiDocsUrl}>
+            {getLocalizedString('settings.features.url_presets.see_docs')}
+          </ExternalLink>
         </Info>
       </Panel.Section>
 
@@ -105,20 +109,22 @@ export default function AutomationSettingsForm({
       >
         <Panel.Loader isLoading={false} />
 
-        <Panel.Title>Automation</Panel.Title>
+        <Panel.Title>{getLocalizedString('settings.automations.automation_settings.automation')}</Panel.Title>
         <Panel.ListGroup>
           <Panel.ListItem>
             <Panel.Field
               title={
                 <>
-                  <span>Enable automations</span>
-                  {automationState === false && <Tag variant='warning'>OFF</Tag>}
+                  <span>{getLocalizedString('settings.automations.automation_settings.enable_automations')}</span>
+                  {automationState === false && (
+                    <Tag variant='warning'>{getLocalizedString('settings.automations.automation_settings.off')}</Tag>
+                  )}
                 </>
               }
               description={
                 automationState === false
-                  ? 'Automations are OFF. Triggers stay configured, but Ontime will not send messages.'
-                  : 'Allow Ontime to send messages on lifecycle triggers'
+                  ? getLocalizedString('settings.automations.automation_settings.automations_off')
+                  : getLocalizedString('settings.automations.automation_settings.allow_ontime')
               }
               descriptionTone={automationState === false ? 'warning' : 'default'}
               error={errors.enabledAutomations?.message}
@@ -132,22 +138,26 @@ export default function AutomationSettingsForm({
             />
           </Panel.ListItem>
         </Panel.ListGroup>
-        <Panel.Title>OSC Input</Panel.Title>
+        <Panel.Title>{getLocalizedString('settings.automations.automation_settings.osc_input')}</Panel.Title>
 
         <Panel.ListGroup>
-          {isOntimeCloud && <Info>For security reasons OSC integrations are not available in the cloud service.</Info>}
+          {isOntimeCloud && (
+            <Info>{getLocalizedString('settings.automations.automation_settings.osc_cloud_warning')}</Info>
+          )}
           <Panel.ListItem>
             <Panel.Field
               title={
                 <>
-                  <span>OSC input</span>
-                  {oscInputState === false && <Tag variant='warning'>OFF</Tag>}
+                  <span>{getLocalizedString('settings.automations.automation_settings.osc_input_label')}</span>
+                  {oscInputState === false && (
+                    <Tag variant='warning'>{getLocalizedString('settings.automations.automation_settings.off')}</Tag>
+                  )}
                 </>
               }
               description={
                 oscInputState === false
-                  ? 'OSC input is OFF. Ontime will not listen for incoming OSC control messages.'
-                  : 'Allow control of Ontime through OSC'
+                  ? getLocalizedString('settings.automations.automation_settings.osc_off')
+                  : getLocalizedString('settings.automations.automation_settings.allow_control')
               }
               descriptionTone={oscInputState === false ? 'warning' : 'default'}
               error={errors.enabledOscIn?.message}
@@ -162,8 +172,8 @@ export default function AutomationSettingsForm({
           </Panel.ListItem>
           <Panel.ListItem>
             <Panel.Field
-              title='Listen on port'
-              description='Port for incoming OSC. Default: 8888'
+              title={getLocalizedString('settings.automations.automation_settings.listen_port')}
+              description={getLocalizedString('settings.automations.automation_settings.port_default')}
               error={errors.oscPortIn?.message}
             />
             <Input
@@ -174,12 +184,21 @@ export default function AutomationSettingsForm({
               type='number'
               fluid
               {...register('oscPortIn', {
-                required: { value: true, message: 'Required field' },
-                max: { value: 65535, message: 'Port must be within range 1024 - 65535' },
-                min: { value: 1024, message: 'Port must be within range 1024 - 65535' },
+                required: {
+                  value: true,
+                  message: getLocalizedString('settings.automations.trigger_form.required_field'),
+                },
+                max: {
+                  value: 65535,
+                  message: getLocalizedString('settings.automations.automation_settings.port_range'),
+                },
+                min: {
+                  value: 1024,
+                  message: getLocalizedString('settings.automations.automation_settings.port_range'),
+                },
                 pattern: {
                   value: isOnlyNumbers,
-                  message: 'Value should be numeric',
+                  message: getLocalizedString('settings.automations.automation_settings.value_numeric'),
                 },
               })}
             />
