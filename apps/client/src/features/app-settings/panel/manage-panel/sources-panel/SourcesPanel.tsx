@@ -247,12 +247,9 @@ export default function SourcesPanel() {
                 <p className={style.sourceDescription}>
                   {getLocalizedString('settings.manage.sources_panel.import_spreadsheet_desc')}
                 </p>
-                <div
-                  className={style.sourceMeta}
-                  dangerouslySetInnerHTML={{
-                    __html: getLocalizedString('settings.manage.sources_panel.import_spreadsheet_meta'),
-                  }}
-                />
+                <div className={style.sourceMeta}>
+                  {getLocalizedString('settings.manage.sources_panel.import_spreadsheet_meta')}
+                </div>
                 <Button variant='primary' size='large' fluid onClick={handleUpload} loading={hasFile === 'loading'}>
                   <IoDownloadOutline />
                   {getLocalizedString('settings.manage.sources_panel.import_spreadsheet_btn')}

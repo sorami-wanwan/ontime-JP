@@ -145,7 +145,7 @@ export default function CustomFieldForm({
       {errors.root && <Panel.Error>{errors.root.message}</Panel.Error>}
       <Panel.InlineElements relation='inner' align='end'>
         <Button variant='ghosted' onClick={onCancel}>
-          {getLocalizedString('settings.manage.custom_views.cancel')}
+          {getLocalizedString('common.cancel')}
         </Button>
         <Button type='submit' variant='primary' disabled={!canSubmit} loading={isSubmitting}>
           {getLocalizedString('settings.manage.custom_fields.save')}

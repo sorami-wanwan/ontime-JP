@@ -58,7 +58,7 @@ export default function ManageRundowns() {
     try {
       await load(targetRundown);
     } catch (error) {
-      setActionError(`${getLocalizedString('settings.manage.manage_rundowns.failed_load')}${maybeAxiosError(error)}`);
+      setActionError(`${getLocalizedString('settings.manage.manage_rundowns.failed_load')} ${maybeAxiosError(error)}`);
     } finally {
       loadHandlers.close();
     }
@@ -73,7 +73,7 @@ export default function ManageRundowns() {
       await duplicate(id);
     } catch (error) {
       setActionError(
-        `${getLocalizedString('settings.manage.manage_rundowns.failed_duplicate')}${maybeAxiosError(error)}`,
+        `${getLocalizedString('settings.manage.manage_rundowns.failed_duplicate')} ${maybeAxiosError(error)}`,
       );
     }
   };
@@ -83,7 +83,9 @@ export default function ManageRundowns() {
       await rename([id, newTitle]);
       setRenamingRundown(null);
     } catch (error) {
-      setActionError(`${getLocalizedString('settings.manage.manage_rundowns.failed_rename')}${maybeAxiosError(error)}`);
+      setActionError(
+        `${getLocalizedString('settings.manage.manage_rundowns.failed_rename')} ${maybeAxiosError(error)}`,
+      );
     }
   };
 
@@ -91,7 +93,9 @@ export default function ManageRundowns() {
     try {
       await remove(targetRundown);
     } catch (error) {
-      setActionError(`${getLocalizedString('settings.manage.manage_rundowns.failed_delete')}${maybeAxiosError(error)}`);
+      setActionError(
+        `${getLocalizedString('settings.manage.manage_rundowns.failed_delete')} ${maybeAxiosError(error)}`,
+      );
     } finally {
       deleteHandlers.close();
     }
@@ -188,10 +192,7 @@ export default function ManageRundowns() {
                             {
                               type: 'destructive',
                               icon: IoTrash,
-                              label: getLocalizedString('settings.manage.custom_fields.delete_title').replace(
-                                'の削除',
-                                '',
-                              ), // or create a specific key if needed, or use 'settings.automations.trigger_form.delete_entry'
+                              label: getLocalizedString('settings.manage.manage_rundowns.delete'),
                               onClick: () => openDelete(id),
                               disabled: isLoaded,
                             },
@@ -214,15 +215,11 @@ export default function ManageRundowns() {
         title={getLocalizedString('settings.manage.manage_rundowns.delete_title')}
         showBackdrop
         showCloseButton
-        bodyElements={
-          <span
-            dangerouslySetInnerHTML={{ __html: getLocalizedString('settings.manage.manage_rundowns.delete_confirm') }}
-          />
-        }
+        bodyElements={<>{getLocalizedString('settings.manage.manage_rundowns.delete_confirm')}</>}
         footerElements={
           <>
             <Button size='large' onClick={deleteHandlers.close}>
-              {getLocalizedString('settings.manage.custom_views.cancel')}
+              {getLocalizedString('common.cancel')}
             </Button>
             <Button variant='destructive' size='large' onClick={submitRundownDelete}>
               {getLocalizedString('settings.manage.manage_rundowns.delete_button')}
@@ -236,15 +233,11 @@ export default function ManageRundowns() {
         title={getLocalizedString('settings.manage.manage_rundowns.load_title')}
         showBackdrop
         showCloseButton
-        bodyElements={
-          <span
-            dangerouslySetInnerHTML={{ __html: getLocalizedString('settings.manage.manage_rundowns.load_confirm') }}
-          />
-        }
+        bodyElements={<>{getLocalizedString('settings.manage.manage_rundowns.load_confirm')}</>}
         footerElements={
           <>
             <Button size='large' onClick={loadHandlers.close}>
-              {getLocalizedString('settings.manage.custom_views.cancel')}
+              {getLocalizedString('common.cancel')}
             </Button>
             <Button variant='primary' size='large' onClick={submitRundownLoad}>
               {getLocalizedString('settings.manage.manage_rundowns.load_button')}

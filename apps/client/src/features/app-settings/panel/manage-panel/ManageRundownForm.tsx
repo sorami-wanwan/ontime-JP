@@ -34,7 +34,7 @@ export function ManageRundownForm({ onClose }: ManageRundownForm) {
       await create(values.title || 'untitled');
       onClose();
     } catch (error) {
-      setError('root', { message: `${getLocalizedString('settings.manage.manage_rundowns.failed_create')}${error}` });
+      setError('root', { message: `${getLocalizedString('settings.manage.manage_rundowns.failed_create')} ${error}` });
     }
   };
 
@@ -57,7 +57,7 @@ export function ManageRundownForm({ onClose }: ManageRundownForm) {
       </Panel.Section>
       <Panel.InlineElements relation='inner' align='end'>
         <Button variant='ghosted' disabled={isSubmitting} onClick={onClose}>
-          {getLocalizedString('settings.manage.custom_views.cancel')}
+          {getLocalizedString('common.cancel')}
         </Button>
         <Button type='submit' variant='primary' disabled={isSubmitting}>
           {getLocalizedString('settings.manage.manage_rundowns.create_button')}

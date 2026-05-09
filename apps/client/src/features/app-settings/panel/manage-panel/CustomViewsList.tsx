@@ -82,7 +82,7 @@ export default function CustomViewsList({ views, onOpenUpload, onMutate, onError
         footerElements={
           <>
             <Button size='large' onClick={() => setTargetSlug(null)}>
-              {getLocalizedString('settings.manage.custom_views.cancel')}
+              {getLocalizedString('common.cancel')}
             </Button>
             <Button variant='destructive' size='large' onClick={submitDelete} loading={isDeleting}>
               {getLocalizedString('settings.manage.custom_views.delete_button')}

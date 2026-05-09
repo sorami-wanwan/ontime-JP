@@ -113,7 +113,7 @@ export default function CustomViewForm({ onComplete, onClose }: CustomViewFormPr
       {error && <Panel.Error>{error}</Panel.Error>}
 
       <Panel.InlineElements align='end'>
-        <Button onClick={onClose}>{getLocalizedString('settings.manage.custom_views.cancel')}</Button>
+        <Button onClick={onClose}>{getLocalizedString('common.cancel')}</Button>
         <Button variant='primary' type='submit' loading={isUploading} disabled={!canUpload}>
           {getLocalizedString('settings.manage.custom_views.upload_view')} <IoCloudUploadOutline />
         </Button>
