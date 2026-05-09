@@ -1,121 +1,128 @@
-# GETTING STARTED
+# 開発ガイド
 
-Ontime consists of 3 distinct parts
+Ontime は 3 つの主要パーツで構成されています。
 
-- **client**: A React app for Ontime's UI and web clients
-- **electron**: An electron app which facilitates the cross-platform distribution of Ontime
-- **server**: A node application which handles the domains services and integrations
+- **client**: Ontime の UI と Web クライアントを提供する React アプリケーション
+- **electron**: クロスプラットフォーム配布を実現する Electron アプリケーション
+- **server**: ドメインサービスと各種連携を処理する Node.js アプリケーション
 
-The steps below will assume you have locally installed the necessary dependencies.
-Other dependencies will be installed as part of the setup
+以下の手順では、ローカル環境に必要な依存関係がインストール済みであることを前提としています。
+その他の依存関係はセットアップ時に自動インストールされます。
 
-- **node** (~22)
+- **Node.js** (~22)
 - **pnpm** (~10)
-- **docker** (only necessary to run and build docker images)
+- **Docker** (Docker イメージのビルド・実行時のみ必要)
 
-## LOCAL DEVELOPMENT
+---
 
-The electron app is only necessary to distribute an installable version of the app and is not required for local
-development.
-Locally, we would need to run both the React client and the node.js server in development mode
+## ローカル開発
 
-From the project root, run the following commands
+Electron アプリはインストーラ版の配布用であり、ローカル開発では不要です。
+ローカルでは React クライアントと Node.js サーバーを開発モードで同時に実行します。
 
-- **Install the project dependencies** by running `pnpm i`
-- **Create a local build** by running `pnpm build`, this will populate local dependencies
-- **Run dev mode** by running `pnpm dev` or `pnpm dev:electron` to get the electron window
+プロジェクトルートから以下のコマンドを実行してください。
 
-### Debugging backend
+1. **プロジェクトの依存関係をインストール**: `pnpm i`
+2. **ローカルビルドを作成**: `pnpm build` — ローカル依存パッケージが生成されます
+3. **開発モードで起動**: `pnpm dev` または Electron ウィンドウ付きで `pnpm dev:electron`
 
-The previous command will start the development servers for both the client, server and electron applications.
-Typically in dev mode we prefer to start these in separate terminals to help with error tracking and debugging.
+### バックエンドのデバッグ
 
-We do that by creating two terminals an running
+上記のコマンドでクライアント、サーバー、Electron の開発サーバーがすべて起動します。
+通常の開発では、エラー追跡やデバッグのためにそれぞれ別のターミナルで起動することを推奨します。
 
-- **Run the React UI** by running `pnpm dev --filter=ontime-ui`
-- **Run the nodejs server** by running `pnpm dev --filter=ontime-server`
+ターミナルを 2 つ開き、以下を実行します：
 
-- If you need to set breakpoints and inspect the code execution, enable Node.js inspect mode by running `pnpm dev:inspect --filter=ontime-server`.
+- **React UI の起動**: `pnpm dev --filter=ontime-ui`
+- **Node.js サーバーの起動**: `pnpm dev --filter=ontime-server`
+- ブレークポイントの設定やコード実行の検査が必要な場合は、Node.js の inspect モードを使用します: `pnpm dev:inspect --filter=ontime-server`
 
-## TESTING
+---
 
-Generally we have 2 types of tests.
+## テスト
 
-- Unit tests for functions that contain business logic
-- End-to-end tests for core features
+テストは大きく 2 種類あります。
 
-### Unit tests
+- **ユニットテスト**: ビジネスロジックを含む関数のテスト
+- **E2E テスト**: コア機能のエンドツーエンドテスト
 
-Unit tests are contained in mostly all the apps and packages (client, server and utils)
+### ユニットテスト
 
-You can run unit tests by running `pnpm test:pipeline` from the project root.
-This will run all tests and close test runner.
+ユニットテストはほぼすべてのアプリ・パッケージ（client, server, utils）に含まれています。
 
-Alternatively you can navigate to an app or project and run `pnpm test` to run those tests in watch mode
+プロジェクトルートから `pnpm test:pipeline` を実行すると、すべてのテストが実行され、完了後にテストランナーが終了します。
 
-### E2E tests
+特定のアプリやパッケージのディレクトリに移動して `pnpm test` を実行すると、ウォッチモードでテストを実行できます。
 
-E2E tests are in a separate package. On running, [playwright](https://playwright.dev/) will spin up an instance of the
-webserver to test against
-These tests also run against a separate version of the DB (test-db)
+### E2E テスト
 
-Before running the E2E, you should first build the project with `pnpm build:local`.
+E2E テストは専用パッケージに格納されています。実行時に [Playwright](https://playwright.dev/) がテスト用の Web サーバーインスタンスを自動起動します。
+これらのテストは専用のデータベース（test-db）に対して実行されます。
 
-You can run playwright tests from project root with `pnpm e2e`
+E2E テストを実行する前に、`pnpm build:local` でプロジェクトをビルドしてください。
 
-When writing tests, it can be handy to run playwright in interactive mode with `pnpm e2e:i`. You would need to manually
-start the webserver with `pnpm dev:server`
+プロジェクトルートから Playwright テストを実行: `pnpm e2e`
 
-Some other useful commands
+テスト作成時には、インタラクティブモードで `pnpm e2e:i` を実行すると便利です。この場合、別途 `pnpm dev:server` で Web サーバーを手動起動する必要があります。
 
-- `pnpm e2e:ui` open playwright UI
-- `pnpm e2e --headed` run tests with a visible browser window
+その他の便利なコマンド：
 
-## CREATE AN INSTALLABLE FILE (Windows | MacOS | Linux)
+- `pnpm e2e:ui` — Playwright の UI を開く
+- `pnpm e2e --headed` — ブラウザウィンドウを表示してテストを実行
 
-Ontime uses Electron to distribute the application.
-You can generate a distribution for your OS by running the following steps.
+---
 
-From the project root, run the following commands
+## インストーラの作成 (Windows | macOS | Linux)
 
-- **Install the project dependencies** by running `pnpm i`
-- **Build the UI and server** by running `pnpm build`
-- **Create the package** by running `pnpm dist-win`, `pnpm dist-mac` or `pnpm dist-linux`
+Ontime は Electron を使ってアプリケーションを配布しています。
+以下の手順で、お使いの OS 向けのディストリビューションを生成できます。
 
-The build distribution assets will be at `.apps/electron/dist`
+プロジェクトルートから以下のコマンドを実行してください。
 
-## DOCKER
+1. **プロジェクトの依存関係をインストール**: `pnpm i`
+2. **UI とサーバーをビルド**: `pnpm build`
+3. **パッケージを作成**: `pnpm dist-win`、`pnpm dist-mac`、または `pnpm dist-linux`
 
-Ontime provides a docker-compose file to aid with building and running docker images.
-While it should allow for a generic setup, it might need to be modified to fit your infrastructure.
+ビルド成果物は `apps/electron/dist` に出力されます。
 
-From the project root, run the following commands
+---
 
-- **Build docker image from** by running `docker build -t getontime/ontime .`
-- **Run docker image from compose** by running `docker-compose up -d`
+## Docker
 
-Other useful commands
+Ontime は Docker イメージのビルドと実行を支援する docker-compose ファイルを提供しています。
+汎用的なセットアップに対応していますが、環境に合わせて変更が必要な場合があります。
 
-- **List running processes** by running `docker ps`
-- **Kill running process** by running `docker kill <process-id>`
+プロジェクトルートから以下のコマンドを実行してください。
 
-## FORMATTING AND LINTING
+- **Docker イメージをビルド**: `docker build -t getontime/ontime .`
+- **docker-compose でイメージを起動**: `docker-compose up -d`
 
-Ontime uses [oxfmt](https://oxc.rs/docs/guide/usage/formatter.html) for formatting and [oxlint](https://oxc.rs/docs/guide/usage/linter.html) for linting. Look for an [oxc extension](https://oxc.rs/docs/guide/usage/linter/editors) for your editor of choice.
+その他の便利なコマンド：
 
-- **Run formatter** by running `pnpm format`
-- **Run linter** by running `pnpm lint`
+- **実行中のプロセスを一覧表示**: `docker ps`
+- **実行中のプロセスを停止**: `docker kill <process-id>`
 
-## CONTRIBUTION GUIDELINES
+---
 
-If you want to propose changes to the codebase, please reach out before opening a Pull Request.
+## フォーマットとリント
 
-For new PRs, please follow the following checklist:
+Ontime はフォーマッタに [oxfmt](https://oxc.rs/docs/guide/usage/formatter.html)、リンターに [oxlint](https://oxc.rs/docs/guide/usage/linter.html) を使用しています。お使いのエディタに対応する [oxc 拡張機能](https://oxc.rs/docs/guide/usage/linter/editors)を導入してください。
 
-- [ ] You have updated and ran unit locally and they are passing. Unit tests are generally created for all utility functions and business logic
-- [ ] You have ran code formatting and linting in all your changes
-- [ ] The branch is clean and the commits are meaningfully separated and contain descriptive messages
-- [ ] The PR body contains description and motivation for the changes
+- **フォーマッタの実行**: `pnpm format`
+- **リンターの実行**: `pnpm lint`
 
-After this checklist is complete, you can request a review from one of the maintainers to get feedback and approval on the changes. \
-We will review as soon as possible
+---
+
+## コントリビューションガイドライン
+
+コードベースへの変更を提案する場合は、プルリクエストを開く前に Issue で事前相談をお願いします。
+
+PR を作成する際は、以下のチェックリストを確認してください：
+
+- [ ] ユニットテストをローカルで実行し、すべてパスしていること。ユニットテストはユーティリティ関数やビジネスロジックに対して一般的に作成されます
+- [ ] すべての変更に対してコードフォーマットとリントを実行していること
+- [ ] ブランチがクリーンで、コミットが意味のある単位で分割され、説明的なメッセージを含んでいること
+- [ ] PR の本文に変更の説明と動機が記載されていること
+
+チェックリストが完了したら、メンテナにレビューをリクエストしてください。
+できるだけ早くレビューいたします。

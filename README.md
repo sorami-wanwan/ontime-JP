@@ -1,135 +1,137 @@
 [![License: GPL v3](https://img.shields.io/badge/License-GPLv3-green.svg)](https://www.gnu.org/licenses/gpl-3.0)
-![GitHub Downloads (all assets, all releases)](https://img.shields.io/github/downloads/cpvalente/ontime/total)
-![Docker Pulls](https://img.shields.io/docker/pulls/getontime/ontime)
-![NPM Downloads](https://img.shields.io/npm/dy/%40getontime%2Fcli)
-![Homebrew Cask Version](https://img.shields.io/homebrew/cask/v/ontime)
 [![](https://img.shields.io/static/v1?label=Sponsor&message=%E2%9D%A4&logo=GitHub&color=%23fe8e86)](https://github.com/sponsors/cpvalente)
-[![](https://img.shields.io/static/v1?label=Buy%20me%20a%20coffee&message=%E2%9D%A4&logo=buymeacoffee&color=%23fe8e86)](https://www.buymeacoffee.com/cpvalente)
 
-## Download the latest release
+# Ontime — 日本語版 (ontime-JP)
 
-<a href="https://www.buymeacoffee.com/cpvalente" target="_blank"><img src="https://cdn.buymeacoffee.com/buttons/v2/default-yellow.png" alt="Buy Me A Coffee" height="32"></a>
+**ontime-JP** は、ライブイベント向けタイムキーパー [Ontime](https://github.com/cpvalente/ontime) の日本語ローカライズ版フォークです。
 
-- Download for <a href="https://github.com/cpvalente/ontime/releases/latest/download/ontime-win64.exe">Windows</a>
-- Download for <a href="https://github.com/cpvalente/ontime/releases/latest/download/ontime-macOS-arm64.dmg">macOS (Apple Silicon)</a>
-- Download for <a href="https://github.com/cpvalente/ontime/releases/latest/download/ontime-macOS-x64.dmg">macOS (Intel)</a>
-- Download AppImage for <a href="https://github.com/cpvalente/ontime/releases/latest/download/ontime-linux-x86_64.AppImage">Linux (Intel / AMD 64-bit)</a>
-- Download AppImage for <a href="https://github.com/cpvalente/ontime/releases/latest/download/ontime-linux-arm64.AppImage">Linux (ARM 64-bit, Raspberry Pi 4+)</a>
-- Download AppImage for <a href="https://github.com/cpvalente/ontime/releases/latest/download/ontime-linux-armv7l.AppImage">Linux (ARM 32-bit, older Raspberry Pi)</a>
+UI の翻訳、ドキュメントの日本語化を通じて、日本語環境でのスムーズな導入と運用を目指しています。
 
-... or
+> [!NOTE]
+> **AI コーディングについて**
+> このリポジトリの開発には [Google Antigravity](https://blog.google/technology/google-deepmind/introducing-antigravity/) を活用した AI コーディングを使用しています。コミット履歴やプルリクエストに AI 生成のコードが含まれる場合があります。
 
-- Get from <a href="https://hub.docker.com/r/getontime/ontime">Docker hub</a>
-- Install from <a href="https://www.npmjs.com/package/@getontime/cli">NPM</a>
-- Install from <a href="https://formulae.brew.sh/cask/ontime">Homebrew</a>
+---
 
-## Need help?
+## Ontime とは
 
-We do our best to have most topics covered by the documentation. However, if your question is not covered, you are welcome to [fill in a bug report in an issue](https://github.com/cpvalente/ontime/issues), [ask a question in GitHub discussions](https://github.com/cpvalente/ontime/discussions) or hop in the [discord server](https://discord.com/invite/eje3CSUEXm) for a chat.
+Ontime は、ブラウザベースのイベント進行管理アプリケーションです。
 
-## Using Ontime?
+イベントの進行表（ランダウン）管理、スケジュール追跡、オートメーション、部署間の情報共有をひとつのプラットフォームで実現します。
 
-Let us know!
-Ontime improves from the collaboration with its users. We would like to understand how you use Ontime and appreciate your feedback.
+Ontime は映像エンジニアやエンターテインメント技術者によって開発され、以下のような現場で活用されています：
 
-# Ontime
+- カンファレンス・セミナーの運営
+- ツアー公演・受け入れ会場
+- 放送局・ライブ配信
+- 劇場・オペラハウス
+- 礼拝施設
 
-Ontime is a browser-based application that manages event rundowns, scheduling, and cueing.
+## 主な機能
 
-With Ontime, you can plan, track your schedule, manage automation and cross-department show information all in one place.
+- **マルチプラットフォーム**: Windows、macOS、Linux、Docker で動作します
+- **あらゆるデバイスで利用可能**: ブラウザがあれば、タブレット、スマートフォン、ノート PC、サイネージなどからアクセスできます
+- **チームコラボレーション**: ディレクター、オペレーター、バックステージ、サイネージ向けの専用ビューを備えています
+- **リアルタイム更新**: ランタイムの遅延を即座に管理・共有できます
+- **自動化対応**: オペレーターによる手動操作、またはシステムクロックを使ったスタンドアロン運用が可能です
+- **柔軟な連携**: OSC、HTTP、WebSocket の各 API や [Companion モジュール](https://bitfocus.io/connections/getontime-ontime)を使い、vMix・disguise・Qlab・OBS などと連携できます
 
-Ontime is made by entertainment and broadcast engineers and used by
+### ライブ環境のために
 
-- Conference organisers
-- Touring shows and receiving venues
-- Broadcasters and streamers
-- Theatres and opera houses
-- Houses of worship
+Ontime はライブ環境での使用を前提に設計されています。
+柔軟性が高く、さまざまなワークフローに効率的に組み込むことができます。
 
-## Main features
+### チームのために
 
-- **Multiplatform**: Available as a Cloud service and for Windows, macOS, Linux, or self-hosted via Docker.
-- **In any device**: Ontime is available to any device with a browser, eg: tablets, mobile phones, laptops, signage, media servers...
-- **Team Collaboration**: Dedicated views for directors, operators, backstage, and signage.
-- **Real-Time Updates**: Manage and communicate runtime delays effortlessly.
-- **Automatable**: Ontime can be fully or partially controlled by an operator, or run standalone with the system clock
-- **Flexible Integrations**: Use one of the APIs provided (OSC, HTTP, Websocket) or the available [Companion module](https://bitfocus.io/connections/getontime-ontime) to integrate into your workflow (vMix, disguise, Qlab, OBS)
+Ontime に登録されたすべての情報は、制作チームやワークフロー上の他のソフトウェア・ハードウェアと共有されます。
+キューシートやオペレーター向け、パブリック・プロダクション向けの専用ビューにより、チームコラボレーションが向上します。
 
-... and a lot more ...
+### シンプルなインフラ
 
-### For live environments
+すべてのデータはネットワーク経由で配信されるため、柔軟かつ低コストなインフラ構成が可能です。
+Docker イメージを利用すれば、IT インフラを活用してチームやクライアントにオンラインで Ontime を提供することもできます。
 
-Ontime is designed for use in live environments. \
-This guides the application into being flexible and efficiently integrating into different workflows.
+![エディタ画面](https://github.com/cpvalente/ontime/blob/master/.github/aux-images/editor.png)
 
-### For teams
+![ビュー一覧](https://github.com/cpvalente/ontime/blob/master/.github/aux-images/ontime-overview.webp)
 
-All information added in Ontime is shared with the production team and other software / hardware in your workflow. \
-Ontime also improves team collaboration with dedicated views for cuesheets and operators, and for public and production
-signage.
+[ドキュメントを読む（英語）](https://docs.getontime.no)
 
-### Simple infrastructure
+---
 
-All the data is distributed over the network, making its distribution and infrastructure flexible and cheap. \
-With the availability of the docker image, you can also leverage IT infrastructure to make Ontime available online for
-your team and clients.
+## ダウンロード
 
-Ontime is made by video engineers and entertainment technicians.
+> [!NOTE]
+> 以下は上流プロジェクト (cpvalente/ontime) の公式リリースへのリンクです。
+> ontime-JP の独自ビルドについては、今後 [Releases](https://github.com/sorami-wanwan/ontime-JP/releases) ページで提供予定です。
 
-![App Window](https://github.com/cpvalente/ontime/blob/master/.github/aux-images/editor.png)
+- <a href="https://github.com/cpvalente/ontime/releases/latest/download/ontime-win64.exe">Windows</a>
+- <a href="https://github.com/cpvalente/ontime/releases/latest/download/ontime-macOS-arm64.dmg">macOS (Apple Silicon)</a>
+- <a href="https://github.com/cpvalente/ontime/releases/latest/download/ontime-macOS-x64.dmg">macOS (Intel)</a>
+- <a href="https://github.com/cpvalente/ontime/releases/latest/download/ontime-linux-x86_64.AppImage">Linux (Intel / AMD 64-bit)</a>
+- <a href="https://github.com/cpvalente/ontime/releases/latest/download/ontime-linux-arm64.AppImage">Linux (ARM 64-bit, Raspberry Pi 4+)</a>
+- <a href="https://github.com/cpvalente/ontime/releases/latest/download/ontime-linux-armv7l.AppImage">Linux (ARM 32-bit, 旧 Raspberry Pi)</a>
 
-![Views](https://github.com/cpvalente/ontime/blob/master/.github/aux-images/ontime-overview.webp)
+その他のインストール方法：
 
-[Read the docs to learn more](https://docs.getontime.no)
+- <a href="https://hub.docker.com/r/getontime/ontime">Docker Hub</a>
+- <a href="https://www.npmjs.com/package/@getontime/cli">NPM</a>
+- <a href="https://formulae.brew.sh/cask/ontime">Homebrew</a>
 
-## Using Ontime
+---
 
-### Getting started
+## 使い方
 
-The easiest way to start with Ontime is by leveraging our [Cloud service](https://getontime.no). \
-This will give you immediate access to running instances of Ontime which are available to share with anyone with an internet connection.
+### はじめに
 
-Alternatively, you can run Ontime locally for free by downloading the latest release for your platform or using the docker image, available at [Docker Hub](https://hub.docker.com/r/getontime/ontime)
+ソースからビルドして使用する場合は、[開発ドキュメント](./DEVELOPMENT.md)のセットアップ手順を参照してください。
 
-Once installed and running, any device that shares the same network as Ontime will have access to Ontime.
+また、上流プロジェクトの[クラウドサービス](https://getontime.no)を使えば、インスタンスをすぐに立ち上げてインターネット経由で共有できます。
 
-More information is available [in our docs](https://docs.getontime.no)
+ローカルで実行する場合は、Ontime と同じネットワーク上のあらゆるデバイスからアクセスできます。
 
-## Continued development
+詳しい使い方は[公式ドキュメント（英語）](https://docs.getontime.no)をご覧ください。
 
-Ontime is under active development. We continue adding and improving features in collaboration with users.
+---
 
-Have an idea? Reach out via [email](mail@getontime.no)
-or [open an issue](https://github.com/cpvalente/ontime/issues/new)
+## ヘルプ・サポート
 
-## Issues
+ほとんどの内容は公式ドキュメントでカバーされていますが、それでも解決しない場合は以下をご利用ください：
 
-We use Github's issue tracking for bug reporting and feature requests. \
-Found a bug? [Open an issue](https://github.com/cpvalente/ontime/issues/new).
+- [GitHub Issue でバグ報告](https://github.com/sorami-wanwan/ontime-JP/issues)
+- [GitHub Discussions で質問](https://github.com/cpvalente/ontime/discussions)（上流プロジェクト・英語）
+- [Discord サーバー](https://discord.com/invite/eje3CSUEXm)でチャット（上流プロジェクト・英語）
 
-## Contributing
+---
 
-Looking to contribute? All types of help are appreciated, from coding to testing and feature specification.
+## 開発に参加する
 
-If you are a developer and would like to contribute with code, please open an issue to discuss before opening a Pull Request.
+ontime-JP はアクティブに開発中です。あらゆる形での貢献を歓迎します。
 
-Information about the project setup can be found in the [development documentation](./DEVELOPMENT.md)
+コードで貢献したい場合は、プルリクエストを開く前に Issue で議論してください。
 
-## Links
+プロジェクトのセットアップ方法は[開発ドキュメント](./DEVELOPMENT.md)に記載しています。
 
-- [Ontime website](https://getontime.no)
-- [Documentation](https://docs.getontime.no)
-- [Video tutorials](https://www.youtube.com/@ontimeapp)
-- [Ontime discord server](https://discord.com/invite/eje3CSUEXm)
+---
 
-## License
+## リンク
 
-This project is licensed under the terms of the GNU GPL v3
+- [Ontime 公式サイト（英語）](https://getontime.no)
+- [公式ドキュメント（英語）](https://docs.getontime.no)
+- [ビデオチュートリアル（英語）](https://www.youtube.com/@ontimeapp)
+- [Discord サーバー](https://discord.com/invite/eje3CSUEXm)
+- [上流リポジトリ (cpvalente/ontime)](https://github.com/cpvalente/ontime)
 
-## Sponsor
+---
 
-You can help the development of this project or say thank you with a one time donation. \
-See [the terms of donations](https://github.com/cpvalente/ontime/blob/master/.github/FUNDING.md).
+## ライセンス
+
+このプロジェクトは [GNU General Public License v3](https://www.gnu.org/licenses/gpl-3.0) の条件に基づきライセンスされています。
+
+## スポンサー
+
+Ontime の開発を支援することができます。
+寄付の詳細は上流プロジェクトの[寄付規約](https://github.com/cpvalente/ontime/blob/master/.github/FUNDING.md)をご参照ください。
 
 <p align="center">
 <br>
