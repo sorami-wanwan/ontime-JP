@@ -91,9 +91,7 @@ export default function ServerPortSettings() {
         {rootError && <Panel.Error>{rootError}</Panel.Error>}
         <Panel.Divider />
         <Panel.Section>
-          {data.pendingRestart && (
-            <Info type='warning'>{getLocalizedString('settings.port.pending_restart')}</Info>
-          )}
+          {data.pendingRestart && <Info type='warning'>{getLocalizedString('settings.port.pending_restart')}</Info>}
           <Panel.ListGroup>
             <Panel.ListItem>
               <Panel.Field

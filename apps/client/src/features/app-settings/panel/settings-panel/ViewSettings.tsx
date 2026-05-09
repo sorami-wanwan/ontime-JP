@@ -99,7 +99,9 @@ export default function ViewSettings() {
                 title={
                   <>
                     <span>{getLocalizedString('settings.view.override_css')}</span>
-                    {overrideStylesEnabled && <Tag variant='warning'>{getLocalizedString('settings.view.override_on')}</Tag>}
+                    {overrideStylesEnabled && (
+                      <Tag variant='warning'>{getLocalizedString('settings.view.override_on')}</Tag>
+                    )}
                   </>
                 }
                 description={
@@ -121,15 +123,24 @@ export default function ViewSettings() {
           </Panel.ListGroup>
           <Panel.ListGroup>
             <Panel.ListItem>
-              <Panel.Field title={getLocalizedString('settings.view.timer_colour')} description={getLocalizedString('settings.view.timer_colour_description')} />
+              <Panel.Field
+                title={getLocalizedString('settings.view.timer_colour')}
+                description={getLocalizedString('settings.view.timer_colour_description')}
+              />
               <SwatchPickerRHF name='normalColor' control={control} />
             </Panel.ListItem>
             <Panel.ListItem>
-              <Panel.Field title={getLocalizedString('settings.view.warning_colour')} description={getLocalizedString('settings.view.warning_colour_description')} />
+              <Panel.Field
+                title={getLocalizedString('settings.view.warning_colour')}
+                description={getLocalizedString('settings.view.warning_colour_description')}
+              />
               <SwatchPickerRHF name='warningColor' control={control} />
             </Panel.ListItem>
             <Panel.ListItem>
-              <Panel.Field title={getLocalizedString('settings.view.danger_colour')} description={getLocalizedString('settings.view.danger_colour_description')} />
+              <Panel.Field
+                title={getLocalizedString('settings.view.danger_colour')}
+                description={getLocalizedString('settings.view.danger_colour_description')}
+              />
               <SwatchPickerRHF name='dangerColor' control={control} />
             </Panel.ListItem>
           </Panel.ListGroup>

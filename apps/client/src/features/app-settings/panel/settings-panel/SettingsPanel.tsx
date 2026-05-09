@@ -1,8 +1,8 @@
 import useScrollIntoView from '../../../../common/hooks/useScrollIntoView';
 import { isDocker } from '../../../../externals';
+import { useTranslation } from '../../../../translation/TranslationProvider';
 import type { PanelBaseProps } from '../../panel-list/PanelList';
 import * as Panel from '../../panel-utils/PanelUtils';
-import { useTranslation } from '../../../../translation/TranslationProvider';
 import CustomViews from '../manage-panel/CustomViews';
 import GeneralSettings from './GeneralSettings';
 import ProjectData from './ProjectData';
