@@ -9,7 +9,7 @@ UI の翻訳、ドキュメントの日本語化を通じて、日本語環境�
 
 > [!NOTE]
 > **AI コーディングについて**
-> このリポジトリの開発には [Google Antigravity](https://blog.google/technology/google-deepmind/introducing-antigravity/) を活用した AI コーディングを使用しています。コミット履歴やプルリクエストに AI 生成のコードが含まれる場合があります。
+> このリポジトリの開発には [Google Antigravity](https://antigravity.google/) を活用した AI コーディングを使用しています。コミット履歴やプルリクエストに AI 生成のコードが含まれる場合があります。
 
 ---
 
