@@ -38,6 +38,7 @@ export default function RundownEventChip({
   isLinkedToLoaded,
 }: RundownEventChipProps) {
   const playback = usePlayback();
+  const { getLocalizedString } = useTranslation();
 
   if (isLoaded) {
     return null;
@@ -50,7 +51,6 @@ export default function RundownEventChip({
   }
 
   if (playbackActive) {
-    const { getLocalizedString } = useTranslation();
     // we extracted the component to avoid unnecessary calculations and re-renders
     return (
       <Tooltip
