@@ -2,6 +2,7 @@ import useScrollIntoView from '../../../../common/hooks/useScrollIntoView';
 import { isDocker } from '../../../../externals';
 import type { PanelBaseProps } from '../../panel-list/PanelList';
 import * as Panel from '../../panel-utils/PanelUtils';
+import { useTranslation } from '../../../../translation/TranslationProvider';
 import CustomViews from '../manage-panel/CustomViews';
 import GeneralSettings from './GeneralSettings';
 import ProjectData from './ProjectData';
@@ -9,6 +10,7 @@ import ServerPortSettings from './ServerPortSettings';
 import ViewSettings from './ViewSettings';
 
 export default function SettingsPanel({ location }: PanelBaseProps) {
+  const { getLocalizedString } = useTranslation();
   const dataRef = useScrollIntoView<HTMLDivElement>('data', location);
   const generalRef = useScrollIntoView<HTMLDivElement>('general', location);
   const viewRef = useScrollIntoView<HTMLDivElement>('view', location);
@@ -17,7 +19,7 @@ export default function SettingsPanel({ location }: PanelBaseProps) {
 
   return (
     <>
-      <Panel.Header>Settings</Panel.Header>
+      <Panel.Header>{getLocalizedString('settings.title')}</Panel.Header>
       <div ref={dataRef}>
         <ProjectData />
       </div>
