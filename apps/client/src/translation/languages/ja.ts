@@ -116,8 +116,7 @@ export const langJa: Partial<TranslationObject> = {
     'Ontimeを制御し、ワークフロー内の外部システムとデータを共有します。',
   'settings.automations.automation_settings.info_2':
     'オートメーションを使用すると、Ontimeはライフサイクルトリガーでデータを送信できます。',
-  'settings.automations.automation_settings.info_3':
-    'OSC入力は、Ontimeに特定のポートのメッセージをリッスンさせます。',
+  'settings.automations.automation_settings.info_3': 'OSC入力は、Ontimeに特定のポートのメッセージをリッスンさせます。',
   'settings.automations.automation_settings.automation': 'オートメーション',
   'settings.automations.automation_settings.enable_automations': 'オートメーションを有効にする',
   'settings.automations.automation_settings.off': 'OFF',
