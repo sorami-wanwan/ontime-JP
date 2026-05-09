@@ -2,20 +2,23 @@ import { PropsWithChildren, memo } from 'react';
 
 import * as Editor from '../../../common/components/editor-utils/EditorUtils';
 import { deviceAlt, deviceMod } from '../../../common/utils/deviceUtils';
+import { useTranslation } from '../../../translation/useTranslation';
 
 import style from './EventEditorEmpty.module.scss';
 
 export default memo(EventEditorEmpty);
 
 function EventEditorEmpty() {
+  const { getLocalizedString } = useTranslation();
+
   return (
     <div className={style.entryEditor} data-testid='editor-container'>
       <div className={style.shortcutSection}>
-        <Editor.Title className={style.prompt}>Rundown shortcuts</Editor.Title>
+        <Editor.Title className={style.prompt}>{getLocalizedString('rundown.editor.shortcuts_title')}</Editor.Title>
         <table className={style.shortcuts}>
           <tbody>
             <tr>
-              <td>Find in rundown</td>
+              <td>{getLocalizedString('rundown.editor.shortcuts.find')}</td>
               <td>
                 <Kbd>{deviceMod}</Kbd>
                 <AuxKey>+</AuxKey>
@@ -23,7 +26,7 @@ function EventEditorEmpty() {
               </td>
             </tr>
             <tr>
-              <td>Open Settings</td>
+              <td>{getLocalizedString('rundown.editor.shortcuts.open_settings')}</td>
               <td>
                 <Kbd>{deviceMod}</Kbd>
                 <AuxKey>+</AuxKey>
@@ -32,7 +35,7 @@ function EventEditorEmpty() {
             </tr>
             <tr className={style.spacer} />
             <tr>
-              <td>Select entry</td>
+              <td>{getLocalizedString('rundown.editor.shortcuts.select_entry')}</td>
               <td>
                 <Kbd>{deviceAlt}</Kbd>
                 <AuxKey>+</AuxKey>
@@ -42,7 +45,7 @@ function EventEditorEmpty() {
               </td>
             </tr>
             <tr>
-              <td>Select group</td>
+              <td>{getLocalizedString('rundown.editor.shortcuts.select_group')}</td>
               <td>
                 <Kbd>{deviceAlt}</Kbd>
                 <AuxKey>+</AuxKey>
@@ -54,7 +57,7 @@ function EventEditorEmpty() {
               </td>
             </tr>
             <tr>
-              <td>Jump to top / bottom</td>
+              <td>{getLocalizedString('rundown.editor.shortcuts.jump_to_top_bottom')}</td>
               <td>
                 <Kbd>Home</Kbd>
                 <AuxKey>/</AuxKey>
@@ -62,7 +65,7 @@ function EventEditorEmpty() {
               </td>
             </tr>
             <tr>
-              <td>Page up / down</td>
+              <td>{getLocalizedString('rundown.editor.shortcuts.page_up_down')}</td>
               <td>
                 <Kbd>PgUp</Kbd>
                 <AuxKey>/</AuxKey>
@@ -70,14 +73,14 @@ function EventEditorEmpty() {
               </td>
             </tr>
             <tr>
-              <td>Deselect entry</td>
+              <td>{getLocalizedString('rundown.editor.shortcuts.deselect_entry')}</td>
               <td>
                 <Kbd>Esc</Kbd>
               </td>
             </tr>
             <tr className={style.spacer} />
             <tr>
-              <td>Reorder selected entry</td>
+              <td>{getLocalizedString('rundown.editor.shortcuts.reorder_selected')}</td>
               <td>
                 <Kbd>{deviceAlt}</Kbd>
                 <AuxKey>+</AuxKey>
@@ -89,7 +92,7 @@ function EventEditorEmpty() {
               </td>
             </tr>
             <tr>
-              <td>Copy selected entry</td>
+              <td>{getLocalizedString('rundown.editor.shortcuts.copy_selected')}</td>
               <td>
                 <Kbd>{deviceMod}</Kbd>
                 <AuxKey>+</AuxKey>
@@ -97,7 +100,7 @@ function EventEditorEmpty() {
               </td>
             </tr>
             <tr>
-              <td>Cut selected entry</td>
+              <td>{getLocalizedString('rundown.editor.shortcuts.cut_selected')}</td>
               <td>
                 <Kbd>{deviceMod}</Kbd>
                 <AuxKey>+</AuxKey>
@@ -105,7 +108,7 @@ function EventEditorEmpty() {
               </td>
             </tr>
             <tr>
-              <td>Paste above</td>
+              <td>{getLocalizedString('rundown.editor.shortcuts.paste_above')}</td>
               <td>
                 <Kbd>{deviceMod}</Kbd>
                 <AuxKey>+</AuxKey>
@@ -115,7 +118,7 @@ function EventEditorEmpty() {
               </td>
             </tr>
             <tr>
-              <td>Paste below</td>
+              <td>{getLocalizedString('rundown.editor.shortcuts.paste_below')}</td>
               <td>
                 <Kbd>{deviceMod}</Kbd>
                 <AuxKey>+</AuxKey>
@@ -123,7 +126,7 @@ function EventEditorEmpty() {
               </td>
             </tr>
             <tr>
-              <td>Clone selected entry</td>
+              <td>{getLocalizedString('rundown.editor.shortcuts.clone_selected')}</td>
               <td>
                 <Kbd>{deviceMod}</Kbd>
                 <AuxKey>+</AuxKey>
@@ -131,7 +134,7 @@ function EventEditorEmpty() {
               </td>
             </tr>
             <tr>
-              <td>Delete selected entry</td>
+              <td>{getLocalizedString('rundown.editor.shortcuts.delete_selected')}</td>
               <td>
                 <Kbd>{deviceAlt}</Kbd>
                 <AuxKey>+</AuxKey>
@@ -140,7 +143,7 @@ function EventEditorEmpty() {
             </tr>
             <tr className={style.spacer} />
             <tr>
-              <td>Add event below</td>
+              <td>{getLocalizedString('rundown.editor.shortcuts.add_event_below')}</td>
               <td>
                 <Kbd>{deviceAlt}</Kbd>
                 <AuxKey>+</AuxKey>
@@ -148,7 +151,7 @@ function EventEditorEmpty() {
               </td>
             </tr>
             <tr>
-              <td>Add event above</td>
+              <td>{getLocalizedString('rundown.editor.shortcuts.add_event_above')}</td>
               <td>
                 <Kbd>{deviceAlt}</Kbd>
                 <AuxKey>+</AuxKey>
@@ -158,7 +161,7 @@ function EventEditorEmpty() {
               </td>
             </tr>
             <tr>
-              <td>Add group below</td>
+              <td>{getLocalizedString('rundown.editor.shortcuts.add_group_below')}</td>
               <td>
                 <Kbd>{deviceAlt}</Kbd>
                 <AuxKey>+</AuxKey>
@@ -166,7 +169,7 @@ function EventEditorEmpty() {
               </td>
             </tr>
             <tr>
-              <td>Add group above</td>
+              <td>{getLocalizedString('rundown.editor.shortcuts.add_group_above')}</td>
               <td>
                 <Kbd>{deviceAlt}</Kbd>
                 <AuxKey>+</AuxKey>
@@ -176,7 +179,7 @@ function EventEditorEmpty() {
               </td>
             </tr>
             <tr>
-              <td>Add milestone below</td>
+              <td>{getLocalizedString('rundown.editor.shortcuts.add_milestone_below')}</td>
               <td>
                 <Kbd>{deviceAlt}</Kbd>
                 <AuxKey>+</AuxKey>
@@ -184,7 +187,7 @@ function EventEditorEmpty() {
               </td>
             </tr>
             <tr>
-              <td>Add milestone above</td>
+              <td>{getLocalizedString('rundown.editor.shortcuts.add_milestone_above')}</td>
               <td>
                 <Kbd>{deviceAlt}</Kbd>
                 <AuxKey>+</AuxKey>
@@ -194,7 +197,7 @@ function EventEditorEmpty() {
               </td>
             </tr>
             <tr>
-              <td>Add delay below</td>
+              <td>{getLocalizedString('rundown.editor.shortcuts.add_delay_below')}</td>
               <td>
                 <Kbd>{deviceAlt}</Kbd>
                 <AuxKey>+</AuxKey>
@@ -202,7 +205,7 @@ function EventEditorEmpty() {
               </td>
             </tr>
             <tr>
-              <td>Add delay above</td>
+              <td>{getLocalizedString('rundown.editor.shortcuts.add_delay_above')}</td>
               <td>
                 <Kbd>{deviceAlt}</Kbd>
                 <AuxKey>+</AuxKey>

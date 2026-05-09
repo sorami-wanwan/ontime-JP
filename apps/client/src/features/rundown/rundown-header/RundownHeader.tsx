@@ -7,6 +7,7 @@ import { memo } from 'react';
 import Tooltip from '../../../common/components/tooltip/Tooltip';
 import { setOffsetMode, useOffsetMode } from '../../../common/hooks/useSocket';
 import { AppMode } from '../../../ontimeConfig';
+import { useTranslation } from '../../../translation/useTranslation';
 import { EditorLayoutMode, useEditorLayout } from '../../../views/editor/useEditorLayout';
 import { RundownViewMode } from '../rundown.options';
 import { useEditorFollowMode } from '../useEditorFollowMode';
@@ -49,6 +50,7 @@ function RundownHeader({ isExtracted, viewMode, setViewMode }: RundownHeaderProp
   const { editorMode, setEditorMode } = useEditorFollowMode();
   const offsetMode = useOffsetMode();
   const { layoutMode } = useEditorLayout();
+  const { getLocalizedString } = useTranslation();
 
   const { showRunEditToggle, showOffsetToggle, showOverflowMenu } = HEADER_CONTROLS_CONFIG[layoutMode];
 
@@ -76,48 +78,48 @@ function RundownHeader({ isExtracted, viewMode, setViewMode }: RundownHeaderProp
       {showRunEditToggle && (
         <ToggleGroup value={[editorMode]} onValueChange={toggleAppMode} className={style.group}>
           <Tooltip
-            text='Live playback view with auto-follow'
+            text={getLocalizedString('rundown.header.run_tooltip')}
             render={<Toolbar.Button render={<Toggle />} value={AppMode.Run} className={style.radioButton} />}
           >
-            Run
+            {getLocalizedString('rundown.header.run')}
           </Tooltip>
           <Tooltip
-            text='Manual editing without playback automation'
+            text={getLocalizedString('rundown.header.edit_tooltip')}
             render={<Toolbar.Button render={<Toggle />} value={AppMode.Edit} className={style.radioButton} />}
           >
-            Edit
+            {getLocalizedString('rundown.header.edit')}
           </Tooltip>
         </ToggleGroup>
       )}
 
       <ToggleGroup value={[viewMode]} onValueChange={toggleViewMode} className={style.group}>
         <Tooltip
-          text='View rundown in list mode'
+          text={getLocalizedString('rundown.header.list_tooltip')}
           render={<Toolbar.Button render={<Toggle />} value={RundownViewMode.List} className={style.radioButton} />}
         >
-          List
+          {getLocalizedString('rundown.header.list')}
         </Tooltip>
         <Tooltip
-          text='View rundown in table mode'
+          text={getLocalizedString('rundown.header.table_tooltip')}
           render={<Toolbar.Button render={<Toggle />} value={RundownViewMode.Table} className={style.radioButton} />}
         >
-          Table
+          {getLocalizedString('rundown.header.table')}
         </Tooltip>
       </ToggleGroup>
 
       {showOffsetToggle && (
         <ToggleGroup value={[offsetMode]} onValueChange={toggleOffsetMode} className={style.group}>
           <Tooltip
-            text='Offsets use fixed clock time'
+            text={getLocalizedString('rundown.header.absolute_tooltip')}
             render={<Toolbar.Button render={<Toggle />} value={OffsetMode.Absolute} className={style.radioButton} />}
           >
-            Absolute
+            {getLocalizedString('rundown.header.absolute')}
           </Tooltip>
           <Tooltip
-            text='Offsets follow the rundown relative start'
+            text={getLocalizedString('rundown.header.relative_tooltip')}
             render={<Toolbar.Button render={<Toggle />} value={OffsetMode.Relative} className={style.radioButton} />}
           >
-            Relative
+            {getLocalizedString('rundown.header.relative')}
           </Tooltip>
         </ToggleGroup>
       )}

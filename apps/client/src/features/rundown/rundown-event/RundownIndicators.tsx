@@ -1,3 +1,4 @@
+import { useTranslation } from '../../../translation/useTranslation';
 import { formatDelay, formatGap } from './rundownEvent.utils';
 
 import style from './RundownIndicators.module.scss';
@@ -10,8 +11,9 @@ interface RundownIndicatorProps {
 }
 
 export default function RundownIndicators({ timeStart, delay, gap, isNextDay }: RundownIndicatorProps) {
-  const hasGap = formatGap(gap, isNextDay);
-  const hasDelay = formatDelay(timeStart, delay);
+  const { getLocalizedString } = useTranslation();
+  const hasGap = formatGap(gap, isNextDay, getLocalizedString);
+  const hasDelay = formatDelay(timeStart, delay, getLocalizedString);
 
   return (
     <div className={style.indicators}>

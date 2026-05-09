@@ -6,6 +6,7 @@ import { IoAdd } from 'react-icons/io5';
 import Button from '../../../../common/components/buttons/Button';
 import { useEntryActionsContext } from '../../../../common/context/EntryActionsContext';
 import { cx } from '../../../../common/utils/styleUtils';
+import { useTranslation } from '../../../../translation/useTranslation';
 
 import style from './QuickAddButtons.module.scss';
 
@@ -18,6 +19,7 @@ interface QuickAddButtonsProps {
 export default memo(QuickAddButtons);
 function QuickAddButtons({ previousEventId, parentGroup, backgroundColor }: QuickAddButtonsProps) {
   const { addEntry } = useEntryActionsContext();
+  const { getLocalizedString } = useTranslation();
 
   const addEvent = () => {
     addEntry(
@@ -80,23 +82,23 @@ function QuickAddButtons({ previousEventId, parentGroup, backgroundColor }: Quic
     >
       <Toolbar.Button render={<Button size='small' />} onClick={addEvent}>
         <IoAdd />
-        Event
+        {getLocalizedString('rundown.editor.event')}
       </Toolbar.Button>
 
       <Toolbar.Button render={<Button size='small' />} onClick={addDelay}>
         <IoAdd />
-        Delay
+        {getLocalizedString('rundown.editor.delay')}
       </Toolbar.Button>
 
       <Toolbar.Button render={<Button size='small' />} onClick={addMilestone}>
         <IoAdd />
-        Milestone
+        {getLocalizedString('rundown.editor.milestone')}
       </Toolbar.Button>
 
       {parentGroup === null && (
         <Toolbar.Button render={<Button size='small' />} onClick={addGroup}>
           <IoAdd />
-          Group
+          {getLocalizedString('rundown.editor.group')}
         </Toolbar.Button>
       )}
     </Toolbar.Root>

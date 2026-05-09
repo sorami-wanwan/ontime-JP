@@ -3,6 +3,7 @@ import { KeyboardEvent, useEffect, useRef, useState } from 'react';
 
 import Input from '../../../common/components/input/input/Input';
 import { useEntryActionsContext } from '../../../common/context/EntryActionsContext';
+import { useTranslation } from '../../../translation/useTranslation';
 import BlockRadio from './BlockRadio';
 
 import style from './DelayInput.module.scss';
@@ -14,6 +15,7 @@ interface DelayInputProps {
 
 export default function DelayInput({ eventId, duration }: DelayInputProps) {
   const { updateEntry } = useEntryActionsContext();
+  const { getLocalizedString } = useTranslation();
 
   const [value, setValue] = useState<string>('');
   const inputRef = useRef<HTMLInputElement | null>(null);
@@ -120,8 +122,8 @@ export default function DelayInput({ eventId, duration }: DelayInputProps) {
         onValueChange={handleSlipChange}
         value={checkedOption}
         items={[
-          { value: 'add', label: 'Add time' },
-          { value: 'subtract', label: 'Subtract time' },
+          { value: 'add', label: getLocalizedString('rundown.editor.add_time') },
+          { value: 'subtract', label: getLocalizedString('rundown.editor.subtract_time') },
         ]}
       />
     </div>

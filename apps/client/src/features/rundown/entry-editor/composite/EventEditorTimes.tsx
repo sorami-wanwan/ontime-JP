@@ -11,6 +11,7 @@ import Tooltip from '../../../../common/components/tooltip/Tooltip';
 import { useEntryActionsContext } from '../../../../common/context/EntryActionsContext';
 import { millisToDelayString } from '../../../../common/utils/dateConfig';
 import { formatTime } from '../../../../common/utils/time';
+import { useTranslation } from '../../../../translation/useTranslation';
 import TimeInputFlow from '../../time-input-flow/TimeInputFlow';
 
 import style from '../EntryEditor.module.scss';
@@ -48,6 +49,7 @@ function EventEditorTimes({
   timeDanger,
 }: EventEditorTimesProps) {
   const { updateEntry } = useEntryActionsContext();
+  const { getLocalizedString } = useTranslation();
 
   const handleSubmit = (field: HandledActions, value: string | boolean) => {
     if (field === 'countToEnd') {
@@ -69,13 +71,16 @@ function EventEditorTimes({
 
   const hasDelay = delay !== 0;
   const delayLabel = hasDelay
-    ? `Event is ${millisToDelayString(delay, 'expanded')}. New schedule ${formatTime(timeStart + delay)} → ${formatTime(timeEnd + delay)}`
+    ? getLocalizedString('rundown.editor.delay_label_expanded')
+        .replace('{{0}}', millisToDelayString(delay, 'expanded'))
+        .replace('{{1}}', formatTime(timeStart + delay))
+        .replace('{{2}}', formatTime(timeEnd + delay))
     : '';
 
   return (
     <>
       <div className={style.column}>
-        <Editor.Title>Event schedule</Editor.Title>
+        <Editor.Title>{getLocalizedString('rundown.editor.event_schedule')}</Editor.Title>
         <div>
           <div className={style.inline}>
             <TimeInputFlow
@@ -95,10 +100,10 @@ function EventEditorTimes({
       </div>
 
       <div className={style.column}>
-        <Editor.Title>Event Behaviour</Editor.Title>
+        <Editor.Title>{getLocalizedString('rundown.editor.event_behaviour')}</Editor.Title>
         <div className={style.splitTwo}>
           <div>
-            <Editor.Label htmlFor='endAction'>End Action</Editor.Label>
+            <Editor.Label htmlFor='endAction'>{getLocalizedString('rundown.editor.end_action')}</Editor.Label>
             <Select
               value={endAction}
               onValueChange={(value: EndAction | null) => {
@@ -106,21 +111,21 @@ function EventEditorTimes({
                 handleSubmit('endAction', value);
               }}
               options={[
-                { value: EndAction.None, label: 'None' },
-                { value: EndAction.LoadNext, label: 'Load next event' },
-                { value: EndAction.PlayNext, label: 'Play next event' },
+                { value: EndAction.None, label: getLocalizedString('rundown.editor.end_action_none') },
+                { value: EndAction.LoadNext, label: getLocalizedString('rundown.editor.end_action_load_next') },
+                { value: EndAction.PlayNext, label: getLocalizedString('rundown.editor.end_action_play_next') },
               ]}
             />
           </div>
           <div>
-            <Editor.Label htmlFor='countToEnd'>Count to End</Editor.Label>
+            <Editor.Label htmlFor='countToEnd'>{getLocalizedString('rundown.editor.count_to_end')}</Editor.Label>
             <Editor.Label className={style.switchLabel}>
               <Switch
                 id='countToEnd'
                 checked={countToEnd}
                 onCheckedChange={(value) => handleSubmit('countToEnd', value)}
               />
-              {countToEnd ? 'On' : 'Off'}
+              {countToEnd ? getLocalizedString('common.on') : getLocalizedString('common.off')}
             </Editor.Label>
           </div>
         </div>
@@ -128,17 +133,14 @@ function EventEditorTimes({
 
       <div className={style.column}>
         <Editor.Title>
-          <Tooltip
-            text='Changes how the timer is displayed in different views. It is not reflected in the rundown'
-            render={<span />}
-          >
-            Display Options
+          <Tooltip text={getLocalizedString('rundown.editor.display_options_tooltip')} render={<span />}>
+            {getLocalizedString('rundown.editor.display_options')}
             <IoInformationCircle className={style.tooltipIcon} />
           </Tooltip>
         </Editor.Title>
         <div className={style.splitTwo}>
           <div>
-            <Editor.Label htmlFor='timerType'>Timer Type</Editor.Label>
+            <Editor.Label htmlFor='timerType'>{getLocalizedString('rundown.editor.timer_type')}</Editor.Label>
             <Select
               value={timerType}
               onValueChange={(value: TimerType | null) => {
@@ -146,33 +148,33 @@ function EventEditorTimes({
                 handleSubmit('timerType', value);
               }}
               options={[
-                { value: TimerType.CountDown, label: 'Count down' },
-                { value: TimerType.CountUp, label: 'Count up' },
-                { value: TimerType.Clock, label: 'Clock' },
-                { value: TimerType.None, label: 'None' },
+                { value: TimerType.CountDown, label: getLocalizedString('rundown.editor.timer_type_count_down') },
+                { value: TimerType.CountUp, label: getLocalizedString('rundown.editor.timer_type_count_up') },
+                { value: TimerType.Clock, label: getLocalizedString('rundown.editor.timer_type_clock') },
+                { value: TimerType.None, label: getLocalizedString('rundown.editor.timer_type_none') },
               ]}
             />
           </div>
 
           <div className={style.inline}>
             <div>
-              <Editor.Label htmlFor='timeWarning'>Warning Time</Editor.Label>
+              <Editor.Label htmlFor='timeWarning'>{getLocalizedString('rundown.editor.warning_time')}</Editor.Label>
               <TimeInput
                 id='timeWarning'
                 name='timeWarning'
                 submitHandler={handleSubmit}
                 time={timeWarning}
-                placeholder='Duration'
+                placeholder={getLocalizedString('common.duration')}
               />
             </div>
             <div>
-              <Editor.Label htmlFor='timeDanger'>Danger Time</Editor.Label>
+              <Editor.Label htmlFor='timeDanger'>{getLocalizedString('rundown.editor.danger_time')}</Editor.Label>
               <TimeInput
                 id='timeDanger'
                 name='timeDanger'
                 submitHandler={handleSubmit}
                 time={timeDanger}
-                placeholder='Duration'
+                placeholder={getLocalizedString('common.duration')}
               />
             </div>
           </div>

@@ -4,6 +4,7 @@ import { IoAdd } from 'react-icons/io5';
 import Button from '../../common/components/buttons/Button';
 import * as Editor from '../../common/components/editor-utils/EditorUtils';
 import Empty from '../../common/components/state/Empty';
+import { useTranslation } from '../../translation/useTranslation';
 
 import style from './Empty.module.scss';
 
@@ -13,6 +14,7 @@ interface RundownEmptyProps {
 
 export default function RundownEmpty(props: RundownEmptyProps) {
   const { handleAddNew } = props;
+  const { getLocalizedString } = useTranslation();
 
   return (
     <div className={style.empty}>
@@ -20,13 +22,14 @@ export default function RundownEmpty(props: RundownEmptyProps) {
       <div className={style.inline}>
         <Button onClick={() => handleAddNew(SupportedEntry.Event)} variant='primary' size='large'>
           <IoAdd />
-          Create Event
+          {getLocalizedString('rundown.empty.create_event')}
         </Button>
 
         <Editor.Separator />
 
         <Button onClick={() => handleAddNew(SupportedEntry.Group)} variant='primary' size='large'>
-          <IoAdd /> Create Group
+          <IoAdd />
+          {getLocalizedString('rundown.empty.create_group')}
         </Button>
       </div>
     </div>

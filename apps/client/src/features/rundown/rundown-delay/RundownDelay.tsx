@@ -8,6 +8,7 @@ import Button from '../../../common/components/buttons/Button';
 import { useEntryActionsContext } from '../../../common/context/EntryActionsContext';
 import { useEntryCopy } from '../../../common/stores/entryCopyStore';
 import { cx } from '../../../common/utils/styleUtils';
+import { useTranslation } from '../../../translation/useTranslation';
 import DelayInput from './DelayInput';
 
 import style from './RundownDelay.module.scss';
@@ -23,6 +24,7 @@ export default function RundownDelay({ data, hasCursor }: RundownDelayProps) {
   const { applyDelay, deleteEntry } = useEntryActionsContext();
   const handleRef = useRef<null | HTMLSpanElement>(null);
   const entryCopyId = useEntryCopy((state) => state.entryCopyId);
+  const { getLocalizedString } = useTranslation();
 
   const {
     attributes: dragAttributes,
@@ -71,11 +73,11 @@ export default function RundownDelay({ data, hasCursor }: RundownDelayProps) {
       </span>
       <DelayInput eventId={data.id} duration={data.duration} />
       <Button onClick={applyDelayHandler} variant='ghosted-white'>
-        <IoCheckmarkDone /> Make permanent
+        <IoCheckmarkDone /> {getLocalizedString('rundown.editor.make_permanent')}
       </Button>
       <Button onClick={cancelDelayHandler} variant='ghosted-white'>
         <IoClose />
-        Cancel
+        {getLocalizedString('common.cancel')}
       </Button>
     </div>
   );

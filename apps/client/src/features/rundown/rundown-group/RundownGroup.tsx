@@ -21,6 +21,7 @@ import { deviceMod } from '../../../common/utils/deviceUtils';
 import { getOffsetState } from '../../../common/utils/offset';
 import { cx, getAccessibleColour } from '../../../common/utils/styleUtils';
 import { formatDuration, formatTime } from '../../../common/utils/time';
+import { useTranslation } from '../../../translation/useTranslation';
 import TitleEditor from '../common/TitleEditor';
 import { canDrop } from '../rundown.utils';
 import { useEventSelection } from '../useEventSelection';
@@ -44,18 +45,19 @@ export default function RundownGroup({ data, hasCursor, collapsed, onCollapse }:
   const selectSingleEntry = useEventSelection((state) => state.setSingleEntrySelection);
   const selectedEvents = useEventSelection((state) => state.selectedEvents);
   const entryCopyId = useEntryCopy((state) => state.entryCopyId);
+  const { getLocalizedString } = useTranslation();
 
   const [onContextMenu] = useContextMenu<HTMLDivElement>(() => [
     {
       type: 'item',
-      label: 'Clone Group',
+      label: getLocalizedString('rundown.group.clone_group'),
       icon: IoDuplicateOutline,
       shortcut: `${deviceMod}+D`,
       onClick: () => clone(data.id),
     },
     {
       type: 'item',
-      label: 'Ungroup',
+      label: getLocalizedString('rundown.group.ungroup'),
       icon: IoFolderOpenOutline,
       onClick: () => ungroup(data.id),
       disabled: data.entries.length === 0,
@@ -63,7 +65,7 @@ export default function RundownGroup({ data, hasCursor, collapsed, onCollapse }:
     { type: 'divider' },
     {
       type: 'item',
-      label: 'Delete Group',
+      label: getLocalizedString('rundown.group.delete_group'),
       icon: IoTrash,
       shortcut: `${deviceMod}+Del`,
       onClick: () => deleteEntry([data.id]),
@@ -156,26 +158,30 @@ export default function RundownGroup({ data, hasCursor, collapsed, onCollapse }:
       </div>
       <div className={style.header}>
         <div className={style.titleRow}>
-          <TitleEditor title={data.title} entryId={data.id} placeholder='Group title' />
+          <TitleEditor
+            title={data.title}
+            entryId={data.id}
+            placeholder={getLocalizedString('rundown.group.group_title')}
+          />
           <IconButton aria-label='Collapse' variant='subtle-white' onClick={() => onCollapse(!collapsed, data.id)}>
             {collapsed ? <IoChevronUp /> : <IoChevronDown />}
           </IconButton>
         </div>
         <div className={style.metaRow}>
           <div className={style.metaEntry}>
-            <div className={style.metaLabel}>Entries</div>
+            <div className={style.metaLabel}>{getLocalizedString('rundown.group.entries')}</div>
             <div>{data.entries.length}</div>
           </div>
           <div className={style.metaEntry}>
-            <div className={style.metaLabel}>Start</div>
+            <div className={style.metaLabel}>{getLocalizedString('common.start')}</div>
             <div>{formatTime(data.timeStart)}</div>
           </div>
           <div className={style.metaEntry}>
-            <div className={style.metaLabel}>End</div>
+            <div className={style.metaLabel}>{getLocalizedString('common.end')}</div>
             <div>{formatTime(data.timeEnd)}</div>
           </div>
           <div className={style.metaEntry}>
-            <div className={style.metaLabel}>Duration</div>
+            <div className={style.metaLabel}>{getLocalizedString('common.duration')}</div>
             {planOffset === null ? (
               <div>{formatDuration(data.duration)}</div>
             ) : (

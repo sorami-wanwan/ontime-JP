@@ -8,6 +8,7 @@ import IconButton from '../../../common/components/buttons/IconButton';
 import Dialog from '../../../common/components/dialog/Dialog';
 import { DropdownMenu } from '../../../common/components/dropdown-menu/DropdownMenu';
 import { useEntryActionsContext } from '../../../common/context/EntryActionsContext';
+import { useTranslation } from '../../../translation/useTranslation';
 import useAppSettingsNavigation from '../../app-settings/useAppSettingsNavigation';
 import { useEventSelection } from '../useEventSelection';
 
@@ -20,6 +21,7 @@ interface RundownMenuProps {
 export default memo(RundownMenu);
 function RundownMenu({ allowNavigation }: RundownMenuProps) {
   const [isOpen, handlers] = useDisclosure();
+  const { getLocalizedString } = useTranslation();
 
   const clearSelectedEvents = useEventSelection((state) => state.clearSelectedEvents);
   const { deleteAllEntries } = useEntryActionsContext();
@@ -39,7 +41,7 @@ function RundownMenu({ allowNavigation }: RundownMenuProps) {
           items={[
             {
               type: 'item',
-              label: 'Manage Rundowns...',
+              label: getLocalizedString('rundown.header.manage_rundowns'),
               icon: IoList,
               onClick: () => setLocation('manage__rundowns'),
               disabled: !allowNavigation,
@@ -47,7 +49,7 @@ function RundownMenu({ allowNavigation }: RundownMenuProps) {
             { type: 'divider' },
             {
               type: 'destructive',
-              label: 'Clear all',
+              label: getLocalizedString('rundown.header.clear_all'),
               icon: IoTrash,
               onClick: handlers.open,
             },
@@ -60,21 +62,19 @@ function RundownMenu({ allowNavigation }: RundownMenuProps) {
       <Dialog
         isOpen={isOpen}
         onClose={handlers.close}
-        title='Clear rundown'
+        title={getLocalizedString('rundown.header.clear_rundown_title')}
         showBackdrop
         showCloseButton
         bodyElements={
-          <>
-            You will lose all data in your rundown. <br /> Are you sure?
-          </>
+          <div dangerouslySetInnerHTML={{ __html: getLocalizedString('rundown.header.clear_rundown_message') }} />
         }
         footerElements={
           <>
             <Button variant='ghosted-white' size='large' onClick={handlers.close}>
-              Cancel
+              {getLocalizedString('common.cancel')}
             </Button>
             <Button variant='destructive' size='large' onClick={deleteAll}>
-              Delete all
+              {getLocalizedString('rundown.header.delete_all')}
             </Button>
           </>
         }

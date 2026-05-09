@@ -10,6 +10,7 @@ import useCustomFields from '../../../common/hooks-query/useCustomFields';
 import { getOffsetState } from '../../../common/utils/offset';
 import { cx, enDash } from '../../../common/utils/styleUtils';
 import { formatTime } from '../../../common/utils/time';
+import { useTranslation } from '../../../translation/useTranslation';
 import TextLikeInput from '../../../views/cuesheet/cuesheet-table/cuesheet-table-elements/TextLikeInput';
 import EntryEditorCustomFields from './composite/EventEditorCustomFields';
 import EventTextArea from './composite/EventTextArea';
@@ -29,6 +30,7 @@ interface GroupEditorProps {
 export default function GroupEditor({ group }: GroupEditorProps) {
   const { data: customFields } = useCustomFields();
   const { updateEntry } = useEntryActionsContext();
+  const { getLocalizedString } = useTranslation();
 
   const handleSubmit = useCallback(
     (field: GroupEditorUpdateTextFields | GroupEditorUpdateMaybeNumberFields, value: string | MaybeNumber) => {
@@ -56,22 +58,22 @@ export default function GroupEditor({ group }: GroupEditorProps) {
   return (
     <div className={style.content}>
       <div className={style.column}>
-        <Editor.Title>Group schedule</Editor.Title>
+        <Editor.Title>{getLocalizedString('rundown.editor.group_schedule')}</Editor.Title>
         <div className={style.inline}>
           <div>
-            <Editor.Label>First event start</Editor.Label>
+            <Editor.Label>{getLocalizedString('rundown.editor.first_event_start')}</Editor.Label>
             <TextLikeInput className={style.textLikeInput} disabled>
               {formatTime(group.timeStart)}
             </TextLikeInput>
           </div>
           <div>
-            <Editor.Label>Last event end</Editor.Label>
+            <Editor.Label>{getLocalizedString('rundown.editor.last_event_end')}</Editor.Label>
             <TextLikeInput className={style.textLikeInput} disabled>
               {formatTime(group.timeEnd)}
             </TextLikeInput>
           </div>
           <div>
-            <Editor.Label htmlFor='duration'>Scheduled duration</Editor.Label>
+            <Editor.Label htmlFor='duration'>{getLocalizedString('rundown.editor.scheduled_duration')}</Editor.Label>
             <TextLikeInput className={style.textLikeInput} disabled>
               {millisToString(group.duration, { fallback: enDash })}
             </TextLikeInput>
@@ -79,7 +81,7 @@ export default function GroupEditor({ group }: GroupEditorProps) {
         </div>
         <div className={style.inline}>
           <div>
-            <Editor.Label htmlFor='eventId'>Plan offset</Editor.Label>
+            <Editor.Label htmlFor='eventId'>{getLocalizedString('rundown.editor.plan_offset')}</Editor.Label>
             <TextLikeInput
               offset={planOffsetLabel}
               className={cx([style.textLikeInput, planOffset === null && style.inactive])}
@@ -98,19 +100,33 @@ export default function GroupEditor({ group }: GroupEditorProps) {
       </div>
 
       <div className={style.column}>
-        <Editor.Title>Group data</Editor.Title>
+        <Editor.Title>{getLocalizedString('rundown.editor.group_data')}</Editor.Title>
         <div>
-          <Editor.Label>Colour</Editor.Label>
+          <Editor.Label>{getLocalizedString('rundown.editor.colour')}</Editor.Label>
           <SwatchSelect name='colour' value={group.colour} handleChange={handleSubmit} />
         </div>
-        <EntryEditorTextInput field='title' label='Title' initialValue={group.title} submitHandler={handleSubmit} />
-        <EventTextArea field='note' label='Note' initialValue={group.note} submitHandler={handleSubmit} />
+        <EntryEditorTextInput
+          field='title'
+          label={getLocalizedString('common.title')}
+          initialValue={group.title}
+          submitHandler={handleSubmit}
+        />
+        <EventTextArea
+          field='note'
+          label={getLocalizedString('common.note')}
+          initialValue={group.note}
+          submitHandler={handleSubmit}
+        />
       </div>
 
       <div className={style.column}>
         <Editor.Title>
-          Custom Fields
-          {isEditor && <AppLink search='settings=manage__custom'>Manage Custom Fields</AppLink>}
+          {getLocalizedString('rundown.editor.custom_fields')}
+          {isEditor && (
+            <AppLink search='settings=manage__custom'>
+              {getLocalizedString('rundown.editor.manage_custom_fields')}
+            </AppLink>
+          )}
         </Editor.Title>
         <EntryEditorCustomFields fields={customFields} handleSubmit={handleSubmit} entry={group} />
       </div>
