@@ -12,12 +12,14 @@ import Switch from '../../../../common/components/switch/Switch';
 import Tag from '../../../../common/components/tag/Tag';
 import useViewSettings from '../../../../common/hooks-query/useViewSettings';
 import { preventEscape } from '../../../../common/utils/keyEvent';
+import { useTranslation } from '../../../../translation/TranslationProvider';
 import * as Panel from '../../panel-utils/PanelUtils';
 import CodeEditorModal from './composite/StyleEditorModal';
 
 const cssOverrideDocsUrl = 'https://docs.getontime.no/features/custom-styling/';
 
 export default function ViewSettings() {
+  const { getLocalizedString } = useTranslation();
   const { data, status, mutateAsync } = useViewSettings();
   const [isCodeEditorOpen, codeEditorHandler] = useDisclosure();
 
@@ -71,21 +73,21 @@ export default function ViewSettings() {
     >
       <Panel.Card>
         <Panel.SubHeader>
-          View settings
+          {getLocalizedString('settings.view.title')}
           <Panel.InlineElements>
             <Button disabled={!isDirty} variant='ghosted' onClick={onReset}>
-              Revert to saved
+              {getLocalizedString('settings.revert_to_saved')}
             </Button>
             <Button type='submit' loading={isSubmitting} disabled={!isDirty} variant='primary'>
-              Save
+              {getLocalizedString('settings.save')}
             </Button>
           </Panel.InlineElements>
         </Panel.SubHeader>
         <Panel.Divider />
         <Info>
-          You can customise the styles applied to Ontime views by providing overriding CSS rules.
+          {getLocalizedString('settings.view.css_info')}
           <br />
-          <ExternalLink href={cssOverrideDocsUrl}>See the docs</ExternalLink>
+          <ExternalLink href={cssOverrideDocsUrl}>{getLocalizedString('settings.view.see_docs')}</ExternalLink>
         </Info>
         <Panel.Section>
           <Panel.Loader isLoading={status === 'pending'} />
@@ -96,14 +98,14 @@ export default function ViewSettings() {
               <Panel.Field
                 title={
                   <>
-                    <span>Override CSS styles</span>
-                    {overrideStylesEnabled && <Tag variant='warning'>ON</Tag>}
+                    <span>{getLocalizedString('settings.view.override_css')}</span>
+                    {overrideStylesEnabled && <Tag variant='warning'>{getLocalizedString('settings.view.override_on')}</Tag>}
                   </>
                 }
                 description={
                   overrideStylesEnabled
-                    ? 'CSS override is ON. Ontime views will use the custom override stylesheet.'
-                    : 'Enables overriding view styles with custom stylesheet'
+                    ? getLocalizedString('settings.view.override_enabled')
+                    : getLocalizedString('settings.view.override_disabled')
                 }
                 descriptionTone={overrideStylesEnabled ? 'warning' : 'default'}
               />
@@ -113,21 +115,21 @@ export default function ViewSettings() {
                 onCheckedChange={(value: boolean) => setValue('overrideStyles', value, { shouldDirty: true })}
               />
               <Button onClick={codeEditorHandler.open} disabled={isSubmitting}>
-                Edit CSS override
+                {getLocalizedString('settings.view.edit_css_override')}
               </Button>
             </Panel.ListItem>
           </Panel.ListGroup>
           <Panel.ListGroup>
             <Panel.ListItem>
-              <Panel.Field title='Timer colour' description='Default colour of a running timer' />
+              <Panel.Field title={getLocalizedString('settings.view.timer_colour')} description={getLocalizedString('settings.view.timer_colour_description')} />
               <SwatchPickerRHF name='normalColor' control={control} />
             </Panel.ListItem>
             <Panel.ListItem>
-              <Panel.Field title='Warning colour' description='Colour of a running timer in warning mode' />
+              <Panel.Field title={getLocalizedString('settings.view.warning_colour')} description={getLocalizedString('settings.view.warning_colour_description')} />
               <SwatchPickerRHF name='warningColor' control={control} />
             </Panel.ListItem>
             <Panel.ListItem>
-              <Panel.Field title='Danger colour' description='Colour of a running timer in danger mode' />
+              <Panel.Field title={getLocalizedString('settings.view.danger_colour')} description={getLocalizedString('settings.view.danger_colour_description')} />
               <SwatchPickerRHF name='dangerColor' control={control} />
             </Panel.ListItem>
           </Panel.ListGroup>

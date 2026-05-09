@@ -10,12 +10,14 @@ import Info from '../../../../common/components/info/Info';
 import Select from '../../../../common/components/select/Select';
 import useSettings from '../../../../common/hooks-query/useSettings';
 import { preventEscape } from '../../../../common/utils/keyEvent';
+import { useTranslation } from '../../../../translation/TranslationProvider';
 import * as Panel from '../../panel-utils/PanelUtils';
 import GeneralPinInput from './composite/GeneralPinInput';
 
 const TranslationModal = lazy(() => import('./composite/CustomTranslationModal'));
 
 export default function GeneralSettings() {
+  const { getLocalizedString } = useTranslation();
   const { data, status, refetch } = useSettings();
   const {
     handleSubmit,
@@ -74,10 +76,10 @@ export default function GeneralSettings() {
       >
         <Panel.Card>
           <Panel.SubHeader>
-            General settings
+            {getLocalizedString('settings.general.title')}
             <Panel.InlineElements>
               <Button disabled={!isDirty || isSubmitting} variant='ghosted' onClick={onReset}>
-                Revert to saved
+                {getLocalizedString('settings.revert_to_saved')}
               </Button>
               <Button
                 type='submit'
@@ -87,36 +89,36 @@ export default function GeneralSettings() {
                 disabled={disableSubmit}
                 variant='primary'
               >
-                Save
+                {getLocalizedString('settings.save')}
               </Button>
             </Panel.InlineElements>
           </Panel.SubHeader>
           {submitError && <Panel.Error>{submitError}</Panel.Error>}
           <Panel.Divider />
           <Panel.Section>
-            <Info>Changes to the views language does not affect the editor view</Info>
+            <Info>{getLocalizedString('settings.general.language_info')}</Info>
             <Panel.Loader isLoading={isLoading} />
             <Panel.ListGroup>
               <Panel.ListItem>
                 <Panel.Field
-                  title='Editor pin code'
-                  description='Protect the editor view with a pin code'
+                  title={getLocalizedString('settings.general.editor_pin_code')}
+                  description={getLocalizedString('settings.general.editor_pin_code_description')}
                   error={errors.editorKey?.message}
                 />
                 <GeneralPinInput register={register} formName='editorKey' disabled={disableInputs} />
               </Panel.ListItem>
               <Panel.ListItem>
                 <Panel.Field
-                  title='Operator pin code'
-                  description='Protect the operator and cuesheet views with a pin code'
+                  title={getLocalizedString('settings.general.operator_pin_code')}
+                  description={getLocalizedString('settings.general.operator_pin_code_description')}
                   error={errors.operatorKey?.message}
                 />
                 <GeneralPinInput register={register} formName='operatorKey' disabled={disableInputs} />
               </Panel.ListItem>
               <Panel.ListItem>
                 <Panel.Field
-                  title='Time format'
-                  description='Default time format to show in views 12 / 24 hours'
+                  title={getLocalizedString('settings.general.time_format')}
+                  description={getLocalizedString('settings.general.time_format_description')}
                   error={errors.timeFormat?.message}
                 />
                 <Select
@@ -127,15 +129,15 @@ export default function GeneralSettings() {
                   }}
                   defaultValue='24'
                   options={[
-                    { value: '12', label: '12 hours 11:00:10 PM' },
-                    { value: '24', label: '24 hours 23:00:10' },
+                    { value: '12', label: getLocalizedString('settings.general.time_format_12') },
+                    { value: '24', label: getLocalizedString('settings.general.time_format_24') },
                   ]}
                 />
               </Panel.ListItem>
               <Panel.ListItem>
                 <Panel.Field
-                  title='Views language'
-                  description='Language to be displayed in views'
+                  title={getLocalizedString('settings.general.views_language')}
+                  description={getLocalizedString('settings.general.views_language_description')}
                   error={errors.language?.message}
                 />
                 <Select
@@ -157,7 +159,7 @@ export default function GeneralSettings() {
                     { value: 'custom', label: 'Custom' },
                   ]}
                 />
-                <Button onClick={handler.open}>Edit custom translation</Button>
+                <Button onClick={handler.open}>{getLocalizedString('settings.general.edit_custom_translation')}</Button>
               </Panel.ListItem>
             </Panel.ListGroup>
           </Panel.Section>
