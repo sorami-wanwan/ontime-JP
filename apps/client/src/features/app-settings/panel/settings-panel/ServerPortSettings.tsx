@@ -8,6 +8,7 @@ import Input from '../../../../common/components/input/input/Input';
 import useServerPort from '../../../../common/hooks-query/useServerPort';
 import { preventEscape } from '../../../../common/utils/keyEvent';
 import { isOnlyNumbers } from '../../../../common/utils/regex';
+import { useTranslation } from '../../../../translation/TranslationProvider';
 import * as Panel from '../../panel-utils/PanelUtils';
 
 interface ServerPortForm {
@@ -15,6 +16,7 @@ interface ServerPortForm {
 }
 
 export default function ServerPortSettings() {
+  const { getLocalizedString } = useTranslation();
   const { data, status, isError, refetch, mutateAsync } = useServerPort();
   const {
     handleSubmit,
@@ -34,7 +36,7 @@ export default function ServerPortSettings() {
 
   const onSubmit = async (formData: ServerPortForm) => {
     if (formData.serverPort < 1024 || formData.serverPort > 65535) {
-      setError('serverPort', { message: 'Port must be within range 1024 - 65535' });
+      setError('serverPort', { message: getLocalizedString('settings.port.port_range') });
       return;
     }
     try {
@@ -50,14 +52,14 @@ export default function ServerPortSettings() {
     const result = await refetch();
 
     if (result.isError) {
-      setError('root', { message: 'Failed to load server port' });
+      setError('root', { message: getLocalizedString('settings.port.load_failed') });
       return;
     }
 
     reset({ serverPort: result.data?.port ?? data.port });
   };
 
-  const rootError = isError ? 'Failed to load server port' : errors.root?.message;
+  const rootError = isError ? getLocalizedString('settings.port.load_failed') : errors.root?.message;
 
   return (
     <Panel.Section
@@ -68,10 +70,10 @@ export default function ServerPortSettings() {
     >
       <Panel.Card>
         <Panel.SubHeader>
-          Server port
+          {getLocalizedString('settings.port.title')}
           <Panel.InlineElements>
             <Button disabled={!isDirty || isSubmitting} variant='ghosted' onClick={onReset}>
-              Revert to saved
+              {getLocalizedString('settings.revert_to_saved')}
             </Button>
             <Button
               type='submit'
@@ -81,7 +83,7 @@ export default function ServerPortSettings() {
               disabled={!isDirty || !isValid || isSubmitting}
               variant='primary'
             >
-              Save
+              {getLocalizedString('settings.save')}
             </Button>
           </Panel.InlineElements>
         </Panel.SubHeader>
@@ -89,14 +91,12 @@ export default function ServerPortSettings() {
         {rootError && <Panel.Error>{rootError}</Panel.Error>}
         <Panel.Divider />
         <Panel.Section>
-          {data.pendingRestart && (
-            <Info type='warning'>A port change is pending and will happen on the next restart.</Info>
-          )}
+          {data.pendingRestart && <Info type='warning'>{getLocalizedString('settings.port.pending_restart')}</Info>}
           <Panel.ListGroup>
             <Panel.ListItem>
               <Panel.Field
-                title='Ontime server port'
-                description='Port ontime server listens in. Defaults to 4001 (needs app restart)'
+                title={getLocalizedString('settings.port.server_port')}
+                description={getLocalizedString('settings.port.server_port_description')}
                 error={errors.serverPort?.message}
               />
               <Input
@@ -105,12 +105,12 @@ export default function ServerPortSettings() {
                 maxLength={5}
                 style={{ width: '75px' }}
                 {...register('serverPort', {
-                  required: { value: true, message: 'Required field' },
-                  max: { value: 65535, message: 'Port must be within range 1024 - 65535' },
-                  min: { value: 1024, message: 'Port must be within range 1024 - 65535' },
+                  required: { value: true, message: getLocalizedString('settings.port.required') },
+                  max: { value: 65535, message: getLocalizedString('settings.port.port_range') },
+                  min: { value: 1024, message: getLocalizedString('settings.port.port_range') },
                   pattern: {
                     value: isOnlyNumbers,
-                    message: 'Value should be numeric',
+                    message: getLocalizedString('settings.port.numeric'),
                   },
                 })}
               />
