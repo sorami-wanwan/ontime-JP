@@ -16,8 +16,8 @@ test('switching rundowns preserves edits per rundown', async ({ page }) => {
   await page.getByRole('button', { name: 'Rundown menu' }).click();
   await page.getByRole('menuitem', { name: 'Manage Rundowns...' }).click();
 
-  await page.getByRole('heading', { name: 'Manage project rundowns' }).getByRole('button', { name: 'New' }).click();
-  await page.getByPlaceholder('Your rundown name').fill(nameA);
+  await page.getByRole('heading', { name: 'Rundowns' }).getByRole('button', { name: 'New' }).click();
+  await page.getByPlaceholder('e.g., Main Stage, Morning Session').fill(nameA);
   await page.getByRole('button', { name: 'Create rundown' }).click();
   await expect(page.getByRole('row', { name: nameA })).toBeVisible();
 
@@ -37,8 +37,8 @@ test('switching rundowns preserves edits per rundown', async ({ page }) => {
   await page.getByRole('button', { name: 'Rundown menu' }).click();
   await page.getByRole('menuitem', { name: 'Manage Rundowns...' }).click();
 
-  await page.getByRole('heading', { name: 'Manage project rundowns' }).getByRole('button', { name: 'New' }).click();
-  await page.getByPlaceholder('Your rundown name').fill(nameB);
+  await page.getByRole('heading', { name: 'Rundowns' }).getByRole('button', { name: 'New' }).click();
+  await page.getByPlaceholder('e.g., Main Stage, Morning Session').fill(nameB);
   await page.getByRole('button', { name: 'Create rundown' }).click();
   await expect(page.getByRole('row', { name: nameB })).toBeVisible();
 
