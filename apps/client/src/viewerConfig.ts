@@ -9,7 +9,6 @@ export const navigatorConstants: { url: string; translationKey: keyof Translatio
   { url: 'info', translationKey: 'navigation.info' },
 ];
 
-
 // default time format to use for users in 12 hour clocks
 export const FORMAT_12 = 'h:mm:ss a';
 // default time format to use for users in 24 hour clocks

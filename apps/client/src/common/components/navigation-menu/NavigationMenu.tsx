@@ -77,7 +77,9 @@ function NavigationMenu({ isOpen, onClose }: NavigationMenuProps) {
                 {keepAwake && <span className={style.note}>{getLocalizedString('navigation.active')}</span>}
               </NavigationMenuItem>
             )}
-            <NavigationMenuItem onClick={handlers.open}>{getLocalizedString('navigation.rename_client')}</NavigationMenuItem>
+            <NavigationMenuItem onClick={handlers.open}>
+              {getLocalizedString('navigation.rename_client')}
+            </NavigationMenuItem>
 
             <hr className={style.separator} />
 

@@ -1,12 +1,11 @@
 import { IoArrowUp } from 'react-icons/io5';
 
+import { useTranslation } from '../../../../translation/useTranslation';
 import useInfo from '../../../hooks-query/useInfo';
 import { linkToOtherHost, openLink } from '../../../utils/linkUtils';
 import CopyTag from '../../copy-tag/CopyTag';
 
-import { useTranslation } from '../../../../translation/useTranslation';
 import style from './OtherAddresses.module.scss';
-
 
 interface OtherAddressesProps {
   currentLocation: string;

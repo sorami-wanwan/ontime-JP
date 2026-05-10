@@ -1,10 +1,10 @@
 import { useState } from 'react';
 import { IoArrowForward } from 'react-icons/io5';
 
+import { useTranslation } from '../../../translation/useTranslation';
 import { navigatorConstants } from '../../../viewerConfig';
 import useUrlPresets from '../../hooks-query/useUrlPresets';
 import { setClientRemote } from '../../hooks/useSocket';
-import { useTranslation } from '../../../translation/useTranslation';
 import Button from '../buttons/Button';
 import Dialog from '../dialog/Dialog';
 import Info from '../info/Info';

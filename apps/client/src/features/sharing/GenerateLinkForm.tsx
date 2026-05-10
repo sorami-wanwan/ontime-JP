@@ -163,9 +163,7 @@ export default function GenerateLinkForm({ hostOptions, pathOptions, presets, is
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} onKeyDown={(event) => preventEscape(event)}>
-      {!isLockedToView && (
-        <Info>{getLocalizedString('sharing.generate_link_info')}</Info>
-      )}
+      {!isLockedToView && <Info>{getLocalizedString('sharing.generate_link_info')}</Info>}
       <div className={style.shareInline}>
         <div className={style.column}>
           <Panel.ListGroup>
@@ -191,7 +189,10 @@ export default function GenerateLinkForm({ hostOptions, pathOptions, presets, is
               <input type='hidden' value={watch('path')} />
             ) : (
               <Panel.ListItem>
-                <Panel.Field title={getLocalizedString('sharing.ontime_view')} description={getLocalizedString('sharing.ontime_view_description')} />
+                <Panel.Field
+                  title={getLocalizedString('sharing.ontime_view')}
+                  description={getLocalizedString('sharing.ontime_view_description')}
+                />
                 <Select
                   options={pathOptions}
                   value={watch('path')}
@@ -227,7 +228,10 @@ export default function GenerateLinkForm({ hostOptions, pathOptions, presets, is
             )}
 
             <Panel.ListItem>
-              <Panel.Field title={getLocalizedString('sharing.lock_navigation')} description={getLocalizedString('sharing.lock_navigation_description')} />
+              <Panel.Field
+                title={getLocalizedString('sharing.lock_navigation')}
+                description={getLocalizedString('sharing.lock_navigation_description')}
+              />
               <Switch
                 size='large'
                 name='lockNav'
@@ -258,7 +262,10 @@ export default function GenerateLinkForm({ hostOptions, pathOptions, presets, is
               </Panel.ListItem>
             )}
             <Panel.ListItem>
-              <Panel.Field title={getLocalizedString('sharing.authenticate')} description={getLocalizedString('sharing.authenticate_description')} />
+              <Panel.Field
+                title={getLocalizedString('sharing.authenticate')}
+                description={getLocalizedString('sharing.authenticate_description')}
+              />
               <Switch
                 size='large'
                 name='authenticate'

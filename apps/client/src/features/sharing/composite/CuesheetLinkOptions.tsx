@@ -3,10 +3,10 @@ import { Fragment, RefObject, useMemo, useState } from 'react';
 import RadioGroup from '../../../common/components/radio-group/RadioGroup';
 import Switch from '../../../common/components/switch/Switch';
 import useCustomFields from '../../../common/hooks-query/useCustomFields';
+import { useTranslation } from '../../../translation/useTranslation';
 import { cuesheetDefaultColumns, makeCuesheetCustomColumns } from '../../../views/cuesheet/cuesheet.options';
 import * as Panel from '../../app-settings/panel-utils/PanelUtils';
 
-import { useTranslation } from '../../../translation/useTranslation';
 import style from './CuesheetLinkOptions.module.scss';
 
 type AccessMode = 'full' | 'custom';

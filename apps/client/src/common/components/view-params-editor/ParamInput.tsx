@@ -1,6 +1,7 @@
 import { ComponentProps, useEffect, useState } from 'react';
 import { useSearchParams } from 'react-router';
 
+import { useTranslation } from '../../../translation/useTranslation';
 import { isStringBoolean } from '../../../views/common/viewUtils';
 import Checkbox from '../checkbox/Checkbox';
 import Input from '../input/input/Input';
@@ -8,7 +9,6 @@ import Select, { SelectOption } from '../select/Select';
 import Switch from '../switch/Switch';
 import InlineColourPicker from './InlineColourPicker';
 import { ParamField } from './viewParams.types';
-import { useTranslation } from '../../../translation/useTranslation';
 
 import style from './ParamInput.module.scss';
 

@@ -4,6 +4,7 @@ import { FormEvent, memo } from 'react';
 import { IoClose } from 'react-icons/io5';
 import { useSearchParams } from 'react-router';
 
+import { useTranslation } from '../../../translation/useTranslation';
 import useViewSettings from '../../hooks-query/useViewSettings';
 import { useIsSmallScreen } from '../../hooks/useIsSmallScreen';
 import Button from '../buttons/Button';
@@ -15,7 +16,6 @@ import { useViewParamsEditorStore } from './viewParamsEditor.store';
 import { ViewParamsPresets } from './ViewParamsPresets';
 import ViewParamsSection from './ViewParamsSection';
 
-import { useTranslation } from '../../../translation/useTranslation';
 import style from './ViewParamsEditor.module.scss';
 
 interface EditFormDrawerProps {

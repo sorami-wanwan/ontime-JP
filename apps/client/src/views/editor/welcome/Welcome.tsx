@@ -70,7 +70,11 @@ export default function Welcome({ onClose }: WelcomeProps) {
           <div className={style.column}>
             <div className={style.header}>
               {getLocalizedString('welcome.title')}
-              <IconButton aria-label={getLocalizedString('welcome.close_aria')} variant='subtle-white' onClick={() => onClose()}>
+              <IconButton
+                aria-label={getLocalizedString('welcome.close_aria')}
+                variant='subtle-white'
+                onClick={() => onClose()}
+              >
                 <IoClose />
               </IconButton>
             </div>
@@ -101,7 +105,6 @@ export default function Welcome({ onClose }: WelcomeProps) {
           <Editor.Label className={style.inline}>
             <Checkbox defaultChecked onCheckedChange={(checked) => postShowWelcomeDialog(checked)} />
             {getLocalizedString('welcome.show_on_startup')}
-
           </Editor.Label>
         </div>
       }

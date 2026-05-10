@@ -4,9 +4,9 @@ import { KeyboardEvent, useState } from 'react';
 
 import Input from '../../../common/components/input/input/Input';
 import Modal from '../../../common/components/modal/Modal';
+import { useTranslation } from '../../../translation/useTranslation';
 import useFinder from './useFinder';
 
-import { useTranslation } from '../../../translation/useTranslation';
 import style from './Finder.module.scss';
 
 interface FinderProps {
@@ -64,7 +64,12 @@ export default function Finder({ isOpen, onClose }: FinderProps) {
       showBackdrop
       bodyElements={
         <div onKeyDown={navigate}>
-          <Input height='large' fluid onChange={debouncedFind} placeholder={getLocalizedString('finder.search_placeholder')} />
+          <Input
+            height='large'
+            fluid
+            onChange={debouncedFind}
+            placeholder={getLocalizedString('finder.search_placeholder')}
+          />
           <ul className={style.scrollContainer} onMouseMove={handleMouseMoveEvent}>
             {error && <li className={style.error}>{error}</li>}
             {results.length === 0 && <li className={style.empty}>{getLocalizedString('finder.no_results')}</li>}

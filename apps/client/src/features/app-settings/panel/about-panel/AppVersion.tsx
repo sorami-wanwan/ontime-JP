@@ -33,6 +33,9 @@ export default function AppVersion() {
     );
   }
 
-  return <Panel.Paragraph>{getLocalizedString('settings.about.version_latest').replace('{{version}}', appVersion)}</Panel.Paragraph>;
+  return (
+    <Panel.Paragraph>
+      {getLocalizedString('settings.about.version_latest').replace('{{version}}', appVersion)}
+    </Panel.Paragraph>
+  );
 }
-

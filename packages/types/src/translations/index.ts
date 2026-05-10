@@ -749,7 +749,8 @@ export const langEn = {
   'settings.about.sponsor': 'Considering sponsoring our work',
   'settings.about.github_sponsors': 'GitHub Sponsors',
   'settings.about.buy_me_coffee': 'Buy Me a Coffee',
-  'settings.about.cloud_description': 'If you are looking for an online version of Ontime, consider trying out our cloud service',
+  'settings.about.cloud_description':
+    'If you are looking for an online version of Ontime, consider trying out our cloud service',
   'settings.about.current_version': 'Current version',
   'settings.about.links': 'Links',
   'settings.about.read_docs': 'Read the docs',
@@ -766,7 +767,8 @@ export const langEn = {
 
   'sharing.share_this_link': 'Share this link',
   'sharing.copy_link': 'Copy link',
-  'sharing.generate_link_info': 'You can generate a link to share with your team or to use in automation (such as companion).',
+  'sharing.generate_link_info':
+    'You can generate a link to share with your team or to use in automation (such as companion).',
   'sharing.host_ip': 'Host IP',
   'sharing.host_ip_description': 'Which IP address will be used',
   'sharing.ontime_view': 'Ontime view',
@@ -792,7 +794,8 @@ export const langEn = {
   'redirect_modal.enter_path': 'Enter custom path',
   'redirect_modal.select_preset': 'Select View or URL Preset',
   'redirect_modal.title': 'Redirect: {{name}}',
-  'redirect_modal.body': 'Remotely redirect the client to a different URL. Either by entering a custom path or selecting a URL Preset.',
+  'redirect_modal.body':
+    'Remotely redirect the client to a different URL. Either by entering a custom path or selecting a URL Preset.',
   'redirect_modal.redirect': 'Redirect',
   'redirect_modal.redirect_to_preset': 'Redirect to preset',
 

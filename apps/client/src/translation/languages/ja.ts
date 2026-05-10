@@ -706,8 +706,7 @@ export const langJa: Partial<TranslationObject> = {
   'settings.about.sponsor': '開発支援を検討する',
   'settings.about.github_sponsors': 'GitHub Sponsors',
   'settings.about.buy_me_coffee': 'Buy Me a Coffee',
-  'settings.about.cloud_description':
-    'Ontimeのオンライン版をお探しの場合は、クラウドサービスをご利用ください',
+  'settings.about.cloud_description': 'Ontimeのオンライン版をお探しの場合は、クラウドサービスをご利用ください',
   'settings.about.current_version': '現在のバージョン',
   'settings.about.links': 'リンク',
   'settings.about.read_docs': 'ドキュメントを読む',
@@ -725,8 +724,7 @@ export const langJa: Partial<TranslationObject> = {
   // ===== sharing =====
   'sharing.share_this_link': 'このリンクを共有',
   'sharing.copy_link': 'リンクをコピー',
-  'sharing.generate_link_info':
-    'チームに共有したり、オートメーション（Companionなど）で使用するリンクを生成できます。',
+  'sharing.generate_link_info': 'チームに共有したり、オートメーション（Companionなど）で使用するリンクを生成できます。',
   'sharing.host_ip': 'ホストIP',
   'sharing.host_ip_description': '使用するIPアドレス',
   'sharing.ontime_view': 'Ontimeビュー',
