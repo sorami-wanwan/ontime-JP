@@ -7,6 +7,7 @@ import {
   githubUrl,
   subredditUrl,
   websiteUrl,
+  youtubeUrl,
 } from '../../../../externals';
 import { useTranslation } from '../../../../translation/useTranslation';
 import * as Panel from '../../panel-utils/PanelUtils';
@@ -40,6 +41,7 @@ export default function AboutPanel() {
         <ExternalLink href={documentationUrl}>{getLocalizedString('settings.about.read_docs')}</ExternalLink>
         <ExternalLink href={githubUrl}>{getLocalizedString('settings.about.follow_github')}</ExternalLink>
         <ExternalLink href={discordUrl}>{getLocalizedString('settings.about.discord')}</ExternalLink>
+        <ExternalLink href={youtubeUrl}>{getLocalizedString('settings.about.youtube')}</ExternalLink>
         <ExternalLink href={subredditUrl}>{getLocalizedString('settings.about.subreddit')}</ExternalLink>
       </Panel.Section>
     </>

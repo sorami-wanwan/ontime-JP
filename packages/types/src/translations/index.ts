@@ -755,6 +755,7 @@ export const langEn = {
   'settings.about.read_docs': 'Read the docs',
   'settings.about.follow_github': 'Follow the project on GitHub',
   'settings.about.discord': 'Discord server',
+  'settings.about.youtube': 'YouTube channel',
   'settings.about.subreddit': 'Subreddit',
   'settings.about.version_current': 'You are currently using Ontime version {{version}}',
   'settings.about.version_error': 'Could not fetch version information',
