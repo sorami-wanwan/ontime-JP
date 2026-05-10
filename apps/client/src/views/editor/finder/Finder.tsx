@@ -6,6 +6,7 @@ import Input from '../../../common/components/input/input/Input';
 import Modal from '../../../common/components/modal/Modal';
 import useFinder from './useFinder';
 
+import { useTranslation } from '../../../translation/useTranslation';
 import style from './Finder.module.scss';
 
 interface FinderProps {
@@ -14,6 +15,7 @@ interface FinderProps {
 }
 
 export default function Finder({ isOpen, onClose }: FinderProps) {
+  const { getLocalizedString } = useTranslation();
   const { find, select, results, error } = useFinder();
   const [selected, setSelected] = useState(0);
 
@@ -62,10 +64,10 @@ export default function Finder({ isOpen, onClose }: FinderProps) {
       showBackdrop
       bodyElements={
         <div onKeyDown={navigate}>
-          <Input height='large' fluid onChange={debouncedFind} placeholder='Search...' />
+          <Input height='large' fluid onChange={debouncedFind} placeholder={getLocalizedString('finder.search_placeholder')} />
           <ul className={style.scrollContainer} onMouseMove={handleMouseMoveEvent}>
             {error && <li className={style.error}>{error}</li>}
-            {results.length === 0 && <li className={style.empty}>No results</li>}
+            {results.length === 0 && <li className={style.empty}>{getLocalizedString('finder.no_results')}</li>}
             {results.length > 0 &&
               results.map((entry, index) => {
                 const isSelected = selected === index;
@@ -87,7 +89,7 @@ export default function Finder({ isOpen, onClose }: FinderProps) {
                       <div className={style.cue}>{displayCue}</div>
                       <div className={style.title}>{entry.title}</div>
                     </div>
-                    {isSelected && <span>Go ⏎</span>}
+                    {isSelected && <span>{getLocalizedString('finder.go')}</span>}
                   </li>
                 );
               })}
@@ -96,8 +98,9 @@ export default function Finder({ isOpen, onClose }: FinderProps) {
       }
       footerElements={
         <div className={style.footer}>
-          Use the keywords <span className={style.em}>cue</span>, <span className={style.em}>index</span> or
-          <span className={style.em}>title</span> to filter search.
+          Use the keywords <span className={style.em}>{getLocalizedString('finder.filter_hint_cue')}</span>,{' '}
+          <span className={style.em}>{getLocalizedString('finder.filter_hint_index')}</span> or
+          <span className={style.em}>{getLocalizedString('finder.filter_hint_title')}</span> to filter search.
         </div>
       }
     />

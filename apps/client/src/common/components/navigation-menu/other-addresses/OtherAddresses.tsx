@@ -4,7 +4,9 @@ import useInfo from '../../../hooks-query/useInfo';
 import { linkToOtherHost, openLink } from '../../../utils/linkUtils';
 import CopyTag from '../../copy-tag/CopyTag';
 
+import { useTranslation } from '../../../../translation/useTranslation';
 import style from './OtherAddresses.module.scss';
+
 
 interface OtherAddressesProps {
   currentLocation: string;
@@ -12,6 +14,7 @@ interface OtherAddressesProps {
 
 export default function OtherAddresses({ currentLocation }: OtherAddressesProps) {
   const { data } = useInfo();
+  const { getLocalizedString } = useTranslation();
 
   // there is no point showing this if we only have one interface
   if (data.networkInterfaces.length < 2) {
@@ -20,7 +23,7 @@ export default function OtherAddresses({ currentLocation }: OtherAddressesProps)
 
   return (
     <>
-      <div className={style.header}>Accessible on external networks</div>
+      <div className={style.header}>{getLocalizedString('navigation.accessible_on_network')}</div>
       <div className={style.interfaces}>
         {data?.networkInterfaces?.map((nif) => {
           if (nif.name === 'localhost') {

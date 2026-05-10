@@ -1,4 +1,5 @@
 import { useOrderedProjectList } from '../../../../common/hooks-query/useProjectList';
+import { useTranslation } from '../../../../translation/useTranslation';
 
 import style from '../Welcome.module.scss';
 
@@ -8,6 +9,7 @@ interface WelcomeProjectListProps {
 }
 
 export default function WelcomeProjectList(props: WelcomeProjectListProps) {
+  const { getLocalizedString } = useTranslation();
   const { loadProject, onClose } = props;
   const { data } = useOrderedProjectList();
 
@@ -18,7 +20,7 @@ export default function WelcomeProjectList(props: WelcomeProjectListProps) {
           return (
             <tr className={style.current} key={project.filename} onClick={onClose}>
               <td>{project.filename}</td>
-              <td>Loaded from last session</td>
+              <td>{getLocalizedString('welcome.loaded_last')}</td>
             </tr>
           );
         }

@@ -8,6 +8,7 @@ import Select, { SelectOption } from '../select/Select';
 import Switch from '../switch/Switch';
 import InlineColourPicker from './InlineColourPicker';
 import { ParamField } from './viewParams.types';
+import { useTranslation } from '../../../translation/useTranslation';
 
 import style from './ParamInput.module.scss';
 
@@ -16,6 +17,7 @@ interface ParamInputProps {
 }
 
 export default function ParamInput({ paramField }: ParamInputProps) {
+  const { getLocalizedString } = useTranslation();
   const [searchParams] = useSearchParams();
   const { id, type, defaultValue } = paramField;
 
@@ -31,7 +33,7 @@ export default function ParamInput({ paramField }: ParamInputProps) {
     const defaultOptionValue = optionFromParams || defaultValue;
 
     if (paramField.values.length === 0) {
-      return <span className={style.empty}>No options available</span>;
+      return <span className={style.empty}>{getLocalizedString('view_params.no_options')}</span>;
     }
 
     return <ControlledSelect id={id} initialValue={defaultOptionValue} options={paramField.values} />;
@@ -86,6 +88,7 @@ interface EditFormMultiOptionProps {
 function MultiOption({ paramField, options }: EditFormMultiOptionProps) {
   const { id, values } = paramField;
   const [paramState, setParamState] = useState<string[]>(options);
+  const { getLocalizedString } = useTranslation();
 
   // synchronise options
   useEffect(() => {
@@ -101,7 +104,7 @@ function MultiOption({ paramField, options }: EditFormMultiOptionProps) {
   };
 
   if (values.length === 0) {
-    return <span className={style.empty}>No options available</span>;
+    return <span className={style.empty}>{getLocalizedString('view_params.no_options')}</span>;
   }
 
   return (

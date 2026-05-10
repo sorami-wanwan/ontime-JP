@@ -17,6 +17,7 @@ import { safeCopyToClipboard } from '../../common/utils/copyToClipboard';
 import { preventEscape } from '../../common/utils/keyEvent';
 import { isUrlSafe } from '../../common/utils/regex';
 import { isOntimeCloud, serverURL } from '../../externals';
+import { useTranslation } from '../../translation/useTranslation';
 import * as Panel from '../app-settings/panel-utils/PanelUtils';
 import CuesheetLinkOptions from './composite/CuesheetLinkOptions';
 
@@ -52,6 +53,7 @@ type GenerateLinkFormOptions = GenericLinkOptions | CuesheetLinkOptions;
 type GenerateLinkState = 'pending' | 'loading' | 'success' | 'error';
 
 export default function GenerateLinkForm({ hostOptions, pathOptions, presets, isLockedToView }: GenerateLinkFormProps) {
+  const { getLocalizedString } = useTranslation();
   const [formState, setFormState] = useState<GenerateLinkState>('pending');
   const [url, setUrl] = useState(serverURL);
   const cuesheetReadRef = useRef<HTMLInputElement>(null);
@@ -162,7 +164,7 @@ export default function GenerateLinkForm({ hostOptions, pathOptions, presets, is
   return (
     <form onSubmit={handleSubmit(onSubmit)} onKeyDown={(event) => preventEscape(event)}>
       {!isLockedToView && (
-        <Info>You can generate a link to share with your team or to use in automation (such as companion).</Info>
+        <Info>{getLocalizedString('sharing.generate_link_info')}</Info>
       )}
       <div className={style.shareInline}>
         <div className={style.column}>
@@ -172,8 +174,8 @@ export default function GenerateLinkForm({ hostOptions, pathOptions, presets, is
             ) : (
               <Panel.ListItem>
                 <Panel.Field
-                  title='Host IP'
-                  description={`Which IP address will be used${isOntimeCloud ? ' (not applicable in Ontime Cloud)' : ''}`}
+                  title={getLocalizedString('sharing.host_ip')}
+                  description={`${getLocalizedString('sharing.host_ip_description')}${isOntimeCloud ? ' (not applicable in Ontime Cloud)' : ''}`}
                 />
                 <Select
                   options={hostOptions}
@@ -189,7 +191,7 @@ export default function GenerateLinkForm({ hostOptions, pathOptions, presets, is
               <input type='hidden' value={watch('path')} />
             ) : (
               <Panel.ListItem>
-                <Panel.Field title='Ontime view' description='Which view or preset will the link point to' />
+                <Panel.Field title={getLocalizedString('sharing.ontime_view')} description={getLocalizedString('sharing.ontime_view_description')} />
                 <Select
                   options={pathOptions}
                   value={watch('path')}
@@ -205,17 +207,17 @@ export default function GenerateLinkForm({ hostOptions, pathOptions, presets, is
               <>
                 <Panel.ListItem>
                   <Panel.Field
-                    title='Preset alias'
-                    description='The name of the preset we will create to hold this options'
+                    title={getLocalizedString('sharing.preset_alias')}
+                    description={getLocalizedString('sharing.preset_alias_description')}
                     error={(errors as FieldErrors<CuesheetLinkOptions>).alias?.message}
                   />
                   <Input
                     defaultValue={generatedAlias.current}
                     {...register('alias', {
-                      required: 'Alias cannot be empty and must be unique',
+                      required: getLocalizedString('sharing.alias_empty_unique'),
                       pattern: {
                         value: isUrlSafe,
-                        message: 'Field can only contain URL safe characters (a-z, 0-9, _ and -)',
+                        message: getLocalizedString('sharing.alias_pattern'),
                       },
                     })}
                   />
@@ -225,7 +227,7 @@ export default function GenerateLinkForm({ hostOptions, pathOptions, presets, is
             )}
 
             <Panel.ListItem>
-              <Panel.Field title='Lock navigation' description='Whether to hide the navigation menu' />
+              <Panel.Field title={getLocalizedString('sharing.lock_navigation')} description={getLocalizedString('sharing.lock_navigation_description')} />
               <Switch
                 size='large'
                 name='lockNav'
@@ -238,8 +240,8 @@ export default function GenerateLinkForm({ hostOptions, pathOptions, presets, is
             {watch('path') !== OntimeView.Cuesheet && (
               <Panel.ListItem>
                 <Panel.Field
-                  title='Lock configuration'
-                  description='Whether to hide the configuration panel (also hides navigation)'
+                  title={getLocalizedString('sharing.lock_configuration')}
+                  description={getLocalizedString('sharing.lock_configuration_description')}
                 />
                 <Switch
                   size='large'
@@ -256,7 +258,7 @@ export default function GenerateLinkForm({ hostOptions, pathOptions, presets, is
               </Panel.ListItem>
             )}
             <Panel.ListItem>
-              <Panel.Field title='Authenticate' description='Whether the URL should be pre-authenticated' />
+              <Panel.Field title={getLocalizedString('sharing.authenticate')} description={getLocalizedString('sharing.authenticate_description')} />
               <Switch
                 size='large'
                 name='authenticate'
@@ -269,17 +271,17 @@ export default function GenerateLinkForm({ hostOptions, pathOptions, presets, is
           <Panel.Error>{errors.root?.message}</Panel.Error>
           <Panel.InlineElements align='end' className={style.end}>
             <Button type='submit' variant={canSubmit ? 'primary' : 'subtle'} loading={formState === 'loading'}>
-              {canSubmit ? 'Create share link' : 'Link copied to clipboard!'}
+              {canSubmit ? getLocalizedString('sharing.create_share_link') : getLocalizedString('sharing.link_copied')}
             </Button>
           </Panel.InlineElements>
         </div>
         <Panel.Section className={style.column}>
-          <Panel.Description>Share this link</Panel.Description>
+          <Panel.Description>{getLocalizedString('sharing.share_this_link')}</Panel.Description>
           <QRCode size={172} value={url} />
           <div className={style.copiableLink} data-testid='copy-link'>
             {url}
           </div>
-          <CopyTag copyValue={url}>Copy link</CopyTag>
+          <CopyTag copyValue={url}>{getLocalizedString('sharing.copy_link')}</CopyTag>
         </Panel.Section>
       </div>
     </form>

@@ -4,6 +4,7 @@ import { createPortal } from 'react-dom';
 
 import { setClientRemote } from '../../hooks/useSocket';
 import { useClientStore } from '../../stores/clientStore';
+import { useTranslation } from '../../../translation/useTranslation';
 
 import style from './IdentifyOverlay.module.scss';
 
@@ -28,10 +29,12 @@ function Overlay() {
   const clients = useClientStore((store) => store.clients);
   const id = useClientStore((store) => store.id);
   const name = useClientStore((store) => store.name);
+  const { getLocalizedString } = useTranslation();
 
   const timerRef = useRef<NodeJS.Timeout | null>(null);
 
   const { setIdentify } = setClientRemote;
+
   const showOverlay = clients[id]?.identify;
 
   const handleClose = useCallback(() => {
@@ -57,7 +60,7 @@ function Overlay() {
   return (
     <div className={style.overlay} data-testid='identify-overlay' onClick={handleClose}>
       <div className={style.name}>{name}</div>
-      <div className={style.message}>Click to close</div>
+      <div className={style.message}>{getLocalizedString('common.click_to_close')}</div>
     </div>
   );
 }
