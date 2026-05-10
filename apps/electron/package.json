@@ -29,8 +29,7 @@
     "appId": "no.lightdev.ontime",
     "asar": true,
     "dmg": {
-      "artifactName": "ontime-macOS-${arch}.dmg",
-      "icon": "icon.icns"
+      "artifactName": "ontime-macOS-${arch}.dmg"
     },
     "mac": {
       "notarize": true,
@@ -46,7 +45,7 @@
         ]
       },
       "category": "public.app-category.productivity",
-      "icon": "icon.icns"
+      "icon": "ontime.icon"
     },
     "win": {
       "target": "nsis"
