@@ -2,6 +2,7 @@ import { CustomFields, OntimeEvent, OntimeGroup, OntimeMilestone } from 'ontime-
 import { CSSProperties, Fragment } from 'react';
 
 import { getAccessibleColour } from '../../../../common/utils/styleUtils';
+import { useTranslation } from '../../../../translation/useTranslation';
 import { EventEditorUpdateFields } from '../EventEditor';
 import EventEditorImage from './EventEditorImage';
 import EventTextArea from './EventTextArea';
@@ -20,6 +21,7 @@ export default function EntryEditorCustomFields({
   handleSubmit,
   entry,
 }: EntryEditorCustomFieldsProps) {
+  const { getLocalizedString } = useTranslation();
   return (
     <Fragment>
       {Object.keys(customFields).map((fieldKey) => {
@@ -51,7 +53,7 @@ export default function EntryEditorCustomFields({
                 field={fieldName}
                 label={labelText}
                 initialValue={initialValue}
-                placeholder='Paste image URL'
+                placeholder={getLocalizedString('rundown.editor.paste_image_url')}
                 submitHandler={handleSubmit}
                 className={style.decorated}
                 maxLength={255}

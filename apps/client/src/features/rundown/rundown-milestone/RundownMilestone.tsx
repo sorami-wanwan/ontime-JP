@@ -11,6 +11,7 @@ import { useContextMenu } from '../../../common/hooks/useContextMenu';
 import { useEntryCopy } from '../../../common/stores/entryCopyStore';
 import { deviceMod } from '../../../common/utils/deviceUtils';
 import { cx, getAccessibleColour } from '../../../common/utils/styleUtils';
+import { useTranslation } from '../../../translation/useTranslation';
 import { useEventSelection } from '../useEventSelection';
 
 import style from './RundownMilestone.module.scss';
@@ -28,6 +29,7 @@ export default function RundownMilestone({ colour, cue, entryId, hasCursor, titl
 
   const handleRef = useRef<null | HTMLSpanElement>(null);
   const { updateEntry, deleteEntry } = useEntryActionsContext();
+  const { getLocalizedString } = useTranslation();
 
   const selectedEvents = useEventSelection((state) => state.selectedEvents);
   const selectSingleEntry = useEventSelection((state) => state.setSingleEntrySelection);
@@ -36,7 +38,7 @@ export default function RundownMilestone({ colour, cue, entryId, hasCursor, titl
   const [onContextMenu] = useContextMenu<HTMLDivElement>(() => [
     {
       type: 'item',
-      label: 'Delete',
+      label: getLocalizedString('common.delete'),
       icon: IoTrash,
       shortcut: `${deviceMod}+Del`,
       onClick: () => deleteEntry([entryId]),
@@ -102,8 +104,18 @@ export default function RundownMilestone({ colour, cue, entryId, hasCursor, titl
           <IoReorderTwo />
         </span>
       </div>
-      <MilestoneTextInput field='cue' initialValue={cue} placeholder='Cue' submitHandler={handleUpdate} />
-      <MilestoneTextInput field='title' initialValue={title} placeholder='Title' submitHandler={handleUpdate} />
+      <MilestoneTextInput
+        field='cue'
+        initialValue={cue}
+        placeholder={getLocalizedString('common.cue')}
+        submitHandler={handleUpdate}
+      />
+      <MilestoneTextInput
+        field='title'
+        initialValue={title}
+        placeholder={getLocalizedString('common.title')}
+        submitHandler={handleUpdate}
+      />
     </div>
   );
 }

@@ -15,6 +15,7 @@ import { LuArrowDownToLine } from 'react-icons/lu';
 import Tooltip from '../../../common/components/tooltip/Tooltip';
 import { cx } from '../../../common/utils/styleUtils';
 import { AppMode } from '../../../ontimeConfig';
+import { useTranslation } from '../../../translation/useTranslation';
 import TitleEditor from '../common/TitleEditor';
 import TimeInputFlow from '../time-input-flow/TimeInputFlow';
 import { useEditorFollowMode } from '../useEditorFollowMode';
@@ -78,19 +79,20 @@ function RundownEventInner({
   hasTriggers,
 }: RundownEventInnerProps) {
   const { editorMode } = useEditorFollowMode();
+  const { getLocalizedString } = useTranslation();
 
   const eventIsPlaying = playback === Playback.Play;
   const eventIsPaused = playback === Playback.Pause;
   const automationTooltip = (() => {
     if (!hasTriggers) {
-      return 'Event has no triggers';
+      return getLocalizedString('rundown.editor.event_has_no_triggers');
     }
 
     if (automationsEnabled !== false) {
-      return 'Event has triggers';
+      return getLocalizedString('rundown.editor.event_has_triggers');
     }
 
-    return 'Event has triggers, but automations are disabled';
+    return getLocalizedString('rundown.editor.event_has_triggers_but_automations_disabled');
   })();
   const automationIconClasses = cx([
     style.statusIcon,
@@ -119,8 +121,13 @@ function RundownEventInner({
         />
       </div>
       <div className={style.titleSection}>
-        <TitleEditor title={title} entryId={eventId} placeholder='Event title' className={style.eventTitle} />
-        {isNext && <span className={style.nextTag}>UP NEXT</span>}
+        <TitleEditor
+          title={title}
+          entryId={eventId}
+          placeholder={getLocalizedString('rundown.editor.event_title_placeholder')}
+          className={style.eventTitle}
+        />
+        {isNext && <span className={style.nextTag}>{getLocalizedString('rundown.editor.up_next')}</span>}
       </div>
       <EventBlockPlayback
         eventId={eventId}
@@ -150,13 +157,26 @@ function RundownEventInner({
           {loaded && <EventBlockProgressBar />}
         </div>
         <div className={style.eventStatus} tabIndex={-1}>
-          <Tooltip text={`Time type: ${timerType}`} render={<span />}>
+          <Tooltip
+            text={getLocalizedString('rundown.editor.time_type_label').replace('{{0}}', timerType)}
+            render={<span />}
+          >
             <TimerIcon type={timerType} className={style.statusIcon} />
           </Tooltip>
-          <Tooltip text={`End action: ${endAction}`} render={<span />}>
+          <Tooltip
+            text={getLocalizedString('rundown.editor.end_action_label').replace('{{0}}', endAction)}
+            render={<span />}
+          >
             <EndActionIcon action={endAction} className={style.statusIcon} />
           </Tooltip>
-          <Tooltip text={`${countToEnd ? 'Count to End' : 'Count duration'}`} render={<span />}>
+          <Tooltip
+            text={
+              countToEnd
+                ? getLocalizedString('rundown.editor.count_to_end')
+                : getLocalizedString('rundown.editor.count_duration')
+            }
+            render={<span />}
+          >
             <LuArrowDownToLine className={`${style.statusIcon} ${countToEnd ? style.active : style.disabled}`} />
           </Tooltip>
           <Tooltip text={automationTooltip} render={<span />}>
