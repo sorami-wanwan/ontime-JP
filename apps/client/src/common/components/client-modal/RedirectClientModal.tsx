@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { IoArrowForward } from 'react-icons/io5';
 
+import { useTranslation } from '../../../translation/useTranslation';
 import { navigatorConstants } from '../../../viewerConfig';
 import useUrlPresets from '../../hooks-query/useUrlPresets';
 import { setClientRemote } from '../../hooks/useSocket';
@@ -24,6 +25,7 @@ interface RedirectClientModalProps {
 
 export function RedirectClientModal({ id, isOpen, name, currentPath, origin, onClose }: RedirectClientModalProps) {
   const { data } = useUrlPresets();
+  const { getLocalizedString } = useTranslation();
   const [path, setPath] = useState(currentPath);
   const [selected, setSelected] = useState('/');
 
@@ -48,7 +50,7 @@ export function RedirectClientModal({ id, isOpen, name, currentPath, origin, onC
   const viewOptions = [
     ...navigatorConstants.map((view) => ({
       value: `/${view.url}`,
-      label: view.label,
+      label: getLocalizedString(view.translationKey),
     })),
     ...enabledPresets.map((preset) => ({
       value: `preset-${preset.alias}`,
@@ -62,35 +64,34 @@ export function RedirectClientModal({ id, isOpen, name, currentPath, origin, onC
       onClose={onClose}
       showCloseButton
       showBackdrop
-      title={`Redirect: ${name}`}
+      title={`${getLocalizedString('redirect_modal.redirect')}: ${name}`}
       bodyElements={
         <>
           <Info>
-            Remotely redirect the client to a different URL. <br />
-            Either by entering a custom path or selecting a URL Preset.
+            {getLocalizedString('redirect_modal.body')}
             <br />
             <br />
-            <AppLink search='settings=sharing__presets'>Manage URL Presets</AppLink>
+            <AppLink search='settings=sharing__presets'>{getLocalizedString('redirect_modal.manage_presets')}</AppLink>
           </Info>
           <div className={style.inlineEntry}>
-            <span className={style.label}>Enter custom path</span>
+            <span className={style.label}>{getLocalizedString('redirect_modal.enter_path')}</span>
             <label className={style.textEntry}>
               {origin}
               <Input placeholder='eg. /timer' fluid value={path} onChange={(event) => setPath(event.target.value)} />
             </label>
             <Button
               variant='primary'
-              aria-label='Redirect'
+              aria-label={getLocalizedString('redirect_modal.redirect')}
               disabled={path === currentPath || path === ''}
               className={style.redirect}
               onClick={() => handleRedirect(path)}
             >
-              Redirect
+              {getLocalizedString('redirect_modal.redirect')}
               <IoArrowForward />
             </Button>
           </div>
           <div>
-            <span className={style.label}>Select View or URL Preset</span>
+            <span className={style.label}>{getLocalizedString('redirect_modal.select_preset')}</span>
             <div className={style.inlineEntry}>
               <label className={style.textEntry}>
                 {origin}
@@ -107,12 +108,12 @@ export function RedirectClientModal({ id, isOpen, name, currentPath, origin, onC
               </label>
               <Button
                 variant='primary'
-                aria-label='Redirect to preset'
+                aria-label={getLocalizedString('redirect_modal.redirect_to_preset')}
                 className={style.redirect}
                 disabled={enabledPresets.length === 0 || selected === '/'}
                 onClick={() => handleRedirect(selected)}
               >
-                Redirect <IoArrowForward />
+                {getLocalizedString('redirect_modal.redirect')} <IoArrowForward />
               </Button>
             </div>
           </div>

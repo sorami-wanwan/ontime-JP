@@ -3,6 +3,7 @@ import { Fragment, RefObject, useMemo, useState } from 'react';
 import RadioGroup from '../../../common/components/radio-group/RadioGroup';
 import Switch from '../../../common/components/switch/Switch';
 import useCustomFields from '../../../common/hooks-query/useCustomFields';
+import { useTranslation } from '../../../translation/useTranslation';
 import { cuesheetDefaultColumns, makeCuesheetCustomColumns } from '../../../views/cuesheet/cuesheet.options';
 import * as Panel from '../../app-settings/panel-utils/PanelUtils';
 
@@ -16,6 +17,7 @@ interface CuesheetLinkOptionsProps {
 }
 
 export default function CuesheetLinkOptions({ readRef, writeRef }: CuesheetLinkOptionsProps) {
+  const { getLocalizedString } = useTranslation();
   const { data } = useCustomFields();
   const customFieldColumns = useMemo(() => makeCuesheetCustomColumns(data), [data]);
 
@@ -136,9 +138,9 @@ export default function CuesheetLinkOptions({ readRef, writeRef }: CuesheetLinkO
       </div>
       <div className={style.twoCols}>
         <div className={style.grid}>
-          <Panel.Description>Ontime columns</Panel.Description>
-          <Panel.Description>Read</Panel.Description>
-          <Panel.Description>Write</Panel.Description>
+          <Panel.Description>{getLocalizedString('sharing.cuesheet_columns')}</Panel.Description>
+          <Panel.Description>{getLocalizedString('sharing.cuesheet_read')}</Panel.Description>
+          <Panel.Description>{getLocalizedString('sharing.cuesheet_write')}</Panel.Description>
           {cuesheetDefaultColumns.map((column) => (
             <Fragment key={column.value}>
               <div>{column.label}</div>
@@ -159,9 +161,9 @@ export default function CuesheetLinkOptions({ readRef, writeRef }: CuesheetLinkO
         </div>
         {customFieldColumns.length > 0 && (
           <div className={style.grid}>
-            <Panel.Description>Custom fields</Panel.Description>
-            <Panel.Description>Read</Panel.Description>
-            <Panel.Description>Write</Panel.Description>
+            <Panel.Description>{getLocalizedString('sharing.cuesheet_custom_fields')}</Panel.Description>
+            <Panel.Description>{getLocalizedString('sharing.cuesheet_read')}</Panel.Description>
+            <Panel.Description>{getLocalizedString('sharing.cuesheet_write')}</Panel.Description>
             {customFieldColumns.map((column) => (
               <Fragment key={column.value}>
                 {column.label}

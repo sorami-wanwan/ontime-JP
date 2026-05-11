@@ -1,6 +1,7 @@
 import { ComponentProps, useEffect, useState } from 'react';
 import { useSearchParams } from 'react-router';
 
+import { useTranslation } from '../../../translation/useTranslation';
 import { isStringBoolean } from '../../../views/common/viewUtils';
 import Checkbox from '../checkbox/Checkbox';
 import Input from '../input/input/Input';
@@ -16,6 +17,7 @@ interface ParamInputProps {
 }
 
 export default function ParamInput({ paramField }: ParamInputProps) {
+  const { getLocalizedString } = useTranslation();
   const [searchParams] = useSearchParams();
   const { id, type, defaultValue } = paramField;
 
@@ -31,7 +33,7 @@ export default function ParamInput({ paramField }: ParamInputProps) {
     const defaultOptionValue = optionFromParams || defaultValue;
 
     if (paramField.values.length === 0) {
-      return <span className={style.empty}>No options available</span>;
+      return <span className={style.empty}>{getLocalizedString('view_params.no_options')}</span>;
     }
 
     return <ControlledSelect id={id} initialValue={defaultOptionValue} options={paramField.values} />;
@@ -86,6 +88,7 @@ interface EditFormMultiOptionProps {
 function MultiOption({ paramField, options }: EditFormMultiOptionProps) {
   const { id, values } = paramField;
   const [paramState, setParamState] = useState<string[]>(options);
+  const { getLocalizedString } = useTranslation();
 
   // synchronise options
   useEffect(() => {
@@ -101,7 +104,7 @@ function MultiOption({ paramField, options }: EditFormMultiOptionProps) {
   };
 
   if (values.length === 0) {
-    return <span className={style.empty}>No options available</span>;
+    return <span className={style.empty}>{getLocalizedString('view_params.no_options')}</span>;
   }
 
   return (

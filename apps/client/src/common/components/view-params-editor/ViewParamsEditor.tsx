@@ -4,6 +4,7 @@ import { FormEvent, memo } from 'react';
 import { IoClose } from 'react-icons/io5';
 import { useSearchParams } from 'react-router';
 
+import { useTranslation } from '../../../translation/useTranslation';
 import useViewSettings from '../../hooks-query/useViewSettings';
 import { useIsSmallScreen } from '../../hooks/useIsSmallScreen';
 import Button from '../buttons/Button';
@@ -24,6 +25,7 @@ interface EditFormDrawerProps {
 
 export default memo(ViewParamsEditor);
 function ViewParamsEditor({ target, viewOptions }: EditFormDrawerProps) {
+  const { getLocalizedString } = useTranslation();
   const [searchParams, setSearchParams] = useSearchParams();
   const { data: viewSettings } = useViewSettings();
   const { isOpen, close } = useViewParamsEditorStore();
@@ -68,14 +70,14 @@ function ViewParamsEditor({ target, viewOptions }: EditFormDrawerProps) {
         <Dialog.Backdrop className={style.backdrop} />
         <Dialog.Popup className={style.drawer}>
           <div className={style.header}>
-            <Dialog.Title>Customise</Dialog.Title>
+            <Dialog.Title>{getLocalizedString('view_params.title')}</Dialog.Title>
             <IconButton variant='subtle-white' size='large' data-testid='close-view-params' onClick={handleClose}>
               <IoClose />
             </IconButton>
           </div>
           <div className={style.body}>
             {viewSettings.overrideStyles && (
-              <Info className={style.info}>This view style is being modified by a custom CSS file.</Info>
+              <Info className={style.info}>{getLocalizedString('view_params.css_override_active')}</Info>
             )}
             <ViewParamsPresets target={target} />
             <form id='edit-params-form' onSubmit={onParamsFormSubmit} className={style.sectionList}>
@@ -91,7 +93,7 @@ function ViewParamsEditor({ target, viewOptions }: EditFormDrawerProps) {
           </div>
           <div className={style.footer}>
             <Button variant='subtle' size='large' onClick={resetParams} type='reset'>
-              Reset to default
+              {getLocalizedString('common.reset_to_default')}
             </Button>
             <Button
               variant='primary'
@@ -100,7 +102,7 @@ function ViewParamsEditor({ target, viewOptions }: EditFormDrawerProps) {
               type='submit'
               data-testid='apply-view-params'
             >
-              Apply
+              {getLocalizedString('common.apply')}
             </Button>
           </div>
         </Dialog.Popup>

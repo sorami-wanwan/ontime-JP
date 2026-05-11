@@ -1,6 +1,7 @@
 import { ReactNode } from 'react';
 
 import { cx } from '../../../common/utils/styleUtils';
+import { useTranslation } from '../../../translation/useTranslation';
 
 import style from './TimeLayout.module.scss';
 
@@ -46,12 +47,13 @@ interface OverUnderProps {
 }
 
 export function OverUnder({ state, value, testId }: OverUnderProps) {
+  const { getLocalizedString } = useTranslation();
   return (
     <div className={style.column} data-state={state}>
       <div className={style.label}>
-        <span className={style.over}>Over</span>
+        <span className={style.over}>{getLocalizedString('common.over')}</span>
         <span>/</span>
-        <span className={style.under}>Under</span>
+        <span className={style.under}>{getLocalizedString('common.under')}</span>
       </div>
       <span className={style.clock} data-testid={testId}>
         {value}

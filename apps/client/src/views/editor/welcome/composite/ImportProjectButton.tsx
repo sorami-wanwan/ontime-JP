@@ -9,12 +9,14 @@ import { uploadProjectFile } from '../../../../common/api/db';
 import { invalidateAllCaches } from '../../../../common/api/utils';
 import Button from '../../../../common/components/buttons/Button';
 import { validateProjectFile } from '../../../../common/utils/uploadUtils';
+import { useTranslation } from '../../../../translation/useTranslation';
 
 interface ImportProjectButtonProps {
   onFinish: () => void;
 }
 
 export default function ImportProjectButton({ onFinish }: ImportProjectButtonProps) {
+  const { getLocalizedString } = useTranslation();
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const handleSelectFile = () => {
@@ -49,7 +51,7 @@ export default function ImportProjectButton({ onFinish }: ImportProjectButtonPro
         data-testid='file-input'
       />
 
-      <Button onClick={handleSelectFile}>Import project</Button>
+      <Button onClick={handleSelectFile}>{getLocalizedString('welcome.import_project')}</Button>
     </>
   );
 }

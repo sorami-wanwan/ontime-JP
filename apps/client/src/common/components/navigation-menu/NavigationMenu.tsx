@@ -7,6 +7,7 @@ import { useLocation } from 'react-router';
 
 import { isLocalhost, supportsFullscreen } from '../../../externals';
 import { canUseWakeLock, useKeepAwakeOptions } from '../../../features/keep-awake/useWakeLock';
+import { useTranslation } from '../../../translation/useTranslation';
 import { navigatorConstants } from '../../../viewerConfig';
 import { useIsSmallScreen } from '../../hooks/useIsSmallScreen';
 import { useClientStore } from '../../stores/clientStore';
@@ -30,6 +31,7 @@ function NavigationMenu({ isOpen, onClose }: NavigationMenuProps) {
   const id = useClientStore((store) => store.id);
   const name = useClientStore((store) => store.name);
   const isSmallScreen = useIsSmallScreen();
+  const { getLocalizedString } = useTranslation();
 
   const [isRenameOpen, handlers] = useDisclosure(false);
   const { fullscreen, toggle } = useFullscreen();
@@ -59,23 +61,25 @@ function NavigationMenu({ isOpen, onClose }: NavigationMenuProps) {
           <div className={style.body}>
             {supportsFullscreen && (
               <NavigationMenuItem active={fullscreen} onClick={toggle}>
-                Toggle Fullscreen
+                {getLocalizedString('navigation.toggle_fullscreen')}
                 {fullscreen ? <IoContract /> : <IoExpand />}
               </NavigationMenuItem>
             )}
             <NavigationMenuItem active={mirror} onClick={() => toggleMirror()}>
-              Flip Screen
+              {getLocalizedString('navigation.flip_screen')}
               <IoSwapVertical />
-              {mirror && <span className={style.note}>Active</span>}
+              {mirror && <span className={style.note}>{getLocalizedString('navigation.active')}</span>}
             </NavigationMenuItem>
             {canUseWakeLock && (
               <NavigationMenuItem active={keepAwake} onClick={toggleKeepAwake}>
-                Keep Awake
+                {getLocalizedString('navigation.keep_awake')}
                 <LuCoffee />
-                {keepAwake && <span className={style.note}>Active</span>}
+                {keepAwake && <span className={style.note}>{getLocalizedString('navigation.active')}</span>}
               </NavigationMenuItem>
             )}
-            <NavigationMenuItem onClick={handlers.open}>Rename Client</NavigationMenuItem>
+            <NavigationMenuItem onClick={handlers.open}>
+              {getLocalizedString('navigation.rename_client')}
+            </NavigationMenuItem>
 
             <hr className={style.separator} />
 
@@ -86,11 +90,11 @@ function NavigationMenu({ isOpen, onClose }: NavigationMenuProps) {
               postAction={isSmallScreen ? onClose : undefined}
             >
               <IoLockClosedOutline />
-              Cuesheet
+              {getLocalizedString('navigation.cuesheet')}
             </ClientLink>
             <ClientLink to='op' current={location.pathname === '/op'} postAction={isSmallScreen ? onClose : undefined}>
               <IoLockClosedOutline />
-              Operator
+              {getLocalizedString('navigation.operator')}
             </ClientLink>
 
             <hr className={style.separator} />
@@ -102,7 +106,7 @@ function NavigationMenu({ isOpen, onClose }: NavigationMenuProps) {
                 current={location.pathname === `/${route.url}`}
                 postAction={isSmallScreen ? onClose : undefined}
               >
-                {route.label}
+                {getLocalizedString(route.translationKey)}
               </ClientLink>
             ))}
           </div>

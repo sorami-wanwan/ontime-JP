@@ -11,6 +11,7 @@ import * as Editor from '../../../common/components/editor-utils/EditorUtils';
 import ExternalLink from '../../../common/components/link/external-link/ExternalLink';
 import Modal from '../../../common/components/modal/Modal';
 import { appVersion, discordUrl, documentationUrl, websiteUrl } from '../../../externals';
+import { useTranslation } from '../../../translation/useTranslation';
 import ImportProjectButton from './composite/ImportProjectButton';
 import WelcomeProjectList from './composite/WelcomeProjectList';
 
@@ -21,6 +22,7 @@ interface WelcomeProps {
 }
 
 export default function Welcome({ onClose }: WelcomeProps) {
+  const { getLocalizedString } = useTranslation();
   const navigate = useNavigate();
 
   /** handle loading a selected project */
@@ -61,24 +63,28 @@ export default function Welcome({ onClose }: WelcomeProps) {
           <div className={style.about}>
             <img src='ontime-logo.png' alt='ontime' className={style.logo} />
             <div>Ontime v{appVersion}</div>
-            <ExternalLink href={websiteUrl}>Website</ExternalLink>
-            <ExternalLink href={documentationUrl}>Read the docs</ExternalLink>
-            <ExternalLink href={discordUrl}>Discord server</ExternalLink>
+            <ExternalLink href={websiteUrl}>{getLocalizedString('welcome.website')}</ExternalLink>
+            <ExternalLink href={documentationUrl}>{getLocalizedString('welcome.docs')}</ExternalLink>
+            <ExternalLink href={discordUrl}>{getLocalizedString('welcome.discord')}</ExternalLink>
           </div>
           <div className={style.column}>
             <div className={style.header}>
-              Welcome to Ontime
-              <IconButton aria-label='close welcome modal' variant='subtle-white' onClick={() => onClose()}>
+              {getLocalizedString('welcome.title')}
+              <IconButton
+                aria-label={getLocalizedString('welcome.close_aria')}
+                variant='subtle-white'
+                onClick={() => onClose()}
+              >
                 <IoClose />
               </IconButton>
             </div>
-            <Editor.Title>Select project</Editor.Title>
+            <Editor.Title>{getLocalizedString('welcome.select_project')}</Editor.Title>
             <div className={style.tableContainer}>
               <table className={style.table}>
                 <thead>
                   <tr>
-                    <th>File Name</th>
-                    <th>Last Used</th>
+                    <th>{getLocalizedString('welcome.file_name')}</th>
+                    <th>{getLocalizedString('welcome.last_used')}</th>
                   </tr>
                 </thead>
                 <WelcomeProjectList loadProject={handleLoadProject} onClose={() => onClose()} />
@@ -90,15 +96,15 @@ export default function Welcome({ onClose }: WelcomeProps) {
       footerElements={
         <div className={style.column}>
           <div className={style.buttonRow}>
-            <Button onClick={handleLoadDemo}>Load demo project</Button>
+            <Button onClick={handleLoadDemo}>{getLocalizedString('welcome.load_demo')}</Button>
             <ImportProjectButton onFinish={() => onClose()} />
             <Button variant='primary' onClick={handleCallCreate}>
-              Create new...
+              {getLocalizedString('welcome.create_new')}
             </Button>
           </div>
           <Editor.Label className={style.inline}>
             <Checkbox defaultChecked onCheckedChange={(checked) => postShowWelcomeDialog(checked)} />
-            Show this modal on next startup
+            {getLocalizedString('welcome.show_on_startup')}
           </Editor.Label>
         </div>
       }
