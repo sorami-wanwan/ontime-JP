@@ -14,6 +14,7 @@ import {
 } from '../../../../common/hooks/useSocket';
 import { enDash } from '../../../../common/utils/styleUtils';
 import { formatDuration } from '../../../../common/utils/time';
+import { useTranslation } from '../../../../translation/useTranslation';
 import { getPlaybackControlState } from '../playbackControl.utils';
 import TapButton from '../tap-button/TapButton';
 import TimerDisplay from '../timer-display/TimerDisplay';
@@ -36,6 +37,8 @@ export default function TrackingPlaybackBar() {
     selectedEventIndex,
     timerPhase: timer.phase,
   });
+
+  const { getLocalizedString } = useTranslation();
 
   const disableAddTimeWithAmount = disableAddTime || addTimeInMs === 0;
 
@@ -93,7 +96,7 @@ export default function TrackingPlaybackBar() {
           active={isPlaying}
           className={style.goButton}
         >
-          <span className={style.goLabel}>{goLabel}</span>
+          <span className={style.goLabel}>{getLocalizedString(goLabel)}</span>
           <span className={style.shortcutHint}>[space]</span>
         </TapButton>
 

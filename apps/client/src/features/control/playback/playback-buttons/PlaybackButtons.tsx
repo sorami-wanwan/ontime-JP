@@ -2,6 +2,7 @@ import { Playback, TimerPhase } from 'ontime-types';
 import { IoPause, IoPlay, IoPlaySkipBack, IoPlaySkipForward, IoReload, IoStop } from 'react-icons/io5';
 
 import { setPlayback } from '../../../../common/hooks/useSocket';
+import { useTranslation } from '../../../../translation/useTranslation';
 import { getPlaybackControlState } from '../playbackControl.utils';
 import TapButton from '../tap-button/TapButton';
 
@@ -36,10 +37,12 @@ export default function PlaybackButtons({ playback, numEvents, selectedEventInde
     timerPhase,
   });
 
+  const { getLocalizedString } = useTranslation();
+
   return (
     <div className={style.buttonContainer}>
       <TapButton disabled={disableGo} onClick={goAction} aspect='fill' className={style.go}>
-        {goLabel}
+        {getLocalizedString(goLabel)}
       </TapButton>
       <div className={style.playbackContainer}>
         <TapButton onClick={setPlayback.start} disabled={disableStart} theme={Playback.Play} active={isPlaying}>
@@ -60,7 +63,7 @@ export default function PlaybackButtons({ playback, numEvents, selectedEventInde
       </div>
       <div className={style.extra}>
         <TapButton onClick={setPlayback.roll} disabled={disableRoll} theme={Playback.Roll} active={isRolling}>
-          Roll
+          {getLocalizedString('control.playback.roll')}
         </TapButton>
         <TapButton onClick={setPlayback.reload} disabled={disableReload}>
           <IoReload className={style.invertX} />
