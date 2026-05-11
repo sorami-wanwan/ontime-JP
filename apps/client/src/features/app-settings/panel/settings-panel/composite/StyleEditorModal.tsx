@@ -4,6 +4,7 @@ import { getCSSContents, postCSSContents, restoreCSSContents } from '../../../..
 import Button from '../../../../../common/components/buttons/Button';
 import Info from '../../../../../common/components/info/Info';
 import Modal from '../../../../../common/components/modal/Modal';
+import { useTranslation } from '../../../../../translation/TranslationProvider';
 import * as Panel from '../../../panel-utils/PanelUtils';
 
 import style from './StyleEditorModal.module.scss';
@@ -16,6 +17,7 @@ interface CodeEditorModalProps {
 }
 
 export default function CodeEditorModal({ isOpen, onClose }: CodeEditorModalProps) {
+  const { getLocalizedString } = useTranslation();
   const [savedCss, setSavedCss] = useState('');
   const [draftCss, setDraftCss] = useState('');
   const [isLoadingCss, setIsLoadingCss] = useState(false);
@@ -72,7 +74,7 @@ export default function CodeEditorModal({ isOpen, onClose }: CodeEditorModalProp
           }
           setSavedCss('');
           setDraftCss('');
-          setError('Failed to load CSS from server');
+          setError(getLocalizedString('settings.view.style_editor.error_load'));
           /** no error handling for now */
         } finally {
           if (!isCancelled) {
@@ -90,7 +92,7 @@ export default function CodeEditorModal({ isOpen, onClose }: CodeEditorModalProp
 
   return (
     <Modal
-      title='Edit CSS override'
+      title={getLocalizedString('settings.view.style_editor.title')}
       size='wide'
       isOpen={isOpen}
       onClose={onClose}
@@ -106,18 +108,22 @@ export default function CodeEditorModal({ isOpen, onClose }: CodeEditorModalProp
       }
       footerElements={
         <div className={style.column}>
-          <Info>Invalid CSS will be refused by the browser</Info>
-          {error && <Panel.Error className={style.right}>{`Error: ${error}`}</Panel.Error>}
+          <Info>{getLocalizedString('settings.view.style_editor.info')}</Info>
+          {error && (
+            <Panel.Error className={style.right}>
+              {getLocalizedString('settings.view.style_editor.error_display').replace('{{error}}', error)}
+            </Panel.Error>
+          )}
           <Panel.InlineElements align='apart' className={style.editorActions}>
             <Button variant='ghosted' size='large' onClick={handleRestore} disabled={saveLoading || resetLoading}>
-              Reset to example
+              {getLocalizedString('settings.view.style_editor.reset')}
             </Button>
             <Panel.InlineElements>
               <Button variant='ghosted' size='large' onClick={clear}>
-                Clear
+                {getLocalizedString('settings.view.style_editor.clear')}
               </Button>
               <Button size='large' onClick={onClose}>
-                Cancel
+                {getLocalizedString('common.cancel')}
               </Button>
               <Button
                 variant='primary'
@@ -126,7 +132,7 @@ export default function CodeEditorModal({ isOpen, onClose }: CodeEditorModalProp
                 disabled={saveLoading || resetLoading || !isDirty}
                 loading={saveLoading}
               >
-                Save changes
+                {getLocalizedString('common.save_changes')}
               </Button>
             </Panel.InlineElements>
           </Panel.InlineElements>

@@ -16,7 +16,7 @@ interface CustomTranslationModalProps {
 }
 
 export default function CustomTranslationModal({ isOpen, onClose }: CustomTranslationModalProps) {
-  const { userTranslation, postUserTranslation } = useTranslation();
+  const { userTranslation, postUserTranslation, getLocalizedString } = useTranslation();
 
   const defaultValues = useMemo(() => {
     const values: Record<string, string> = {};
@@ -56,7 +56,7 @@ export default function CustomTranslationModal({ isOpen, onClose }: CustomTransl
 
   return (
     <Modal
-      title='Edit custom translations'
+      title={getLocalizedString('settings.general.custom_translation.title')}
       isOpen={isOpen}
       onClose={onClose}
       showCloseButton
@@ -64,8 +64,9 @@ export default function CustomTranslationModal({ isOpen, onClose }: CustomTransl
       bodyElements={
         <Panel.Section as='form' onSubmit={handleSubmit(onSubmit)} id='custom-translations-form'>
           <Info>
-            Provide custom translations for the public views of Ontime. <br />
-            You will need to activate this in the settings by selecting &quot;Custom&quot; as the views language.
+            {getLocalizedString('settings.general.custom_translation.info_line1')}
+            <br />
+            {getLocalizedString('settings.general.custom_translation.info_line2')}
           </Info>
           <Panel.ListGroup>
             {Object.entries(langEn).map(([key, value]) => (
@@ -74,7 +75,7 @@ export default function CustomTranslationModal({ isOpen, onClose }: CustomTransl
                 <Input
                   maxLength={150}
                   {...register(toFormKey(key), {
-                    required: 'This field is required',
+                    required: getLocalizedString('settings.project.field_required'),
                   })}
                   placeholder={value}
                 />
@@ -89,7 +90,7 @@ export default function CustomTranslationModal({ isOpen, onClose }: CustomTransl
           <Panel.InlineElements align='apart'>
             <Panel.InlineElements>
               <Button size='large' onClick={onClose}>
-                Cancel
+                {getLocalizedString('common.cancel')}
               </Button>
               <Button
                 variant='primary'
@@ -99,7 +100,7 @@ export default function CustomTranslationModal({ isOpen, onClose }: CustomTransl
                 disabled={isSubmitting || !isDirty || !isValid}
                 loading={isSubmitting}
               >
-                Save changes
+                {getLocalizedString('common.save_changes')}
               </Button>
             </Panel.InlineElements>
           </Panel.InlineElements>

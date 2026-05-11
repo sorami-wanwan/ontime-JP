@@ -149,14 +149,14 @@ export default function GeneralSettings() {
                   disabled={disableInputs}
                   defaultValue='en'
                   options={[
-                    { value: 'en', label: 'English' },
-                    { value: 'fr', label: 'French' },
-                    { value: 'de', label: 'German' },
-                    { value: 'it', label: 'Italian' },
-                    { value: 'ja', label: 'Japanese' },
-                    { value: 'pt', label: 'Portuguese' },
-                    { value: 'es', label: 'Spanish' },
-                    { value: 'custom', label: 'Custom' },
+                    { value: 'en', label: getLocalizedString('settings.general.language.en') },
+                    { value: 'fr', label: getLocalizedString('settings.general.language.fr') },
+                    { value: 'de', label: getLocalizedString('settings.general.language.de') },
+                    { value: 'it', label: getLocalizedString('settings.general.language.it') },
+                    { value: 'ja', label: getLocalizedString('settings.general.language.ja') },
+                    { value: 'pt', label: getLocalizedString('settings.general.language.pt') },
+                    { value: 'es', label: getLocalizedString('settings.general.language.es') },
+                    { value: 'custom', label: getLocalizedString('settings.general.language.custom') },
                   ]}
                 />
                 <Button onClick={handler.open}>{getLocalizedString('settings.general.edit_custom_translation')}</Button>

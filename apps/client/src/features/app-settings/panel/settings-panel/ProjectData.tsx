@@ -177,14 +177,19 @@ export default function ProjectData() {
 
           <label>
             {getLocalizedString('settings.project.project_description')}
-            <Input fluid maxLength={100} placeholder='Euro Love, Malmö 2024' {...register('description')} />
+            <Input
+              fluid
+              maxLength={100}
+              placeholder={getLocalizedString('settings.project.project_description_placeholder')}
+              {...register('description')}
+            />
           </label>
           <label>
             {getLocalizedString('settings.project.project_info')}
             <Textarea
               fluid
               maxLength={150}
-              placeholder='Wi-Fi password: 1234'
+              placeholder={getLocalizedString('settings.project.project_info_placeholder')}
               resize='vertical'
               {...register('info')}
             />
