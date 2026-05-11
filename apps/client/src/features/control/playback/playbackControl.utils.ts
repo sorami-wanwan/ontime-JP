@@ -36,7 +36,7 @@ export interface PlaybackControlState {
 
   // Go button configuration
   goAction: () => void;
-  goLabel: 'Start' | 'Next' | 'Finish';
+  goLabel: 'common.start' | 'common.next' | 'common.finish';
 }
 
 /**
@@ -87,9 +87,9 @@ function getGoAction(
   playback: Playback,
   selectedEventIndex: number | null,
   isLast: boolean,
-): { action: () => void; label: 'Start' | 'Next' | 'Finish' } {
-  if (playback === Playback.Armed) return { action: setPlayback.start, label: 'Start' };
-  if (isLast) return { action: setPlayback.stop, label: 'Finish' };
-  if (selectedEventIndex === null) return { action: setPlayback.startNext, label: 'Start' };
-  return { action: setPlayback.startNext, label: 'Next' };
+): { action: () => void; label: 'common.start' | 'common.next' | 'common.finish' } {
+  if (playback === Playback.Armed) return { action: setPlayback.start, label: 'common.start' };
+  if (isLast) return { action: setPlayback.stop, label: 'common.finish' };
+  if (selectedEventIndex === null) return { action: setPlayback.startNext, label: 'common.start' };
+  return { action: setPlayback.startNext, label: 'common.next' };
 }

@@ -208,6 +208,7 @@ export const langJa: Partial<TranslationObject> = {
   'common.cue': 'キュー',
   'common.on': 'オン',
   'common.off': 'オフ',
+  'common.finish': '完了',
 
   // ===== countdown =====
   'countdown.ended': 'イベント終了:',
@@ -578,6 +579,7 @@ export const langJa: Partial<TranslationObject> = {
   'control.playback.timer.removed': '短縮',
   'control.playback.timer.roll_active': 'ロールモード有効',
   'control.playback.timer.roll_countdown': 'ロール: 開始までカウントダウン',
+  'control.playback.roll': 'ロール',
 
   // ===== rundown.editor / rundown.header =====
   'rundown.empty.create_event': 'イベントを作成',
