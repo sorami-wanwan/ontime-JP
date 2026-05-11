@@ -105,6 +105,7 @@ export default function TimeInput<T extends string>({
    */
   const onKeyDownHandler = useCallback(
     (event: KeyboardEvent<HTMLInputElement>) => {
+      if (event.nativeEvent?.isComposing) return;
       if (event.key === 'Enter') {
         inputRef.current?.blur();
       }
