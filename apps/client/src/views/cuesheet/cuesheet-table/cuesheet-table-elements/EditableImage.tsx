@@ -42,6 +42,7 @@ function EditableImage({ initialValue, readOnly, updateValue }: EditableImagePro
         placeholder='Paste image URL'
         onBlur={(event) => handleUpdate(event.currentTarget.value)}
         onKeyDown={(event) => {
+          if (event.nativeEvent?.isComposing) return;
           if (event.key === 'Enter') {
             handleUpdate(event.currentTarget.value);
           }

@@ -22,6 +22,8 @@ export default function Finder({ isOpen, onClose }: FinderProps) {
   const debouncedFind = useDebouncedCallback(find, 100);
 
   const navigate = (event: KeyboardEvent<HTMLDivElement>) => {
+    if (event.nativeEvent?.isComposing) return;
+
     // all operations need results
     if (results.length === 0) {
       return;
