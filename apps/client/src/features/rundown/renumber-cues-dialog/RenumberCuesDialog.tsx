@@ -8,6 +8,7 @@ import Dialog from '../../../common/components/dialog/Dialog';
 import Input from '../../../common/components/input/input/Input';
 import { useEntryActionsContext } from '../../../common/context/EntryActionsContext';
 import useRundown from '../../../common/hooks-query/useRundown';
+import { useTranslation } from '../../../translation/useTranslation';
 import { orderEntries } from '../rundown.utils';
 import { useEventSelection } from '../useEventSelection';
 
@@ -22,6 +23,7 @@ export default function RenumberCuesDialog() {
   const { onClose, isOpen } = useRenumberCuesDialogStore();
   const { renumberCues } = useEntryActionsContext();
   const selectedEvents = useEventSelection((state) => state.selectedEvents);
+  const { getLocalizedString } = useTranslation();
 
   const {
     register,
@@ -48,14 +50,14 @@ export default function RenumberCuesDialog() {
     <Dialog
       isOpen={isOpen}
       onClose={onClose}
-      title='Renumber cues'
+      title={getLocalizedString('rundown.editor.renumber_cues')}
       showCloseButton
       showBackdrop
       bodyElements={
         <form id='renumber-cues-form' onSubmit={handleSubmit(onSubmit)} className={style.fields}>
           <div className={style.field}>
             <label className={style.label}>
-              Prefix
+              {getLocalizedString('rundown.editor.prefix')}
               <Input
                 {...register('prefix')}
                 type='text'
@@ -69,7 +71,7 @@ export default function RenumberCuesDialog() {
           </div>
           <div className={style.field}>
             <label className={style.label}>
-              Start
+              {getLocalizedString('rundown.editor.start')}
               <Input
                 {...register('start')}
                 type='number'
@@ -84,7 +86,7 @@ export default function RenumberCuesDialog() {
           </div>
           <div className={style.field}>
             <label className={style.label}>
-              Increment
+              {getLocalizedString('rundown.editor.increment')}
               <Input
                 {...register('increment')}
                 type='number'
@@ -103,10 +105,10 @@ export default function RenumberCuesDialog() {
       footerElements={
         <>
           <Button type='button' variant='subtle-white' onClick={onClose} disabled={isSubmitting}>
-            Cancel
+            {getLocalizedString('common.cancel')}
           </Button>
           <Button type='submit' variant='primary' form='renumber-cues-form' loading={isSubmitting}>
-            Renumber
+            {getLocalizedString('rundown.editor.renumber')}
           </Button>
         </>
       }

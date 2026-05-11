@@ -706,6 +706,15 @@ export const langJa: Partial<TranslationObject> = {
   'rundown.editor.start': '開始番号',
   'rundown.editor.increment': '増分',
   'rundown.editor.renumber': '振り直す',
+  'rundown.editor.event_title_placeholder': 'イベントタイトル',
+  'rundown.editor.up_next': '次へ',
+  'rundown.editor.event_has_no_triggers': 'トリガーがありません',
+  'rundown.editor.event_has_triggers': 'トリガーが設定されています',
+  'rundown.editor.event_has_triggers_but_automations_disabled': 'トリガーがありますが、オートメーションが無効です',
+  'rundown.editor.time_type_label': '時間タイプ: {{0}}',
+  'rundown.editor.end_action_label': '終了アクション: {{0}}',
+  'rundown.editor.count_duration': '経過時間をカウント',
+  'rundown.editor.paste_image_url': '画像URLを貼り付け',
 
   // ===== welcome screen =====
   'welcome.title': 'Ontimeへようこそ',
