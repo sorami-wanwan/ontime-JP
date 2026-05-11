@@ -1,10 +1,12 @@
 import { KeyboardEvent } from 'react';
 
 export function isKeyEnter<T>(event: KeyboardEvent<T>): boolean {
+  if (event.nativeEvent?.isComposing) return false;
   return event.key === 'Enter';
 }
 
 export function isKeyEscape<T>(event: KeyboardEvent<T>): boolean {
+  if (event.nativeEvent?.isComposing) return false;
   return event.key === 'Escape';
 }
 

@@ -131,6 +131,8 @@ export default function useReactiveTextInput(
     const hotKeyHandler = getHotkeyHandler(hotKeys);
 
     return (event: KeyboardEvent<HTMLElement>) => {
+      if (event.nativeEvent?.isComposing) return;
+
       // allow moving in input field with arrow keys
       if (
         event.key === 'ArrowLeft' ||

@@ -72,6 +72,7 @@ export default function DelayInput({ eventId, duration }: DelayInputProps) {
    * @param {KeyboardEvent} event
    */
   const onKeyDownHandler = (event: KeyboardEvent<HTMLInputElement>) => {
+    if (event.nativeEvent?.isComposing) return;
     if (event.key === 'Enter') {
       inputRef.current?.blur();
       validateAndSubmit((event.target as HTMLInputElement).value);
