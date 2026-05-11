@@ -7,6 +7,7 @@ export const useKeyDown: UseKeyDown = (callback, targetKey, options = {}) => {
 
   const onKeyDown = useCallback(
     (event: KeyboardEvent) => {
+      if (event.isComposing) return;
       const targetKeyPressed = event.key === targetKey && !event.repeat;
       if (targetKeyPressed && !isDisabled) {
         event.preventDefault();
