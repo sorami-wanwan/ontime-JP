@@ -10,9 +10,10 @@ test('project file upload', async ({ page }) => {
   await page.goto('/editor');
 
   // Try to close welcome modal if it appears (times out silently if not present)
+  // Note: modal text is in Japanese as the app defaults to 'ja' before the test DB is loaded
   try {
-    await page.getByText('Welcome to Ontime').waitFor({ timeout: 1000 });
-    await page.getByRole('button', { name: 'close welcome modal' }).click();
+    await page.getByText('Ontimeへようこそ').waitFor({ timeout: 1000 });
+    await page.getByRole('button', { name: 'ウェルカムモーダルを閉じる' }).click();
   } catch {
     // Modal wasn't shown, continue with the test
   }
