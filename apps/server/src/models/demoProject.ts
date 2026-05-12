@@ -28,7 +28,7 @@ export const demoDb: DatabaseModel = {
     editorKey: null,
     operatorKey: null,
     timeFormat: '24',
-    language: 'en',
+    language: 'ja',
   },
   viewSettings: {
     dangerColor: '#ff7300',

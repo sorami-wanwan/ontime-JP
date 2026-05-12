@@ -6,6 +6,6 @@ export const quickStartDefaults: QuickStartData = {
   },
   settings: {
     timeFormat: '24',
-    language: 'en',
+    language: 'ja',
   },
 };

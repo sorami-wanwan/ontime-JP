@@ -5,5 +5,5 @@ export const ontimePlaceholderSettings: Settings = {
   editorKey: null,
   operatorKey: null,
   timeFormat: '24',
-  language: 'en',
+  language: 'ja',
 };

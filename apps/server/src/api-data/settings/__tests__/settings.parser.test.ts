@@ -15,7 +15,7 @@ describe('parseSettings()', () => {
       editorKey: null,
       operatorKey: null,
       timeFormat: '24',
-      language: 'en',
+      language: 'ja',
     });
   });
 });

@@ -40,7 +40,7 @@ export const TranslationProvider = ({ children }: PropsWithChildren) => {
   const { data: translationData } = useCustomTranslation();
 
   const getLocalizedString = useCallback(
-    (key: TranslationKey, lang = data?.language || 'en'): string => {
+    (key: TranslationKey, lang = data?.language || 'ja'): string => {
       if (lang in translationsList) {
         if (key in translationsList[lang as keyof typeof translationsList]) {
           return translationsList[lang as keyof typeof translationsList][key] || langEn[key];
