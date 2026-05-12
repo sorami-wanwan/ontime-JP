@@ -18,22 +18,24 @@ test('project file upload', async ({ page }) => {
     // Modal wasn't shown, continue with the test
   }
 
-  await page.getByRole('button', { name: 'Edit' }).click();
+  // Note: UI is in Japanese (ja) until the test DB (language: en) is loaded below.
+  // 'Rundown menu' and 'toggle settings' are hardcoded English aria-labels in the source — no change needed.
+  await page.getByRole('button', { name: '編集' }).click();
   await page.getByRole('button', { name: 'Rundown menu' }).click();
-  await page.getByRole('menuitem', { name: 'Clear all' }).click();
-  await page.getByRole('button', { name: 'Delete all' }).click();
+  await page.getByRole('menuitem', { name: 'すべてクリア' }).click();
+  await page.getByRole('button', { name: 'すべて削除' }).click();
 
   await page.getByRole('button', { name: 'toggle settings' }).click();
-  await page.getByRole('button', { name: 'Manage projects' }).click();
+  await page.getByRole('button', { name: 'プロジェクトの管理' }).click();
 
   // workaround to upload file on hidden input
   // https://playwright.dev/docs/api/class-filechooser
   const fileChooserPromise = page.waitForEvent('filechooser');
-  await page.getByRole('button', { name: 'Import', exact: true }).click();
+  await page.getByRole('button', { name: 'インポート', exact: true }).click();
   const fileChooser = await fileChooserPromise;
   await fileChooser.setFiles(fileToUpload);
 
-  await page.getByRole('button', { name: 'close' }).click();
+  await page.getByRole('button', { name: '閉じる' }).click();
 
   // asset test events
   const firstTitle = page.getByTestId('entry-1').getByTestId('entry__title');
