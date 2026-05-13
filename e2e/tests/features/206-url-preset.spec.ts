@@ -14,8 +14,14 @@ test.describe('URL Preset', () => {
     await page.getByRole('button', { name: /(Toggle settings|設定の切り替え)/ }).click();
     await page.getByRole('button', { name: /(URL Presets|URLプリセット)/ }).click();
 
-    await page.getByRole('heading', { name: 'URL presets New' }).getByRole('button').scrollIntoViewIfNeeded();
-    await page.getByRole('heading', { name: 'URL presets New' }).getByRole('button').click();
+    await page
+      .getByRole('heading', { name: /(URL presets New|URLプリセット 新規)/ })
+      .getByRole('button')
+      .scrollIntoViewIfNeeded();
+    await page
+      .getByRole('heading', { name: /(URL presets New|URLプリセット 新規)/ })
+      .getByRole('button')
+      .click();
 
     await page.locator('input[name="alias"]').click();
     await page.locator('input[name="alias"]').fill(aliasName);
@@ -176,7 +182,7 @@ test.describe('Sharing from cuesheet', () => {
 
     // mode toggle should not be rendered for readonly users
     await expect(page.getByRole('button', { name: /(Edit|編集)/ })).toHaveCount(0);
-    await expect(page.getByRole('button', { name: 'Run' })).toHaveCount(0);
+    await expect(page.getByRole('button', { name: /(Run|実行)/ })).toHaveCount(0);
 
     // Verify that the title is visible but not editable
     await expect(page.getByTestId('cuesheet-event').getByText('title 1')).toBeVisible();

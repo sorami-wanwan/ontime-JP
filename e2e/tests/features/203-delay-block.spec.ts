@@ -11,12 +11,30 @@ test('delays add time to events', async ({ page }) => {
   await page.getByRole('button', { name: /(Create event|イベントを作成)/i }).click();
 
   // add data to new event
-  await page.getByTestId('rundown').getByPlaceholder('Start').click();
-  await page.getByTestId('rundown').getByPlaceholder('Start').fill('10m');
-  await page.getByTestId('rundown').getByPlaceholder('Start').press('Enter');
-  await page.getByTestId('rundown').getByPlaceholder('Duration').click();
-  await page.getByTestId('rundown').getByPlaceholder('Duration').fill('20m');
-  await page.getByTestId('rundown').getByPlaceholder('Duration').press('Enter');
+  await page
+    .getByTestId('rundown')
+    .getByPlaceholder(/(Start|開始)/)
+    .click();
+  await page
+    .getByTestId('rundown')
+    .getByPlaceholder(/(Start|開始)/)
+    .fill('10m');
+  await page
+    .getByTestId('rundown')
+    .getByPlaceholder(/(Start|開始)/)
+    .press('Enter');
+  await page
+    .getByTestId('rundown')
+    .getByPlaceholder(/(Duration|予定所要時間)/)
+    .click();
+  await page
+    .getByTestId('rundown')
+    .getByPlaceholder(/(Duration|予定所要時間)/)
+    .fill('20m');
+  await page
+    .getByTestId('rundown')
+    .getByPlaceholder(/(Duration|予定所要時間)/)
+    .press('Enter');
 
   // add delay
   await page
@@ -39,7 +57,10 @@ test('delays add time to events', async ({ page }) => {
   await expect(page.getByTestId('rundown').getByTestId('time-input-timeStart')).toHaveValue('00:08:00');
 
   // add new delay
-  await page.getByTestId('rundown').getByPlaceholder('Start').click();
+  await page
+    .getByTestId('rundown')
+    .getByPlaceholder(/(Start|開始)/)
+    .click();
   await page
     .getByRole('button', { name: /(Delay|ディレイ)/ })
     .nth(0)

@@ -7,15 +7,23 @@ test('message control sends messages to screens', async ({ context }) => {
   await editorPage.goto('/messagecontrol');
 
   // stage timer message
-  await editorPage.getByPlaceholder('Message shown fullscreen in stage timer').click();
-  await editorPage.getByPlaceholder('Message shown fullscreen in stage timer').fill('testing stage');
-  await editorPage.getByRole('button', { name: /toggle timer message/i }).click({ timeout: 5000 });
+  await editorPage
+    .getByPlaceholder(/(Message shown fullscreen in stage timer|ステージタイマーに全画面で表示されるメッセージ)/)
+    .click();
+  await editorPage
+    .getByPlaceholder(/(Message shown fullscreen in stage timer|ステージタイマーに全画面で表示されるメッセージ)/)
+    .fill('testing stage');
+  await editorPage
+    .getByRole('button', { name: /(toggle timer message|タイマーメッセージの表示を切り替え)/i })
+    .click({ timeout: 5000 });
 
   await featurePage.goto('/timer');
   await featurePage.waitForLoadState('load', { timeout: 5000 });
   await expect(featurePage.getByText('testing stage')).toBeVisible();
 
-  await editorPage.getByRole('button', { name: /toggle timer message/i }).click({ timeout: 5000 });
+  await editorPage
+    .getByRole('button', { name: /(toggle timer message|タイマーメッセージの表示を切り替え)/i })
+    .click({ timeout: 5000 });
 
   await expect(featurePage.getByText(/TIME NOW|現在時刻/i)).toBeVisible();
 });

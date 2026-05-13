@@ -41,7 +41,10 @@ test('smoke test operator', async ({ page }) => {
 
   await page.getByRole('button', { name: /(Edit|編集)/ }).click();
   await page.getByTestId('entry-1').click();
-  await page.getByTestId('editor-container').getByLabel('Cue').fill('--1');
+  await page
+    .getByTestId('editor-container')
+    .getByLabel(/(Cue|キュー)/)
+    .fill('--1');
   await page
     .getByRole('button', { name: /^(Event|イベント)$/ })
     .nth(1)

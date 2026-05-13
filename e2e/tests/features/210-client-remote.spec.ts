@@ -10,7 +10,7 @@ test('redirect', async ({ context }) => {
   await controllerPage.getByTestId('not-self-redirect').click();
   await controllerPage.getByRole('textbox', { name: 'http://localhost:' }).click();
   await controllerPage.getByRole('textbox', { name: 'http://localhost:' }).fill('studio');
-  await controllerPage.getByLabel('Redirect', { exact: true }).click();
+  await controllerPage.getByLabel(/(Redirect|リダイレクト)/, { exact: true }).click();
 
   await expect(remotePage.getByTestId('studio-view')).toBeVisible();
 });

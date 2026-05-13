@@ -32,9 +32,7 @@ test('project file upload', async ({ page }) => {
   await page.getByRole('button', { name: /(Delete all|すべて削除)/ }).click();
 
   await page.getByRole('button', { name: 'toggle settings' }).click();
-  // Note: The settings sidebar navigation is hardcoded in English ('Manage projects')
-  // even when the rest of the UI is in Japanese.
-  await page.getByRole('button', { name: 'Manage projects' }).click();
+  await page.getByRole('button', { name: /(Manage projects|プロジェクトの管理)/ }).click();
 
   // workaround to upload file on hidden input
   // https://playwright.dev/docs/api/class-filechooser
