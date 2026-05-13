@@ -4,16 +4,16 @@ const fileToUpload = 'e2e/tests/fixtures/Ontime rundown template v4.xlsx';
 
 test('imports spreadsheet and applies imported rundown to editor', async ({ page }) => {
   await page.goto('/editor');
-  await page.getByRole('button', { name: 'Edit' }).click();
+  await page.getByRole('button', { name: /(Edit|編集)/ }).click();
 
   // clear the rundown
-  await page.getByRole('button', { name: 'Rundown menu' }).click();
-  await page.getByRole('menuitem', { name: 'Clear all' }).click();
-  await page.getByRole('button', { name: 'Delete all' }).click();
+  await page.getByRole('button', { name: /(Rundown menu|進行表の管理\.\.\.)/ }).click();
+  await page.getByRole('menuitem', { name: /(Clear all|すべてクリア)/ }).click();
+  await page.getByRole('button', { name: /(Delete all|すべて削除)/ }).click();
   await expect(page.getByTestId('rundown-event')).toHaveCount(0);
 
   // open the spreadsheet
-  await page.getByRole('button', { name: 'Toggle settings' }).click();
+  await page.getByRole('button', { name: /(Toggle settings|設定の切り替え)/ }).click();
   await page.getByRole('button', { name: 'Project settings' }).click();
   await page.getByRole('button', { name: 'Import spreadsheet' }).first().click();
   await expect(page.getByRole('heading', { name: 'Sources' })).toBeVisible();
@@ -32,13 +32,13 @@ test('imports spreadsheet and applies imported rundown to editor', async ({ page
   // apply import
   await page.getByRole('button', { name: 'Preview import' }).click();
   await page.getByRole('button', { name: 'Apply import' }).click();
-  await expect(page.getByText('Import complete!')).toBeVisible();
-  await expect(page.getByText('Your imported data has been applied to the current rundown.')).toBeVisible();
-  await page.getByRole('button', { name: 'Start new import' }).click();
+  await expect(page.getByText(/(Import complete!|インポート完了！)/)).toBeVisible();
+  await expect(page.getByText(/(Your imported data has been applied to the current rundown\.|インポートしたデータが現在の進行表に適用されました\。)/)).toBeVisible();
+  await page.getByRole('button', { name: /(Start new import|新しいインポートを開始)/ }).click();
 
   // verify the data in the rundown
-  await page.getByRole('button', { name: 'Close settings' }).scrollIntoViewIfNeeded();
-  await page.getByRole('button', { name: 'Close settings' }).click();
+  await page.getByRole('button', { name: /(Close settings|設定を閉じる)/ }).scrollIntoViewIfNeeded();
+  await page.getByRole('button', { name: /(Close settings|設定を閉じる)/ }).click();
 
   await expectGroupSummary(page, {
     title: 'Morning Sessions',

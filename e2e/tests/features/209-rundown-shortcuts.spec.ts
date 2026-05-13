@@ -2,15 +2,15 @@ import { expect, test } from '@playwright/test';
 
 test('Copy-paste', async ({ page }) => {
   await page.goto('/rundown');
-  await page.getByRole('button', { name: 'Edit' }).click();
+  await page.getByRole('button', { name: /(Edit|編集)/ }).click();
 
   // clear rundown
-  await page.getByRole('button', { name: 'Rundown menu' }).click();
-  await page.getByRole('menuitem', { name: 'Clear all' }).click();
-  await page.getByRole('button', { name: 'Delete all' }).click();
+  await page.getByRole('button', { name: /(Rundown menu|進行表の管理\.\.\.)/ }).click();
+  await page.getByRole('menuitem', { name: /(Clear all|すべてクリア)/ }).click();
+  await page.getByRole('button', { name: /(Delete all|すべて削除)/ }).click();
 
   // create event
-  await page.getByRole('button', { name: 'Create Event' }).click();
+  await page.getByRole('button', { name: /(Create Event|イベントを作成)/ }).click();
   await page.getByTestId('entry-1').click();
   await page.getByLabel('Cue', { exact: true }).click();
   await page.getByLabel('Cue', { exact: true }).fill('4');
@@ -33,20 +33,20 @@ test('Copy-paste', async ({ page }) => {
 
 test('Cut-paste', async ({ page }) => {
   await page.goto('/rundown');
-  await page.getByRole('button', { name: 'Edit' }).click();
+  await page.getByRole('button', { name: /(Edit|編集)/ }).click();
 
   // clear rundown
-  await page.getByRole('button', { name: 'Rundown menu' }).click();
-  await page.getByRole('menuitem', { name: 'Clear all' }).click();
-  await page.getByRole('button', { name: 'Delete all' }).click();
+  await page.getByRole('button', { name: /(Rundown menu|進行表の管理\.\.\.)/ }).click();
+  await page.getByRole('menuitem', { name: /(Clear all|すべてクリア)/ }).click();
+  await page.getByRole('button', { name: /(Delete all|すべて削除)/ }).click();
 
   // create events
-  await page.getByRole('button', { name: 'Create Event' }).click();
+  await page.getByRole('button', { name: /(Create Event|イベントを作成)/ }).click();
   await page.getByTestId('entry-1').getByTestId('entry__title').click();
   await page.getByTestId('entry-1').getByTestId('entry__title').fill('first');
   await page.getByTestId('entry-1').getByTestId('entry__title').press('Enter');
 
-  await page.getByRole('button', { name: 'Event' }).nth(4).click();
+  await page.getByRole('button', { name: /(Event|イベント)/ }).nth(4).click();
   await page.getByTestId('entry-2').getByTestId('entry__title').click();
   await page.getByTestId('entry-2').getByTestId('entry__title').fill('second');
   await page.getByTestId('entry-2').getByTestId('entry__title').press('Enter');
@@ -65,17 +65,17 @@ test('Cut-paste', async ({ page }) => {
 
 test('Move', async ({ page }) => {
   await page.goto('/rundown');
-  await page.getByRole('button', { name: 'Edit' }).click();
+  await page.getByRole('button', { name: /(Edit|編集)/ }).click();
 
   // clear rundown
-  await page.getByRole('button', { name: 'Rundown menu' }).click();
-  await page.getByRole('menuitem', { name: 'Clear all' }).click();
-  await page.getByRole('button', { name: 'Delete all' }).click();
+  await page.getByRole('button', { name: /(Rundown menu|進行表の管理\.\.\.)/ }).click();
+  await page.getByRole('menuitem', { name: /(Clear all|すべてクリア)/ }).click();
+  await page.getByRole('button', { name: /(Delete all|すべて削除)/ }).click();
 
   // create events
-  await page.getByRole('button', { name: 'Create Event' }).click();
-  await page.getByRole('button', { name: 'Event' }).nth(4).click();
-  await page.getByRole('button', { name: 'Event', exact: true }).nth(1).click();
+  await page.getByRole('button', { name: /(Create Event|イベントを作成)/ }).click();
+  await page.getByRole('button', { name: /(Event|イベント)/ }).nth(4).click();
+  await page.getByRole('button', { name: /^(Event|イベント)$/ }).nth(1).click();
 
   // copy move down
   await page.getByTestId('entry-1').getByTestId('rundown-event').getByText('1').click();
@@ -103,17 +103,17 @@ test('Move', async ({ page }) => {
 
 test('Add group', async ({ page }) => {
   await page.goto('/rundown');
-  await page.getByRole('button', { name: 'Edit' }).click();
+  await page.getByRole('button', { name: /(Edit|編集)/ }).click();
 
   // clear rundown
-  await page.getByRole('button', { name: 'Rundown menu' }).click();
-  await page.getByRole('menuitem', { name: 'Clear all' }).click();
-  await page.getByRole('button', { name: 'Delete all' }).click();
+  await page.getByRole('button', { name: /(Rundown menu|進行表の管理\.\.\.)/ }).click();
+  await page.getByRole('menuitem', { name: /(Clear all|すべてクリア)/ }).click();
+  await page.getByRole('button', { name: /(Delete all|すべて削除)/ }).click();
   await expect(page.getByTestId('rundown-event')).toHaveCount(0);
   await expect(page.getByTestId('rundown-group')).toHaveCount(0);
 
   // create events
-  await page.getByRole('button', { name: 'Create Event' }).click();
+  await page.getByRole('button', { name: /(Create Event|イベントを作成)/ }).click();
   await expect(page.getByTestId('rundown-event')).toHaveCount(1);
   await expect(page.getByTestId('rundown-group')).toHaveCount(0);
   await page.getByPlaceholder(/event title/i).fill('test');
@@ -138,17 +138,17 @@ test('Add group', async ({ page }) => {
 
 test('Add delay', async ({ page }) => {
   await page.goto('/rundown');
-  await page.getByRole('button', { name: 'Edit' }).click();
+  await page.getByRole('button', { name: /(Edit|編集)/ }).click();
 
   // clear rundown
-  await page.getByRole('button', { name: 'Rundown menu' }).click();
-  await page.getByRole('menuitem', { name: 'Clear all' }).click();
-  await page.getByRole('button', { name: 'Delete all' }).click();
+  await page.getByRole('button', { name: /(Rundown menu|進行表の管理\.\.\.)/ }).click();
+  await page.getByRole('menuitem', { name: /(Clear all|すべてクリア)/ }).click();
+  await page.getByRole('button', { name: /(Delete all|すべて削除)/ }).click();
   await expect(page.getByTestId('rundown-event')).toHaveCount(0);
   await expect(page.getByTestId('rundown-delay')).toHaveCount(0);
 
   // create events
-  await page.getByRole('button', { name: 'Create Event' }).click();
+  await page.getByRole('button', { name: /(Create Event|イベントを作成)/ }).click();
   await expect(page.getByTestId('rundown-event')).toHaveCount(1);
   await expect(page.getByTestId('rundown-delay')).toHaveCount(0);
   await page.getByTestId('entry-1').click();
@@ -169,16 +169,16 @@ test('Add delay', async ({ page }) => {
 
 test('Add event', async ({ page }) => {
   await page.goto('/rundown');
-  await page.getByRole('button', { name: 'Edit' }).click();
+  await page.getByRole('button', { name: /(Edit|編集)/ }).click();
 
   // clear rundown
-  await page.getByRole('button', { name: 'Rundown menu' }).click();
-  await page.getByRole('menuitem', { name: 'Clear all' }).click();
-  await page.getByRole('button', { name: 'Delete all' }).click();
+  await page.getByRole('button', { name: /(Rundown menu|進行表の管理\.\.\.)/ }).click();
+  await page.getByRole('menuitem', { name: /(Clear all|すべてクリア)/ }).click();
+  await page.getByRole('button', { name: /(Delete all|すべて削除)/ }).click();
   await expect(page.getByTestId('rundown-event')).toHaveCount(0);
 
   // create events
-  await page.getByRole('button', { name: 'Create Event' }).click();
+  await page.getByRole('button', { name: /(Create Event|イベントを作成)/ }).click();
   await expect(page.getByTestId('rundown-event')).toHaveCount(1);
   await page.getByTestId('entry-1').click();
   await page.getByTestId('entry__title').press('Escape');
@@ -196,25 +196,25 @@ test('Add event', async ({ page }) => {
 
 test('Delete event', async ({ page }) => {
   await page.goto('/rundown');
-  await page.getByRole('button', { name: 'Edit' }).click();
+  await page.getByRole('button', { name: /(Edit|編集)/ }).click();
 
   // clear rundown
   await page.goto('/rundown');
-  await page.getByRole('button', { name: 'Rundown menu' }).click();
-  await page.getByRole('menuitem', { name: 'Clear all' }).click();
-  await page.getByRole('button', { name: 'Delete all' }).click();
+  await page.getByRole('button', { name: /(Rundown menu|進行表の管理\.\.\.)/ }).click();
+  await page.getByRole('menuitem', { name: /(Clear all|すべてクリア)/ }).click();
+  await page.getByRole('button', { name: /(Delete all|すべて削除)/ }).click();
   await expect(page.getByTestId('rundown-event')).toHaveCount(0);
 
   // create event
-  await page.getByRole('button', { name: 'Create Event' }).click();
+  await page.getByRole('button', { name: /(Create Event|イベントを作成)/ }).click();
   await expect(page.getByTestId('rundown-event')).toHaveCount(1);
 
   // delete event
   await page.getByTestId('rundown-event').locator('div').filter({ hasText: '1' }).click();
   await page.getByTestId('rundown-event').locator('div').filter({ hasText: '1' }).press('Alt+Backspace');
   await expect(page.getByTestId('rundown-event')).toHaveCount(0);
-  await expect(page.getByRole('button', { name: 'Create Event' })).toBeVisible();
-  await expect(page.getByRole('button', { name: 'Create Group' })).toBeVisible();
+  await expect(page.getByRole('button', { name: /(Create Event|イベントを作成)/ })).toBeVisible();
+  await expect(page.getByRole('button', { name: /(Create Group|グループを作成)/ })).toBeVisible();
 });
 
 test('Find in rundown', async ({ page }) => {
@@ -222,10 +222,10 @@ test('Find in rundown', async ({ page }) => {
   await expect(page.getByTestId('panel-rundown')).toBeVisible();
 
   await page.keyboard.press('ControlOrMeta+f');
-  await expect(page.getByPlaceholder('Search...')).toBeVisible();
+  await expect(page.getByPlaceholder(/Search\.\.\.|検索\.\.\./)).toBeVisible();
 
   await page.keyboard.press('Escape');
-  await expect(page.getByPlaceholder('Search...')).toBeHidden();
+  await expect(page.getByPlaceholder(/Search\.\.\.|検索\.\.\./)).toBeHidden();
 });
 
 test('Open settings', async ({ page }) => {
@@ -233,8 +233,8 @@ test('Open settings', async ({ page }) => {
   await expect(page.getByTestId('editor-container')).toBeVisible();
 
   await page.keyboard.press('ControlOrMeta+,');
-  await expect(page.getByRole('button', { name: 'Close settings' })).toBeVisible();
+  await expect(page.getByRole('button', { name: /(Close settings|設定を閉じる)/ })).toBeVisible();
 
   await page.keyboard.press('Escape');
-  await expect(page.getByRole('button', { name: 'Close settings' })).toBeHidden();
+  await expect(page.getByRole('button', { name: /(Close settings|設定を閉じる)/ })).toBeHidden();
 });

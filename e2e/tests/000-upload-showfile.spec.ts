@@ -11,16 +11,16 @@ test('project file upload', async ({ page }) => {
 
   // Try to close welcome modal if it appears (times out silently if not present)
   try {
-    await page.getByText('Welcome to Ontime').waitFor({ timeout: 1000 });
+    await page.getByText(/(Welcome to Ontime|Ontimeへようこそ)/).waitFor({ timeout: 1000 });
     await page.getByRole('button', { name: 'close welcome modal' }).click();
   } catch {
     // Modal wasn't shown, continue with the test
   }
 
-  await page.getByRole('button', { name: 'Edit' }).click();
-  await page.getByRole('button', { name: 'Rundown menu' }).click();
-  await page.getByRole('menuitem', { name: 'Clear all' }).click();
-  await page.getByRole('button', { name: 'Delete all' }).click();
+  await page.getByRole('button', { name: /(Edit|編集)/ }).click();
+  await page.getByRole('button', { name: /(Rundown menu|進行表の管理\.\.\.)/ }).click();
+  await page.getByRole('menuitem', { name: /(Clear all|すべてクリア)/ }).click();
+  await page.getByRole('button', { name: /(Delete all|すべて削除)/ }).click();
 
   await page.getByRole('button', { name: 'toggle settings' }).click();
   await page.getByRole('button', { name: 'Manage projects' }).click();
@@ -28,7 +28,7 @@ test('project file upload', async ({ page }) => {
   // workaround to upload file on hidden input
   // https://playwright.dev/docs/api/class-filechooser
   const fileChooserPromise = page.waitForEvent('filechooser');
-  await page.getByRole('button', { name: 'Import', exact: true }).click();
+  await page.getByRole('button', { name: /(Import|インポート)/, exact: true }).click();
   const fileChooser = await fileChooserPromise;
   await fileChooser.setFiles(fileToUpload);
 

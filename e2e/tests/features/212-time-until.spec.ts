@@ -9,15 +9,15 @@ test('time until absolute', async ({ context }) => {
   await op.goto('/op');
   await timeline.goto('/timeline');
 
-  await editor.getByRole('button', { name: 'Edit' }).click();
-  await editor.getByRole('button', { name: 'Rundown menu' }).click();
-  await editor.getByRole('menuitem', { name: 'Clear all' }).click();
-  await editor.getByRole('button', { name: 'Delete all' }).click();
+  await editor.getByRole('button', { name: /(Edit|編集)/ }).click();
+  await editor.getByRole('button', { name: /(Rundown menu|進行表の管理\.\.\.)/ }).click();
+  await editor.getByRole('menuitem', { name: /(Clear all|すべてクリア)/ }).click();
+  await editor.getByRole('button', { name: /(Delete all|すべて削除)/ }).click();
 
-  await editor.getByRole('button', { name: 'Create Event' }).click();
-  await editor.getByRole('button', { name: 'Event', exact: true }).nth(1).click();
-  await editor.getByRole('button', { name: 'Event', exact: true }).nth(1).click();
-  await editor.getByRole('button', { name: 'Event', exact: true }).nth(1).click();
+  await editor.getByRole('button', { name: /(Create Event|イベントを作成)/ }).click();
+  await editor.getByRole('button', { name: /^(Event|イベント)$/ }).nth(1).click();
+  await editor.getByRole('button', { name: /^(Event|イベント)$/ }).nth(1).click();
+  await editor.getByRole('button', { name: /^(Event|イベント)$/ }).nth(1).click();
 
   await editor.getByTestId('entry-1').getByTestId('rundown-event').click();
   const ids = new Array<string>();
@@ -55,7 +55,7 @@ test('time until absolute', async ({ context }) => {
     countdownItem: countdown.getByTestId('4'),
   };
 
-  await editor.getByRole('button', { name: 'Absolute' }).click();
+  await editor.getByRole('button', { name: /(Absolute|絶対時間)/ }).click();
   await editor.getByTestId('entry-1').getByLabel('Start event').click();
   await expect(editor.getByTestId('offset')).not.toContainText('0:00'); // This might be a bad test requires that the test is not run at 0h
   await editor.getByLabel('Pause event').click();
@@ -131,17 +131,17 @@ test('time until relative', async ({ context }) => {
   const editor = await context.newPage();
   editor.goto('/editor');
 
-  await editor.getByRole('button', { name: 'Edit' }).click();
-  await editor.getByRole('button', { name: 'Rundown menu' }).click();
-  await editor.getByRole('menuitem', { name: 'Clear all' }).click();
-  await editor.getByRole('button', { name: 'Delete all' }).click();
+  await editor.getByRole('button', { name: /(Edit|編集)/ }).click();
+  await editor.getByRole('button', { name: /(Rundown menu|進行表の管理\.\.\.)/ }).click();
+  await editor.getByRole('menuitem', { name: /(Clear all|すべてクリア)/ }).click();
+  await editor.getByRole('button', { name: /(Delete all|すべて削除)/ }).click();
 
-  await editor.getByRole('button', { name: 'Create Event' }).click();
-  await editor.getByRole('button', { name: 'Event' }).nth(4).click();
-  await editor.getByRole('button', { name: 'Event', exact: true }).nth(1).click();
-  await editor.getByRole('button', { name: 'Event', exact: true }).nth(1).click();
+  await editor.getByRole('button', { name: /(Create Event|イベントを作成)/ }).click();
+  await editor.getByRole('button', { name: /(Event|イベント)/ }).nth(4).click();
+  await editor.getByRole('button', { name: /^(Event|イベント)$/ }).nth(1).click();
+  await editor.getByRole('button', { name: /^(Event|イベント)$/ }).nth(1).click();
 
-  await editor.getByRole('button', { name: 'Relative' }).click();
+  await editor.getByRole('button', { name: /(Relative|相対時間)/ }).click();
   await editor.getByTestId('entry-1').getByLabel('Start event').click();
   await expect(editor.getByTestId('offset')).toContainText('0:00'); // This might be a bad test as it ruires the evaluation to happen within 1s
   await editor.getByLabel('Pause event').click();
@@ -166,5 +166,5 @@ test('time until relative', async ({ context }) => {
   await expect(editor.getByTestId('entry-3').getByTestId('rundown-event')).toContainText('10m');
   await expect(editor.getByTestId('entry-4').getByTestId('rundown-event')).toContainText('20m');
 
-  await editor.getByRole('button', { name: 'Absolute' }).click();
+  await editor.getByRole('button', { name: /(Absolute|絶対時間)/ }).click();
 });

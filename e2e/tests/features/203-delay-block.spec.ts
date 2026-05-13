@@ -4,11 +4,11 @@ test('delays add time to events', async ({ page }) => {
   await page.goto('/editor');
 
   // delete all events and add a new one
-  await page.getByRole('button', { name: 'Edit' }).click();
-  await page.getByRole('button', { name: 'Rundown menu' }).click();
-  await page.getByRole('menuitem', { name: 'Clear all' }).click();
-  await page.getByRole('button', { name: 'Delete all' }).click();
-  await page.getByRole('button', { name: 'Create event' }).click();
+  await page.getByRole('button', { name: /(Edit|編集)/ }).click();
+  await page.getByRole('button', { name: /(Rundown menu|進行表の管理\.\.\.)/ }).click();
+  await page.getByRole('menuitem', { name: /(Clear all|すべてクリア)/ }).click();
+  await page.getByRole('button', { name: /(Delete all|すべて削除)/ }).click();
+  await page.getByRole('button', { name: /(Create event|イベントを作成)/i }).click();
 
   // add data to new event
   await page.getByTestId('rundown').getByPlaceholder('Start').click();
@@ -19,7 +19,7 @@ test('delays add time to events', async ({ page }) => {
   await page.getByTestId('rundown').getByPlaceholder('Duration').press('Enter');
 
   // add delay
-  await page.getByRole('button', { name: 'Delay' }).nth(0).click();
+  await page.getByRole('button', { name: /(Delay|ディレイ)/ }).nth(0).click();
 
   // fill positive delay
   await page.getByTestId('delay-input').click();
@@ -32,19 +32,19 @@ test('delays add time to events', async ({ page }) => {
   await page.getByText('New start 00:08').click();
 
   // apply delay
-  await page.getByRole('button', { name: 'Make permanent' }).click();
+  await page.getByRole('button', { name: /(Make permanent|永続化)/ }).click();
   await expect(page.getByTestId('rundown').getByTestId('time-input-timeStart')).toHaveValue('00:08:00');
 
   // add new delay
   await page.getByTestId('rundown').getByPlaceholder('Start').click();
-  await page.getByRole('button', { name: 'Delay' }).nth(0).click();
+  await page.getByRole('button', { name: /(Delay|ディレイ)/ }).nth(0).click();
   await page.getByTestId('delay-input').click();
   await page.getByTestId('delay-input').fill('10m');
   await page.getByTestId('delay-input').press('Enter');
   await page.getByText('New start 00:18').click();
 
   // cancel delay
-  await page.getByRole('button', { name: 'Cancel' }).click();
+  await page.getByRole('button', { name: /(Cancel|キャンセル)/ }).click();
   await expect(page.getByTestId('rundown').getByTestId('time-input-timeStart')).toHaveValue('00:08:00');
   await expect(page.getByText('New start 00:18')).toHaveCount(0);
 });
@@ -53,11 +53,11 @@ test('delays are show correctly', async ({ page }) => {
   await page.goto('/editor');
 
   // add a test event
-  await page.getByRole('button', { name: 'Edit' }).click();
-  await page.getByRole('button', { name: 'Rundown menu' }).click();
-  await page.getByRole('menuitem', { name: 'Clear all' }).click();
-  await page.getByRole('button', { name: 'Delete all' }).click();
-  await page.getByRole('button', { name: 'Create Event' }).click();
+  await page.getByRole('button', { name: /(Edit|編集)/ }).click();
+  await page.getByRole('button', { name: /(Rundown menu|進行表の管理\.\.\.)/ }).click();
+  await page.getByRole('menuitem', { name: /(Clear all|すべてクリア)/ }).click();
+  await page.getByRole('button', { name: /(Delete all|すべて削除)/ }).click();
+  await page.getByRole('button', { name: /(Create Event|イベントを作成)/ }).click();
 
   await page.getByTestId('time-input-timeStart').click();
   await page.getByTestId('rundown').getByTestId('time-input-timeStart').click();
@@ -72,7 +72,7 @@ test('delays are show correctly', async ({ page }) => {
   await expect(page.getByTestId('entry-1').locator('#entry-status')).toHaveAttribute('data-timerType', 'count-down');
 
   // add a delay
-  await page.getByRole('button', { name: 'Delay' }).nth(0).click();
+  await page.getByRole('button', { name: /(Delay|ディレイ)/ }).nth(0).click();
   await page.getByTestId('delay-input').click();
   await page.getByTestId('delay-input').fill('1');
   await page.getByTestId('delay-input').press('Enter');
