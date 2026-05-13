@@ -12,7 +12,6 @@ import {
 } from 'react-icons/tb';
 
 import Tooltip from '../../../common/components/tooltip/Tooltip';
-import { useTranslation } from '../../../translation/useTranslation';
 import { useEntry } from '../../../common/hooks-query/useRundown';
 import { useAutoTickingClock } from '../../../common/hooks/useAutoTickingClock';
 import {
@@ -29,6 +28,7 @@ import {
 import { getOffsetState, getOffsetText } from '../../../common/utils/offset';
 import { cx, enDash, timerPlaceholder } from '../../../common/utils/styleUtils';
 import { formatDuration, formatTime } from '../../../common/utils/time';
+import { useTranslation } from '../../../translation/useTranslation';
 import SuperscriptPeriod from '../../../views/common/superscript-time/SuperscriptPeriod';
 import { calculateEndAndDaySpan, formatDueTime } from '../overview.utils';
 import { OverUnder, TimeColumn, WrappedInTimeColumn } from './TimeLayout';
@@ -239,9 +239,14 @@ function GroupTimes() {
 
   return (
     <div className={style.metadataRow}>
-      <span className={group?.title ? style.labelTitle : style.label}>{`${group?.title || getLocalizedString('common.group')} `}</span>
+      <span
+        className={group?.title ? style.labelTitle : style.label}
+      >{`${group?.title || getLocalizedString('common.group')} `}</span>
       <div className={style.labelledElement}>
-        <Tooltip text={getLocalizedString('common.time_to_planned_group_end')} render={<TbFolderPin className={style.icon} />} />
+        <Tooltip
+          text={getLocalizedString('common.time_to_planned_group_end')}
+          render={<TbFolderPin className={style.icon} />}
+        />
         <span
           className={cx([
             style.time,
@@ -253,7 +258,10 @@ function GroupTimes() {
         </span>
       </div>
       <div className={style.labelledElement}>
-        <Tooltip text={getLocalizedString('common.time_to_expected_group_end')} render={<TbFolderStar className={style.icon} />} />
+        <Tooltip
+          text={getLocalizedString('common.time_to_expected_group_end')}
+          render={<TbFolderStar className={style.icon} />}
+        />
         <span
           className={cx([
             style.time,
@@ -299,7 +307,10 @@ function FlagTimes() {
     <div className={style.metadataRow}>
       <span className={title ? style.labelTitle : style.label}>{`${title || getLocalizedString('common.flag')} `}</span>
       <div className={style.labelledElement}>
-        <Tooltip text={getLocalizedString('common.time_to_next_flag_planned')} render={<TbFlagPin className={style.icon} />} />
+        <Tooltip
+          text={getLocalizedString('common.time_to_next_flag_planned')}
+          render={<TbFlagPin className={style.icon} />}
+        />
         <span
           data-testid='flag-plannedStart'
           className={cx([
@@ -312,7 +323,10 @@ function FlagTimes() {
         </span>
       </div>
       <div className={style.labelledElement}>
-        <Tooltip text={getLocalizedString('common.time_to_next_flag_expected')} render={<TbFlagStar className={style.icon} />} />
+        <Tooltip
+          text={getLocalizedString('common.time_to_next_flag_expected')}
+          render={<TbFlagStar className={style.icon} />}
+        />
         <span
           data-testid='flag-expectedStart'
           className={cx([
@@ -337,7 +351,13 @@ export function ProgressOverview() {
     ? getLocalizedString('common.progress_format').replace('{{0}}', String(current)).replace('{{1}}', String(numEvents))
     : enDash;
 
-  return <TimeColumn label={getLocalizedString('common.progress')} value={progressText} state={selectedEventIndex === null ? 'muted' : 'active'} />;
+  return (
+    <TimeColumn
+      label={getLocalizedString('common.progress')}
+      value={progressText}
+      state={selectedEventIndex === null ? 'muted' : 'active'}
+    />
+  );
 }
 
 export function OffsetOverview() {

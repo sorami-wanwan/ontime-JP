@@ -1,5 +1,6 @@
 import { memo, use, useMemo } from 'react';
 
+import { useTranslation } from '../../../translation/useTranslation';
 import EmptyPage from '../../common/components/state/EmptyPage';
 import { PresetContext } from '../../common/context/PresetContext';
 import useCustomFields from '../../common/hooks-query/useCustomFields';
@@ -7,8 +8,6 @@ import CuesheetDnd from './cuesheet-dnd/CuesheetDnd';
 import { makeCuesheetColumns } from './cuesheet-table/cuesheet-table-elements/cuesheetColsFactory';
 import CuesheetTable from './cuesheet-table/CuesheetTable';
 import { useApplyCuesheetPolicy } from './useApplyCuesheetPolicy';
-
-import { useTranslation } from '../../../translation/useTranslation';
 
 export default memo(CuesheetTableWrapper);
 function CuesheetTableWrapper() {

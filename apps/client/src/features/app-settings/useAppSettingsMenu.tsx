@@ -112,11 +112,14 @@ export function useAppSettingsMenu() {
         secondary:
           'secondary' in option
             ? isDocker && option.id === 'settings'
-              ? option.secondary.filter(({ id }) => id !== 'settings__port').map((sec) => ({ ...sec, label: getLocalizedString(sec.labelKey as any) }))
+              ? option.secondary
+                  .filter(({ id }) => id !== 'settings__port')
+                  .map((sec) => ({ ...sec, label: getLocalizedString(sec.labelKey as any) }))
               : option.secondary.map((sec) => ({ ...sec, label: getLocalizedString(sec.labelKey as any) }))
             : undefined,
         // if there is an update then highlight the about setting
-        highlight: option.id === 'about' && data.hasUpdates ? getLocalizedString('settings.menu.new_version') : undefined,
+        highlight:
+          option.id === 'about' && data.hasUpdates ? getLocalizedString('settings.menu.new_version') : undefined,
       })),
     [data, getLocalizedString],
   );
