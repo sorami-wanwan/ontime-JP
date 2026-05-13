@@ -9,8 +9,11 @@ import { makeCuesheetColumns } from '../../../views/cuesheet/cuesheet-table/cues
  * Creates column definitions for the rundown table
  * Reuses cuesheetColsFactory with preset=undefined for full access
  */
-export function makeRundownColumns(customFields: CustomFields): ColumnDef<ExtendedEntry>[] {
+export function makeRundownColumns(
+  customFields: CustomFields,
+  getLocalizedString: (key: string) => string,
+): ColumnDef<ExtendedEntry>[] {
   // When preset=undefined, factory defaults to fullRead=true, fullWrite=true
   // canWrite is determined by editorMode (AppMode.Edit vs AppMode.Run)
-  return makeCuesheetColumns(customFields, AppMode.Edit, undefined);
+  return makeCuesheetColumns(customFields, AppMode.Edit, undefined, getLocalizedString);
 }

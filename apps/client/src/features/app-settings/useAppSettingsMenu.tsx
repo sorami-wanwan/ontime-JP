@@ -1,3 +1,4 @@
+import { TranslationObject } from 'ontime-types';
 import { useMemo } from 'react';
 
 import useAppVersion from '../../common/hooks-query/useAppVersion';
@@ -6,7 +7,7 @@ import { useTranslation } from '../../translation/useTranslation';
 
 export type SettingsOption = {
   id: string;
-  labelKey: Extract<keyof typeof import('../../../types/src/translations').translationObject, string>;
+  labelKey: keyof TranslationObject;
   secondary?: Readonly<SettingsOption[]>;
   split?: boolean;
   highlight?: string;
