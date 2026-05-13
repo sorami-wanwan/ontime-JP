@@ -17,5 +17,5 @@ test('message control sends messages to screens', async ({ context }) => {
 
   await editorPage.getByRole('button', { name: /toggle timer message/i }).click({ timeout: 5000 });
 
-  await expect(featurePage.getByText(/(TIME NOW|現在時刻)/)).toBeVisible();
+  await expect(featurePage.getByText(/TIME NOW|現在時刻/i)).toBeVisible();
 });

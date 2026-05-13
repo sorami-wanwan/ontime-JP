@@ -29,7 +29,7 @@ const dbModel: DatabaseModel = {
     editorKey: null,
     operatorKey: null,
     timeFormat: '24',
-    language: 'en',
+    language: 'ja',
   },
   viewSettings: {
     overrideStyles: false,
