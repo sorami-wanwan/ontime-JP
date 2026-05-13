@@ -32,16 +32,20 @@ test('project file upload', async ({ page }) => {
   await page.getByRole('button', { name: 'すべて削除' }).click();
 
   await page.getByRole('button', { name: 'toggle settings' }).click();
-  await page.getByRole('button', { name: 'プロジェクトの管理' }).click();
+  // Note: The settings sidebar navigation is hardcoded in English ('Manage projects')
+  // even when the rest of the UI is in Japanese.
+  await page.getByRole('button', { name: 'Manage projects' }).click();
 
   // workaround to upload file on hidden input
   // https://playwright.dev/docs/api/class-filechooser
   const fileChooserPromise = page.waitForEvent('filechooser');
+  // 'インポート' is correctly translated via 'settings.project.import'
   await page.getByRole('button', { name: 'インポート', exact: true }).click();
   const fileChooser = await fileChooserPromise;
   await fileChooser.setFiles(fileToUpload);
 
-  await page.getByRole('button', { name: '閉じる' }).click();
+  // Note: The modal close button is hardcoded in English ('Close settings')
+  await page.getByRole('button', { name: 'Close settings' }).click();
 
   // asset test events
   const firstTitle = page.getByTestId('entry-1').getByTestId('entry__title');
