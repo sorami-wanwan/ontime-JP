@@ -3,15 +3,10 @@ import { expect, test } from '@playwright/test';
 test('View params configures timer view', async ({ page }) => {
   await page.goto('/timer');
 
-  // Implement a robust waiting strategy:
   // The application starts with the default Japanese ('ja') localization, rendering '現在時刻'.
-  // However, the test fixtures (applied asynchronously) use 'en', which eventually changes it to 'TIME NOW'.
-  // We use a regex to wait for either state, ensuring the UI has loaded before proceeding.
+  // The test DB fixture (language: 'en') is loaded asynchronously by the preceding 000-upload-showfile test,
+  // which eventually changes the label to 'Time now'. We accept either localization here.
   await expect(page.getByText(/TIME NOW|現在時刻/i)).toBeInViewport({ timeout: 10000 });
-
-  // Ensure the application environment has finished applying test fixtures (language: 'en')
-  // before the test performs further interactions.
-  await expect(page.getByText(/TIME NOW/i)).toBeInViewport({ timeout: 10000 });
 
   await page.mouse.move(Math.random() * 100, Math.random() * 100);
   await page.getByTestId('navigation__toggle-settings').click();
