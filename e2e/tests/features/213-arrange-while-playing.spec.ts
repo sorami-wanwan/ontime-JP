@@ -11,11 +11,20 @@ test('Rearrange while playing', async ({ page }) => {
 
   // create events
   await page.getByRole('button', { name: /(Create Event|イベントを作成)/ }).click();
-  await page.getByRole('button', { name: /(Event|イベント)/ }).nth(4).click();
-  await page.getByRole('button', { name: /^(Event|イベント)$/ }).nth(1).click();
+  await page
+    .getByRole('button', { name: /(Event|イベント)/ })
+    .nth(4)
+    .click();
+  await page
+    .getByRole('button', { name: /^(Event|イベント)$/ })
+    .nth(1)
+    .click();
 
   // start event 2
-  await page.getByTestId('entry-2').getByRole('button', { name: /(Start event|イベントを開始)/ }).click();
+  await page
+    .getByTestId('entry-2')
+    .getByRole('button', { name: /(Start event|イベントを開始)/ })
+    .click();
   await expect(page.getByTestId('entry-2').getByTestId('rundown-event')).toHaveAttribute('data-running');
 
   // move event 2 up
@@ -41,10 +50,16 @@ test('flag and unflag an event while playing', async ({ page }) => {
   await page.getByRole('menuitem', { name: /(Clear all|すべてクリア)/ }).click();
   await page.getByRole('button', { name: /(Delete all|すべて削除)/ }).click();
   await page.getByRole('button', { name: /(Create Event|イベントを作成)/ }).click();
-  await page.getByRole('button', { name: /(Event|イベント)/ }).nth(4).click();
+  await page
+    .getByRole('button', { name: /(Event|イベント)/ })
+    .nth(4)
+    .click();
 
   //start the the first event
-  await page.getByTestId('entry-1').getByRole('button', { name: /(Start event|イベントを開始)/ }).click();
+  await page
+    .getByTestId('entry-1')
+    .getByRole('button', { name: /(Start event|イベントを開始)/ })
+    .click();
 
   // there should be no flag times
   await expect(page.getByTestId('flag-plannedStart')).toContainText('––:––:––');

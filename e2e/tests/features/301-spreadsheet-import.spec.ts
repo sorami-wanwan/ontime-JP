@@ -33,7 +33,11 @@ test('imports spreadsheet and applies imported rundown to editor', async ({ page
   await page.getByRole('button', { name: 'Preview import' }).click();
   await page.getByRole('button', { name: 'Apply import' }).click();
   await expect(page.getByText(/(Import complete!|インポート完了！)/)).toBeVisible();
-  await expect(page.getByText(/(Your imported data has been applied to the current rundown\.|インポートしたデータが現在の進行表に適用されました\。)/)).toBeVisible();
+  await expect(
+    page.getByText(
+      /(Your imported data has been applied to the current rundown\.|インポートしたデータが現在の進行表に適用されました\。)/,
+    ),
+  ).toBeVisible();
   await page.getByRole('button', { name: /(Start new import|新しいインポートを開始)/ }).click();
 
   // verify the data in the rundown

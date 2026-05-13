@@ -15,9 +15,18 @@ test('time until absolute', async ({ context }) => {
   await editor.getByRole('button', { name: /(Delete all|すべて削除)/ }).click();
 
   await editor.getByRole('button', { name: /(Create Event|イベントを作成)/ }).click();
-  await editor.getByRole('button', { name: /^(Event|イベント)$/ }).nth(1).click();
-  await editor.getByRole('button', { name: /^(Event|イベント)$/ }).nth(1).click();
-  await editor.getByRole('button', { name: /^(Event|イベント)$/ }).nth(1).click();
+  await editor
+    .getByRole('button', { name: /^(Event|イベント)$/ })
+    .nth(1)
+    .click();
+  await editor
+    .getByRole('button', { name: /^(Event|イベント)$/ })
+    .nth(1)
+    .click();
+  await editor
+    .getByRole('button', { name: /^(Event|イベント)$/ })
+    .nth(1)
+    .click();
 
   await editor.getByTestId('entry-1').getByTestId('rundown-event').click();
   const ids = new Array<string>();
@@ -137,9 +146,18 @@ test('time until relative', async ({ context }) => {
   await editor.getByRole('button', { name: /(Delete all|すべて削除)/ }).click();
 
   await editor.getByRole('button', { name: /(Create Event|イベントを作成)/ }).click();
-  await editor.getByRole('button', { name: /(Event|イベント)/ }).nth(4).click();
-  await editor.getByRole('button', { name: /^(Event|イベント)$/ }).nth(1).click();
-  await editor.getByRole('button', { name: /^(Event|イベント)$/ }).nth(1).click();
+  await editor
+    .getByRole('button', { name: /(Event|イベント)/ })
+    .nth(4)
+    .click();
+  await editor
+    .getByRole('button', { name: /^(Event|イベント)$/ })
+    .nth(1)
+    .click();
+  await editor
+    .getByRole('button', { name: /^(Event|イベント)$/ })
+    .nth(1)
+    .click();
 
   await editor.getByRole('button', { name: /(Relative|相対時間)/ }).click();
   await editor.getByTestId('entry-1').getByLabel('Start event').click();

@@ -46,7 +46,10 @@ test('Cut-paste', async ({ page }) => {
   await page.getByTestId('entry-1').getByTestId('entry__title').fill('first');
   await page.getByTestId('entry-1').getByTestId('entry__title').press('Enter');
 
-  await page.getByRole('button', { name: /(Event|イベント)/ }).nth(4).click();
+  await page
+    .getByRole('button', { name: /(Event|イベント)/ })
+    .nth(4)
+    .click();
   await page.getByTestId('entry-2').getByTestId('entry__title').click();
   await page.getByTestId('entry-2').getByTestId('entry__title').fill('second');
   await page.getByTestId('entry-2').getByTestId('entry__title').press('Enter');
@@ -74,8 +77,14 @@ test('Move', async ({ page }) => {
 
   // create events
   await page.getByRole('button', { name: /(Create Event|イベントを作成)/ }).click();
-  await page.getByRole('button', { name: /(Event|イベント)/ }).nth(4).click();
-  await page.getByRole('button', { name: /^(Event|イベント)$/ }).nth(1).click();
+  await page
+    .getByRole('button', { name: /(Event|イベント)/ })
+    .nth(4)
+    .click();
+  await page
+    .getByRole('button', { name: /^(Event|イベント)$/ })
+    .nth(1)
+    .click();
 
   // copy move down
   await page.getByTestId('entry-1').getByTestId('rundown-event').getByText('1').click();

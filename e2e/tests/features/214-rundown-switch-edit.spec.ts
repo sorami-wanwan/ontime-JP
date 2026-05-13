@@ -16,7 +16,10 @@ test('switching rundowns preserves edits per rundown', async ({ page }) => {
   await page.getByRole('button', { name: /(Rundown menu|進行表の管理\.\.\.)/ }).click();
   await page.getByRole('menuitem', { name: /(Manage Rundowns\.\.\.|進行表の管理\.\.\.)/ }).click();
 
-  await page.getByRole('heading', { name: 'Rundowns' }).getByRole('button', { name: /(New|新規)/ }).click();
+  await page
+    .getByRole('heading', { name: 'Rundowns' })
+    .getByRole('button', { name: /(New|新規)/ })
+    .click();
   await page.getByPlaceholder('e.g., Main Stage, Morning Session').fill(nameA);
   await page.getByRole('button', { name: /(Create rundown|進行表を作成)/ }).click();
   await expect(page.getByRole('row', { name: nameA })).toBeVisible();
@@ -37,7 +40,10 @@ test('switching rundowns preserves edits per rundown', async ({ page }) => {
   await page.getByRole('button', { name: /(Rundown menu|進行表の管理\.\.\.)/ }).click();
   await page.getByRole('menuitem', { name: /(Manage Rundowns\.\.\.|進行表の管理\.\.\.)/ }).click();
 
-  await page.getByRole('heading', { name: 'Rundowns' }).getByRole('button', { name: /(New|新規)/ }).click();
+  await page
+    .getByRole('heading', { name: 'Rundowns' })
+    .getByRole('button', { name: /(New|新規)/ })
+    .click();
   await page.getByPlaceholder('e.g., Main Stage, Morning Session').fill(nameB);
   await page.getByRole('button', { name: /(Create rundown|進行表を作成)/ }).click();
   await expect(page.getByRole('row', { name: nameB })).toBeVisible();
