@@ -143,7 +143,7 @@ export default function CuesheetLinkOptions({ readRef, writeRef }: CuesheetLinkO
           <Panel.Description>{getLocalizedString('sharing.cuesheet_write')}</Panel.Description>
           {cuesheetDefaultColumns.map((column) => (
             <Fragment key={column.value}>
-              <div>{column.label}</div>
+              <div>{column.labelKey ? getLocalizedString(column.labelKey) : column.label}</div>
               <Switch
                 checked={Boolean(readSwitches[column.value])}
                 onCheckedChange={(value: boolean) => handleSwitchChange(column.value, 'read', value)}

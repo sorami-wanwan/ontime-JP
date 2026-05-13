@@ -255,6 +255,7 @@ export function makeCuesheetColumns(
   customFields: CustomFields,
   cuesheetMode: AppMode,
   preset: URLPreset | undefined,
+  getLocalizedString: (key: string) => string,
 ): ColumnDef<ExtendedEntry>[] {
   const columnsDef: ColumnDef<ExtendedEntry>[] = [];
   const { canRead, canWrite } = getCuesheetColumnAccessPolicy(preset, cuesheetMode);
@@ -263,7 +264,7 @@ export function makeCuesheetColumns(
     columnsDef.push({
       accessorKey: 'flag',
       id: 'flag',
-      header: 'Flag',
+      header: getLocalizedString('common.flag'),
       cell: MakeFlagField,
       size: 45,
       minSize: 45,
@@ -275,7 +276,7 @@ export function makeCuesheetColumns(
     columnsDef.push({
       accessorKey: 'cue',
       id: 'cue',
-      header: 'Cue',
+      header: getLocalizedString('common.cue'),
       cell: MakeSingleLineField,
       size: 75,
       minSize: 40,
@@ -287,7 +288,7 @@ export function makeCuesheetColumns(
     columnsDef.push({
       accessorKey: 'timeStart',
       id: 'timeStart',
-      header: 'Start',
+      header: getLocalizedString('common.time_start'),
       cell: MakeStart,
       size: 75,
       minSize: 75,
@@ -299,7 +300,7 @@ export function makeCuesheetColumns(
     columnsDef.push({
       accessorKey: 'timeEnd',
       id: 'timeEnd',
-      header: 'End',
+      header: getLocalizedString('common.time_end'),
       cell: MakeEnd,
       size: 75,
       minSize: 75,
@@ -311,7 +312,7 @@ export function makeCuesheetColumns(
     columnsDef.push({
       accessorKey: 'duration',
       id: 'duration',
-      header: 'Duration',
+      header: getLocalizedString('common.duration'),
       cell: MakeDuration,
       size: 75,
       minSize: 75,
@@ -323,7 +324,7 @@ export function makeCuesheetColumns(
     columnsDef.push({
       accessorKey: 'title',
       id: 'title',
-      header: 'Title',
+      header: getLocalizedString('common.title'),
       cell: MakeSingleLineField,
       size: 250,
       minSize: 75,
@@ -335,7 +336,7 @@ export function makeCuesheetColumns(
     columnsDef.push({
       accessorKey: 'note',
       id: 'note',
-      header: 'Note',
+      header: getLocalizedString('common.note'),
       cell: MakeMultiLineField,
       size: 250,
       minSize: 75,

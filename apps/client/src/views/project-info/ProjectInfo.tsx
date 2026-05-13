@@ -13,15 +13,16 @@ import './ProjectInfo.scss';
 
 export default function ProjectInfoLoader() {
   const { data, status } = useProjectInfoData();
+  const { getLocalizedString } = useTranslation();
 
-  useWindowTitle('Project info');
+  useWindowTitle(getLocalizedString('project.info'));
 
   if (status === 'pending') {
     return <Loader />;
   }
 
   if (status === 'error') {
-    return <EmptyPage text='There was an error fetching data, please refresh the page.' />;
+    return <EmptyPage text={getLocalizedString('common.error_fetching_data')} />;
   }
 
   return <ProjectInfo {...data} />;

@@ -8,15 +8,18 @@ import { makeCuesheetColumns } from './cuesheet-table/cuesheet-table-elements/cu
 import CuesheetTable from './cuesheet-table/CuesheetTable';
 import { useApplyCuesheetPolicy } from './useApplyCuesheetPolicy';
 
+import { useTranslation } from '../../../translation/useTranslation';
+
 export default memo(CuesheetTableWrapper);
 function CuesheetTableWrapper() {
   const { data: customFields, status: customFieldStatus } = useCustomFields();
   const preset = use(PresetContext);
   const { cuesheetMode, setCuesheetMode } = useApplyCuesheetPolicy(preset);
+  const { getLocalizedString } = useTranslation();
 
   const columns = useMemo(
-    () => makeCuesheetColumns(customFields, cuesheetMode, preset),
-    [customFields, cuesheetMode, preset],
+    () => makeCuesheetColumns(customFields, cuesheetMode, preset, getLocalizedString as any),
+    [customFields, cuesheetMode, preset, getLocalizedString],
   );
 
   const isLoading = !customFields || customFieldStatus === 'pending';

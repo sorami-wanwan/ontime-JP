@@ -12,6 +12,7 @@ import {
 } from 'react-icons/tb';
 
 import Tooltip from '../../../common/components/tooltip/Tooltip';
+import { useTranslation } from '../../../translation/useTranslation';
 import { useEntry } from '../../../common/hooks-query/useRundown';
 import { useAutoTickingClock } from '../../../common/hooks/useAutoTickingClock';
 import {
@@ -48,6 +49,7 @@ function formatTimeValue(time: number | null, shouldFormat: boolean | undefined)
 
 export function StartTimesRuntime({ shouldFormat }: OverviewTimeElementsProps) {
   const { plannedEnd, plannedStart, actualStart } = useStartTimesOverview();
+  const { getLocalizedString } = useTranslation();
 
   const plannedStartText = formatTimeValue(plannedStart, shouldFormat);
   const actualStartText = formatTimeValue(actualStart, shouldFormat);
@@ -57,15 +59,15 @@ export function StartTimesRuntime({ shouldFormat }: OverviewTimeElementsProps) {
 
   const multipleDays = maybePlannedDaySpan > 0;
   const plannedEndTooltip = multipleDays
-    ? `Planned end time (rundown spans over ${maybePlannedDaySpan + 1} days)`
-    : 'Planned end time';
+    ? getLocalizedString('common.planned_end_spans').replace('{{0}}', String(maybePlannedDaySpan + 1))
+    : getLocalizedString('common.planned_end');
 
   return (
     <div className={style.column}>
       <div className={style.row}>
-        <span className={style.label}>Start</span>
+        <span className={style.label}>{getLocalizedString('common.start')}</span>
         <Tooltip
-          text='Planned start time'
+          text={getLocalizedString('common.planned_start')}
           render={
             <div className={style.labelledElement}>
               <TbCalendarPin className={style.icon} />
@@ -77,7 +79,7 @@ export function StartTimesRuntime({ shouldFormat }: OverviewTimeElementsProps) {
           }
         />
         <Tooltip
-          text='Actual start time'
+          text={getLocalizedString('common.actual_start')}
           render={
             <div className={style.labelledElement} data-testid='actual-start-time'>
               <TbCalendarClock className={style.icon} />
@@ -91,7 +93,7 @@ export function StartTimesRuntime({ shouldFormat }: OverviewTimeElementsProps) {
       </div>
 
       <div className={style.row}>
-        <span className={style.label}>End</span>
+        <span className={style.label}>{getLocalizedString('common.end')}</span>
         <Tooltip
           text={plannedEndTooltip}
           render={
@@ -115,6 +117,7 @@ export function StartTimesRuntime({ shouldFormat }: OverviewTimeElementsProps) {
 
 export function StartTimesPlanning({ shouldFormat }: OverviewTimeElementsProps) {
   const { plannedEnd, plannedStart } = useStartTimesOverview();
+  const { getLocalizedString } = useTranslation();
 
   const plannedStartText = formatTimeValue(plannedStart, shouldFormat);
 
@@ -123,15 +126,15 @@ export function StartTimesPlanning({ shouldFormat }: OverviewTimeElementsProps) 
 
   const multipleDays = maybePlannedDaySpan > 0;
   const plannedEndTooltip = multipleDays
-    ? `Planned end time (rundown spans over ${maybePlannedDaySpan + 1} days)`
-    : 'Planned end time';
+    ? getLocalizedString('common.planned_end_spans').replace('{{0}}', String(maybePlannedDaySpan + 1))
+    : getLocalizedString('common.planned_end');
 
   return (
     <div className={style.column}>
       <div className={style.row2}>
-        <span className={style.label}>Start</span>
+        <span className={style.label}>{getLocalizedString('common.start')}</span>
         <Tooltip
-          text='Planned start time'
+          text={getLocalizedString('common.planned_start')}
           render={
             <div className={style.labelledElement}>
               <TbCalendarPin className={style.icon} />
@@ -145,7 +148,7 @@ export function StartTimesPlanning({ shouldFormat }: OverviewTimeElementsProps) 
       </div>
 
       <div className={style.row2}>
-        <span className={style.label}>End</span>
+        <span className={style.label}>{getLocalizedString('common.end')}</span>
         <Tooltip
           text={plannedEndTooltip}
           render={
@@ -172,14 +175,15 @@ export function StartTimesPlanning({ shouldFormat }: OverviewTimeElementsProps) 
  */
 function RundownExpectedEnd({ shouldFormat }: OverviewTimeElementsProps) {
   const expectedEnd = useRundownExpectedEnd();
+  const { getLocalizedString } = useTranslation();
 
   const [maybeExpectedEnd, maybeExpectedDaySpan] = useMemo(() => calculateEndAndDaySpan(expectedEnd), [expectedEnd]);
   const maybeExpectedEndText = formatTimeValue(maybeExpectedEnd, shouldFormat);
 
   const multipleDays = maybeExpectedEnd !== null && maybeExpectedDaySpan > 0;
   const tooltip = multipleDays
-    ? `Expected end time (rundown spans over ${maybeExpectedDaySpan + 1} days)`
-    : 'Expected end time';
+    ? getLocalizedString('common.expected_end_spans').replace('{{0}}', String(maybeExpectedDaySpan + 1))
+    : getLocalizedString('common.expected_end');
 
   return (
     <Tooltip
@@ -211,6 +215,7 @@ function GroupTimes() {
   const { clock, mode, groupExpectedEnd, actualGroupStart, currentDay, playback, phase } = useGroupTimerOverView();
   const currentGroupId = useCurrentGroupId();
   const group = useEntry(currentGroupId) as OntimeGroup | null;
+  const { getLocalizedString } = useTranslation();
 
   const hasRunningTimer = phase !== TimerPhase.Pending && isPlaybackActive(playback);
 
@@ -234,9 +239,9 @@ function GroupTimes() {
 
   return (
     <div className={style.metadataRow}>
-      <span className={group?.title ? style.labelTitle : style.label}>{`${group?.title || 'Group'} `}</span>
+      <span className={group?.title ? style.labelTitle : style.label}>{`${group?.title || getLocalizedString('common.group')} `}</span>
       <div className={style.labelledElement}>
-        <Tooltip text='Time to planned group end' render={<TbFolderPin className={style.icon} />} />
+        <Tooltip text={getLocalizedString('common.time_to_planned_group_end')} render={<TbFolderPin className={style.icon} />} />
         <span
           className={cx([
             style.time,
@@ -248,7 +253,7 @@ function GroupTimes() {
         </span>
       </div>
       <div className={style.labelledElement}>
-        <Tooltip text='Time to expected group end' render={<TbFolderStar className={style.icon} />} />
+        <Tooltip text={getLocalizedString('common.time_to_expected_group_end')} render={<TbFolderStar className={style.icon} />} />
         <span
           className={cx([
             style.time,
@@ -267,6 +272,7 @@ function FlagTimes() {
   const { clock, mode, actualStart, plannedStart, playback, currentDay, phase } = useFlagTimerOverView();
   const { id, expectedStart } = useNextFlag();
   const entry = useEntry(id) as OntimeEvent | null;
+  const { getLocalizedString } = useTranslation();
 
   const hasRunningTimer = phase !== TimerPhase.Pending && isPlaybackActive(playback);
 
@@ -291,9 +297,9 @@ function FlagTimes() {
 
   return (
     <div className={style.metadataRow}>
-      <span className={title ? style.labelTitle : style.label}>{`${title || 'Flag'} `}</span>
+      <span className={title ? style.labelTitle : style.label}>{`${title || getLocalizedString('common.flag')} `}</span>
       <div className={style.labelledElement}>
-        <Tooltip text='Time to next flag planned start' render={<TbFlagPin className={style.icon} />} />
+        <Tooltip text={getLocalizedString('common.time_to_next_flag_planned')} render={<TbFlagPin className={style.icon} />} />
         <span
           data-testid='flag-plannedStart'
           className={cx([
@@ -306,7 +312,7 @@ function FlagTimes() {
         </span>
       </div>
       <div className={style.labelledElement}>
-        <Tooltip text='Time to next flag expected start' render={<TbFlagStar className={style.icon} />} />
+        <Tooltip text={getLocalizedString('common.time_to_next_flag_expected')} render={<TbFlagStar className={style.icon} />} />
         <span
           data-testid='flag-expectedStart'
           className={cx([
@@ -324,11 +330,14 @@ function FlagTimes() {
 
 export function ProgressOverview() {
   const { numEvents, selectedEventIndex } = useProgressOverview();
+  const { getLocalizedString } = useTranslation();
 
   const current = selectedEventIndex !== null ? selectedEventIndex + 1 : enDash;
-  const progressText = numEvents ? `${current} of ${numEvents || enDash}` : enDash;
+  const progressText = numEvents
+    ? getLocalizedString('common.progress_format').replace('{{0}}', String(current)).replace('{{1}}', String(numEvents))
+    : enDash;
 
-  return <TimeColumn label='Progress' value={progressText} state={selectedEventIndex === null ? 'muted' : 'active'} />;
+  return <TimeColumn label={getLocalizedString('common.progress')} value={progressText} state={selectedEventIndex === null ? 'muted' : 'active'} />;
 }
 
 export function OffsetOverview() {
@@ -343,11 +352,12 @@ export function OffsetOverview() {
 
 export function ClockOverview({ shouldFormat, className }: OverviewTimeElementsProps & { className?: string }) {
   const clock = useAutoTickingClock();
+  const { getLocalizedString } = useTranslation();
   const formattedClock = shouldFormat ? formatTime(clock) : millisToString(clock);
 
   return (
     <WrappedInTimeColumn
-      label='Time now'
+      label={getLocalizedString('common.time_now')}
       className={className}
       render={(clockClasses) => <SuperscriptPeriod className={clockClasses} time={formattedClock} />}
     />
@@ -356,9 +366,10 @@ export function ClockOverview({ shouldFormat, className }: OverviewTimeElementsP
 
 export function TimerOverview({ className }: { className?: string }) {
   const timer = useTimer();
+  const { getLocalizedString } = useTranslation();
 
   const isWaiting = timer.phase === TimerPhase.Pending;
-  const title = isWaiting ? 'Count to start' : 'Running timer';
+  const title = isWaiting ? getLocalizedString('common.count_to_start') : getLocalizedString('common.running_timer');
   const display = millisToString(isWaiting ? timer.secondaryTimer : timer.current, { fallback: timerPlaceholder });
 
   function getTimerState(): 'waiting' | 'muted' | 'active' {
@@ -373,14 +384,15 @@ export function TimerOverview({ className }: { className?: string }) {
 export function PlanningStats() {
   const { numEvents } = useProgressOverview();
   const { plannedEnd, plannedStart } = useStartTimesOverview();
+  const { getLocalizedString } = useTranslation();
 
   const hasTimes = plannedStart !== null && plannedEnd !== null;
   const formattedDuration = hasTimes ? formatDuration(plannedEnd - plannedStart) : timerPlaceholder;
 
   return (
     <>
-      <TimeColumn label='Total duration' value={formattedDuration} />
-      <TimeColumn label='Events' value={String(numEvents)} />
+      <TimeColumn label={getLocalizedString('common.total_duration')} value={formattedDuration} />
+      <TimeColumn label={getLocalizedString('common.events')} value={String(numEvents)} />
     </>
   );
 }
