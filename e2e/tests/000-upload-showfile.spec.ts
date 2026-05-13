@@ -10,29 +10,42 @@ test('project file upload', async ({ page }) => {
   await page.goto('/editor');
 
   // Try to close welcome modal if it appears (times out silently if not present)
+  // Note: modal text is in Japanese as the app defaults to 'ja' before the test DB is loaded.
+  // We use a 5000ms timeout (up from 1000ms) to handle slow WebSocket initialization in CI,
+  // where the server's 'welcome' dialog message can arrive later than expected.
+  // After closing, we wait for the modal to be fully hidden to prevent it from intercepting
+  // subsequent clicks (race condition with modal closing animation).
   try {
-    await page.getByText('Welcome to Ontime').waitFor({ timeout: 1000 });
-    await page.getByRole('button', { name: 'close welcome modal' }).click();
+    const welcomeText = page.getByText('Ontimeへようこそ');
+    await welcomeText.waitFor({ state: 'visible', timeout: 5000 });
+    await page.getByRole('button', { name: 'ウェルカムモーダルを閉じる' }).click();
+    await welcomeText.waitFor({ state: 'hidden', timeout: 5000 });
   } catch {
     // Modal wasn't shown, continue with the test
   }
 
-  await page.getByRole('button', { name: 'Edit' }).click();
+  // Note: UI is in Japanese (ja) until the test DB (language: en) is loaded below.
+  // 'Rundown menu' and 'toggle settings' are hardcoded English aria-labels in the source — no change needed.
+  await page.getByRole('button', { name: '編集' }).click();
   await page.getByRole('button', { name: 'Rundown menu' }).click();
-  await page.getByRole('menuitem', { name: 'Clear all' }).click();
-  await page.getByRole('button', { name: 'Delete all' }).click();
+  await page.getByRole('menuitem', { name: 'すべてクリア' }).click();
+  await page.getByRole('button', { name: 'すべて削除' }).click();
 
   await page.getByRole('button', { name: 'toggle settings' }).click();
+  // Note: The settings sidebar navigation is hardcoded in English ('Manage projects')
+  // even when the rest of the UI is in Japanese.
   await page.getByRole('button', { name: 'Manage projects' }).click();
 
   // workaround to upload file on hidden input
   // https://playwright.dev/docs/api/class-filechooser
   const fileChooserPromise = page.waitForEvent('filechooser');
-  await page.getByRole('button', { name: 'Import', exact: true }).click();
+  // 'インポート' is correctly translated via 'settings.project.import'
+  await page.getByRole('button', { name: 'インポート', exact: true }).click();
   const fileChooser = await fileChooserPromise;
   await fileChooser.setFiles(fileToUpload);
 
-  await page.getByRole('button', { name: 'close' }).click();
+  // Note: The modal close button is hardcoded in English ('Close settings')
+  await page.getByRole('button', { name: 'Close settings' }).click();
 
   // asset test events
   const firstTitle = page.getByTestId('entry-1').getByTestId('entry__title');
