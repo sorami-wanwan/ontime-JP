@@ -38,7 +38,10 @@ test('project file upload', async ({ page }) => {
   // https://playwright.dev/docs/api/class-filechooser
   const fileChooserPromise = page.waitForEvent('filechooser');
   // 'インポート' is correctly translated via 'settings.project.import'
-  await page.locator('button').filter({ hasText: /^(Import|インポート)$/ }).click();
+  await page
+    .locator('button')
+    .filter({ hasText: /^(Import|インポート)$/ })
+    .click();
   const fileChooser = await fileChooserPromise;
   await fileChooser.setFiles(fileToUpload);
 

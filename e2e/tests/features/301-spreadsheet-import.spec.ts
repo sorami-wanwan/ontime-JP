@@ -15,7 +15,10 @@ test('imports spreadsheet and applies imported rundown to editor', async ({ page
   // open the spreadsheet
   await page.getByRole('button', { name: /(Toggle settings|設定の切り替え)/ }).click();
   await page.getByRole('button', { name: /(Project settings|プロジェクト)/ }).click();
-  await page.getByRole('button', { name: /(Import spreadsheet|スプレッドシートのインポート)/ }).first().click();
+  await page
+    .getByRole('button', { name: /(Import spreadsheet|スプレッドシートのインポート)/ })
+    .first()
+    .click();
   await expect(page.getByRole('heading', { name: /(Sources|ソース)/ })).toBeVisible();
 
   // upload the spreadsheet
