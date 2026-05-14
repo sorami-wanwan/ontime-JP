@@ -11,14 +11,8 @@ test('Rearrange while playing', async ({ page }) => {
 
   // create events
   await page.getByRole('button', { name: /(Create Event|イベントを作成)/ }).click();
-  await page
-    .getByRole('button', { name: /(Event|イベント)/ })
-    .nth(4)
-    .click();
-  await page
-    .getByRole('button', { name: /^(Event|イベント)$/ })
-    .nth(1)
-    .click();
+  await page.getByTestId('entry-1').getByTestId('rundown-event').press('Alt+E');
+  await page.getByTestId('entry-2').getByTestId('rundown-event').press('Alt+E');
 
   // start event 2
   await page
@@ -50,10 +44,7 @@ test('flag and unflag an event while playing', async ({ page }) => {
   await page.getByRole('menuitem', { name: /(Clear all|すべてクリア)/ }).click();
   await page.getByRole('button', { name: /(Delete all|すべて削除)/ }).click();
   await page.getByRole('button', { name: /(Create Event|イベントを作成)/ }).click();
-  await page
-    .getByRole('button', { name: /(Event|イベント)/ })
-    .nth(4)
-    .click();
+  await page.getByTestId('entry-1').getByTestId('rundown-event').press('Alt+E');
 
   //start the the first event
   await page

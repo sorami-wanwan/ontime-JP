@@ -207,7 +207,6 @@ test('Delete event', async ({ page }) => {
   await page.getByRole('button', { name: /(Edit|編集)/ }).click();
 
   // clear rundown
-  await page.goto('/rundown');
   await page.getByRole('button', { name: /(Rundown menu|進行表の管理\.\.\.)/ }).click();
   await page.getByRole('menuitem', { name: /(Clear all|すべてクリア)/ }).click();
   await page.getByRole('button', { name: /(Delete all|すべて削除)/ }).click();
