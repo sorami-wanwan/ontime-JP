@@ -14,24 +14,24 @@ test('imports spreadsheet and applies imported rundown to editor', async ({ page
 
   // open the spreadsheet
   await page.getByRole('button', { name: /(Toggle settings|設定の切り替え)/ }).click();
-  await page.getByRole('button', { name: 'Project settings' }).click();
-  await page.getByRole('button', { name: 'Import spreadsheet' }).first().click();
-  await expect(page.getByRole('heading', { name: 'Sources' })).toBeVisible();
+  await page.getByRole('button', { name: /(Project settings|プロジェクト)/ }).click();
+  await page.getByRole('button', { name: /(Import spreadsheet|スプレッドシートのインポート)/ }).first().click();
+  await expect(page.getByRole('heading', { name: /(Sources|ソース)/ })).toBeVisible();
 
   // upload the spreadsheet
   const fileChooserPromise = page.waitForEvent('filechooser');
-  await page.getByRole('button', { name: 'Start import', exact: true }).click();
+  await page.getByRole('button', { name: /(Start import|インポートを開始)/, exact: true }).click();
   const fileChooser = await fileChooserPromise;
   await fileChooser.setFiles(fileToUpload);
-  const worksheetSelect = page.getByRole('combobox', { name: 'Worksheet', exact: true });
+  const worksheetSelect = page.getByRole('combobox', { name: /(Worksheet|ワークシート)/, exact: true });
   await expect(worksheetSelect).toBeVisible();
   await worksheetSelect.click();
   await page.getByRole('option', { name: 'Event schedule advanced' }).click();
   await expect(worksheetSelect).toContainText('Event schedule advanced');
 
   // apply import
-  await page.getByRole('button', { name: 'Preview import' }).click();
-  await page.getByRole('button', { name: 'Apply import' }).click();
+  await page.getByRole('button', { name: /(Preview import|インポートをプレビュー)/ }).click();
+  await page.getByRole('button', { name: /(Apply import|インポートを適用)/ }).click();
   await expect(page.getByText(/(Import complete!|インポート完了！)/)).toBeVisible();
   await expect(
     page.getByText(

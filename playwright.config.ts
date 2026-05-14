@@ -25,9 +25,9 @@ const config: PlaywrightTestConfig = {
         timeout: 60 * 1000,
       }
     : {
-        command: 'turbo run dev --filter=ontime-server',
+        command: 'cross-env PORT=4001 turbo run dev --filter=ontime-server',
         port: 4001,
-        reuseExistingServer: true,
+        reuseExistingServer: !process.env.CI,
         timeout: 60 * 1000,
       },
   use: {
