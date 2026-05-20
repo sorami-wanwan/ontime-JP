@@ -1,7 +1,7 @@
-import { join } from 'path';
-import { homedir } from 'os';
 import { randomUUID } from 'crypto';
 import { readFile, unlink } from 'fs/promises';
+import { homedir } from 'os';
+import { join } from 'path';
 
 import { expect, test } from '@playwright/test';
 
@@ -9,15 +9,23 @@ const fileToUpload = 'e2e/tests/fixtures/e2e-test-db.json';
 const fileToDownload = 'e2e/tests/fixtures/tmp/';
 
 test.beforeAll(async () => {
-  try {
-    const projectFilePath = join(homedir(), '.Ontime', 'projects', 'e2e-test-db.json');
-    await unlink(projectFilePath);
-  } catch (error) {
-    // Ignore if file doesn't exist
+  const filesToDelete = [
+    join(homedir(), '.Ontime', 'projects', 'e2e-test-db.json'),
+    join(homedir(), '.Ontime', 'projects', 'e2e-test-db (1).json'),
+    join(homedir(), '.Ontime', 'uploads', 'e2e-test-db.json'),
+    join(homedir(), '.Ontime', 'uploads', 'e2e-test-db (1).json'),
+  ];
+  for (const file of filesToDelete) {
+    await unlink(file).catch(() => {});
   }
 });
 
 test('project file upload', async ({ page }) => {
+  page.on('console', (msg) => console.log('PAGE LOG:', msg.text()));
+  page.on('pageerror', (err) => console.log('PAGE ERROR:', err.message));
+  page.on('request', (req) => console.log('PAGE REQUEST:', req.method(), req.url()));
+  page.on('response', (res) => console.log('PAGE RESPONSE:', res.status(), res.url()));
+
   await page.goto('/editor');
 
   // Welcome modal is now disabled globally during E2E tests via E2E_SKIP_WELCOME
@@ -28,6 +36,9 @@ test('project file upload', async ({ page }) => {
   await page.getByRole('button', { name: /(Rundown menu|進行表の管理\.\.\.)/ }).click();
   await page.getByRole('menuitem', { name: /(Clear all|すべてクリア)/ }).click();
   await page.getByRole('button', { name: /(Delete all|すべて削除)/ }).click();
+
+  // Wait for rundown to be cleared completely in the UI (synchronizing client & server state)
+  await expect(page.getByTestId('entry-1')).toBeHidden();
 
   await page.getByRole('button', { name: 'toggle settings' }).click();
   await page.getByRole('button', { name: /(Manage projects|プロジェクトの管理)/ }).click();
@@ -45,6 +56,15 @@ test('project file upload', async ({ page }) => {
 
   // Note: The modal close button is hardcoded in English ('Close settings')
   await page.getByRole('button', { name: 'Close settings' }).click();
+
+  // Wait for the newly uploaded project data to load and render completely
+  try {
+    await expect(page.getByTestId('entry-1').getByTestId('entry__title')).toHaveValue('Albania', { timeout: 10000 });
+  } catch (err) {
+    await page.screenshot({ path: 'e2e-debug-screenshot.png' });
+    console.log('PAGE HTML CONTENT:', await page.content());
+    throw err;
+  }
 
   // asset test events
   const firstTitle = page.getByTestId('entry-1').getByTestId('entry__title');

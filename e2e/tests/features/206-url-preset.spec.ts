@@ -11,7 +11,7 @@ test.describe('URL Preset', () => {
     await page.goto('/editor');
 
     // Create the preset that will be used by other tests
-    await page.getByRole('button', { name: /(Toggle settings|設定の切り替え)/ }).click();
+    await page.getByTestId('navigation__toggle-settings').click();
     await page.getByRole('button', { name: /(URL Presets|URLプリセット)/ }).click();
 
     await page
@@ -44,7 +44,7 @@ test.describe('URL Preset', () => {
     expect(page.url().includes('alias=testing')).not.toBeTruthy();
 
     // open settings
-    await page.getByRole('button', { name: /(Toggle settings|設定の切り替え)/ }).click();
+    await page.getByTestId('navigation__toggle-settings').click();
     await page
       .locator('div')
       .filter({ hasText: /^testingApply$/ })
@@ -61,7 +61,7 @@ test.describe('URL Preset', () => {
     await page.goto('/editor');
 
     // open settings
-    await page.getByRole('button', { name: /(Toggle settings|設定の切り替え)/ }).click();
+    await page.getByTestId('navigation__toggle-settings').click();
     await page.getByRole('button', { name: 'Share link' }).click();
 
     // select options
@@ -92,7 +92,7 @@ test.describe('URL Preset', () => {
     await page.goto('/editor');
 
     // open settings
-    await page.getByRole('button', { name: /(Toggle settings|設定の切り替え)/ }).click();
+    await page.getByTestId('navigation__toggle-settings').click();
     await page.getByRole('button', { name: 'Share link' }).click();
 
     // select options

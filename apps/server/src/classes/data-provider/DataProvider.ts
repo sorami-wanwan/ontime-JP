@@ -12,7 +12,7 @@ import {
   ViewSettings,
 } from 'ontime-types';
 
-import { isTest } from '../../setup/environment.js';
+import { isE2e, isTest } from '../../setup/environment.js';
 import { shouldCrashDev } from '../../utils/development.js';
 import { isPath } from '../../utils/fileManagement.js';
 import { safeMerge } from './DataProvider.utils.js';
@@ -27,6 +27,16 @@ let db = {} as Low<DatabaseModel>;
 export async function initPersistence(filePath: string, fallbackData: DatabaseModel) {
   // eslint-disable-next-line no-unused-labels -- dev code path
   DEV: shouldCrashDev(!isPath(filePath), 'initPersistence should be called with a path');
+
+  if (pendingWrite) {
+    clearTimeout(pendingWrite);
+    pendingWrite = null;
+  }
+  if (activeWrite) {
+    await activeWrite.catch(() => {});
+    activeWrite = null;
+  }
+
   const newDb = await JSONFilePreset<DatabaseModel>(filePath, fallbackData);
 
   // Read the database to initialize it
@@ -189,6 +199,25 @@ const writeDelayMs = 3000; // 3 seconds
  */
 async function persist() {
   if (isTest) return;
+
+  if (isE2e) {
+    if (pendingWrite) {
+      clearTimeout(pendingWrite);
+      pendingWrite = null;
+    }
+    if (activeWrite) {
+      await activeWrite.catch(() => {});
+    }
+    try {
+      activeWrite = db.write();
+      await activeWrite;
+    } catch (error) {
+      console.error('Failed to persist database:', error);
+    } finally {
+      activeWrite = null;
+    }
+    return;
+  }
 
   // Cancel any pending write and reschedule
   if (pendingWrite) {

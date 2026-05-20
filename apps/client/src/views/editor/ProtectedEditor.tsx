@@ -54,7 +54,13 @@ export default function ProtectedEditor() {
           <IconButton aria-label='Toggle navigation' variant='subtle-white' size='xlarge' onClick={handler.open}>
             <IoApps />
           </IconButton>
-          <IconButton aria-label='Toggle settings' variant='subtle-white' size='xlarge' onClick={toggleSettings}>
+          <IconButton
+            aria-label='Toggle settings'
+            variant='subtle-white'
+            size='xlarge'
+            onClick={toggleSettings}
+            data-testid='navigation__toggle-settings'
+          >
             {isSettingsOpen ? <IoClose /> : <IoSettingsOutline />}
           </IconButton>
           <EditorLayoutOptions />

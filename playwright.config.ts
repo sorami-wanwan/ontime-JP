@@ -25,7 +25,8 @@ const config: PlaywrightTestConfig = {
         timeout: 60 * 1000,
       }
     : {
-        command: 'cross-env E2E_SKIP_WELCOME=true PORT=4001 turbo run dev --filter=ontime-server',
+        command:
+          'cross-env E2E_SKIP_WELCOME=true PORT=4001 ONTIME_E2E_MOCK_CLOCK=09:00:00 turbo run dev --filter=ontime-server',
         port: 4001,
         reuseExistingServer: !process.env.CI,
         timeout: 60 * 1000,

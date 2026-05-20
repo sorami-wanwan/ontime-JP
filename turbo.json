@@ -14,7 +14,7 @@
     "dev": {
       "cache": false,
       "persistent": true,
-      "env": ["ROUTER_PREFIX", "IS_CLOUD", "PORT", "E2E_SKIP_WELCOME"]
+      "env": ["ROUTER_PREFIX", "IS_CLOUD", "PORT", "E2E_SKIP_WELCOME", "ONTIME_E2E_MOCK_CLOCK"]
     },
     "dev:electron": {
       "cache": false,

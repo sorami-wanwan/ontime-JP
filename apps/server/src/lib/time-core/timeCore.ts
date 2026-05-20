@@ -1,8 +1,42 @@
 import { Day, Duration, Instant, TimeOfDay } from 'ontime-types';
 import { MILLIS_PER_MINUTE, dayInMs } from 'ontime-utils';
 
+let mockStartEpoch: number | null = null;
+let processStartTime = Date.now();
+
+function getMockStartEpoch(): number | null {
+  if (mockStartEpoch !== null) {
+    return mockStartEpoch;
+  }
+  const mockClockEnv = process.env.ONTIME_E2E_MOCK_CLOCK;
+  if (!mockClockEnv) {
+    return null;
+  }
+
+  // Parse "HH:MM:SS" or similar format
+  const parts = mockClockEnv.split(':');
+  if (parts.length < 2) {
+    return null;
+  }
+  const hours = parseInt(parts[0], 10) || 0;
+  const minutes = parseInt(parts[1], 10) || 0;
+  const seconds = parseInt(parts[2] || '0', 10) || 0;
+
+  const mockTimeOfDayMs = (hours * 3600 + minutes * 60 + seconds) * 1000;
+  const startOfToday = new Date();
+  startOfToday.setHours(0, 0, 0, 0);
+
+  mockStartEpoch = startOfToday.getTime() + mockTimeOfDayMs;
+  processStartTime = Date.now();
+  return mockStartEpoch;
+}
+
 /** Returns the current instant */
 export function now(): Instant {
+  const mockStart = getMockStartEpoch();
+  if (mockStart !== null) {
+    return (mockStart + (Date.now() - processStartTime)) as Instant;
+  }
   return Date.now() as Instant;
 }
 

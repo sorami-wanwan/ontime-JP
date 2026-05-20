@@ -9,7 +9,11 @@ import { parseDatabaseModel } from '../../api-data/db/db.parser.js';
 import { getCurrentRundown } from '../../api-data/rundown/rundown.dao.js';
 import { parseRundowns } from '../../api-data/rundown/rundown.parser.js';
 import { initRundown } from '../../api-data/rundown/rundown.service.js';
-import { getDataProvider, initPersistence, flushPendingWrites as dbFlushPendingWrites } from '../../classes/data-provider/DataProvider.js';
+import {
+  getDataProvider,
+  initPersistence,
+  flushPendingWrites as dbFlushPendingWrites,
+} from '../../classes/data-provider/DataProvider.js';
 import { safeMerge } from '../../classes/data-provider/DataProvider.utils.js';
 import { logger } from '../../classes/Logger.js';
 import { makeNewProject } from '../../models/dataModel.js';
@@ -214,9 +218,11 @@ export async function initialiseProject(): Promise<string> {
  */
 export async function loadProjectFile(
   fileName: string,
-  options?: { rundownId?: string; initialLoad?: boolean },
+  options?: { rundownId?: string; initialLoad?: boolean; skipFlush?: boolean },
 ): Promise<string> {
-  await flushPendingWrites();
+  if (!options?.skipFlush) {
+    await flushPendingWrites();
+  }
   const filePath = doesProjectExist(fileName);
   if (filePath === null) {
     throw new Error('Project file not found');

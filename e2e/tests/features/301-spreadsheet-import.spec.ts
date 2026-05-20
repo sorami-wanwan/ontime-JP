@@ -10,6 +10,7 @@ test('imports spreadsheet and applies imported rundown to editor', async ({ page
   await page.getByRole('button', { name: /(Rundown menu|進行表の管理\.\.\.)/ }).click();
   await page.getByRole('menuitem', { name: /(Clear all|すべてクリア)/ }).click();
   await page.getByRole('button', { name: /(Delete all|すべて削除)/ }).click();
+  await expect(page.getByRole('dialog')).toBeHidden();
   await expect(page.getByTestId('rundown-event')).toHaveCount(0);
 
   // open the spreadsheet

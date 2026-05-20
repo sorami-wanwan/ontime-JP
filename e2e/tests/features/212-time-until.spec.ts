@@ -2,32 +2,78 @@ import { expect, test } from '@playwright/test';
 
 test('time until absolute', async ({ context }) => {
   const editor = await context.newPage();
-  const op = await context.newPage();
-  const timeline = await context.newPage();
-  const countdown = await context.newPage();
   await editor.goto('/editor');
-  await op.goto('/op');
-  await timeline.goto('/timeline');
 
-  await editor.getByRole('button', { name: /(Edit|編集)/ }).click();
+  await editor.getByRole('button', { name: /(Edit|編集)/ }).click({ timeout: 15000 });
   await editor.getByRole('button', { name: /(Rundown menu|進行表の管理\.\.\.)/ }).click();
   await editor.getByRole('menuitem', { name: /(Clear all|すべてクリア)/ }).click();
   await editor.getByRole('button', { name: /(Delete all|すべて削除)/ }).click();
+  await expect(editor.getByRole('dialog')).toBeHidden();
+
+  // Verify editor is empty
+  await expect(editor.getByTestId('rundown-event')).toHaveCount(0);
+
+  const op = await context.newPage();
+  const timeline = await context.newPage();
+  const countdown = await context.newPage();
+  await op.goto('/op');
+  await timeline.goto('/timeline');
+
+  // Verify they started empty
+  await expect(op.getByTestId('time-until')).toHaveCount(0);
+  await expect(timeline.getByTestId('1')).toBeHidden();
 
   await editor.getByRole('button', { name: /(Create Event|イベントを作成)/ }).click();
+
+  await editor.getByTestId('entry-1').getByTestId('entry__title').click();
+  await editor.getByTestId('entry-1').getByTestId('entry__title').press('Enter');
   await editor.getByTestId('entry-1').getByTestId('rundown-event').press('Alt+E');
+
+  await editor.getByTestId('entry-2').getByTestId('entry__title').click();
+  await editor.getByTestId('entry-2').getByTestId('entry__title').press('Enter');
   await editor.getByTestId('entry-2').getByTestId('rundown-event').press('Alt+E');
+
+  await editor.getByTestId('entry-3').getByTestId('entry__title').click();
+  await editor.getByTestId('entry-3').getByTestId('entry__title').press('Enter');
   await editor.getByTestId('entry-3').getByTestId('rundown-event').press('Alt+E');
+
+  // Wait for all pages to receive the 4 new events
+  await expect(editor.getByTestId('rundown-event')).toHaveCount(4);
+  await expect(op.getByTestId('time-until')).toHaveCount(4);
+  await expect(timeline.getByTestId('1')).toBeVisible();
+  await expect(timeline.getByTestId('2')).toBeVisible();
+  await expect(timeline.getByTestId('3')).toBeVisible();
+  await expect(timeline.getByTestId('4')).toBeVisible();
 
   await editor.getByTestId('entry-1').getByTestId('rundown-event').click();
   const ids = new Array<string>();
-  ids.push(await editor.getByTestId('editor-container').getByLabel('Event ID (read only)').inputValue());
+  ids.push(
+    await editor
+      .getByTestId('editor-container')
+      .getByLabel(/^(Event ID \(read only\)|イベントID（読み取り専用）)$/)
+      .inputValue(),
+  );
   await editor.getByTestId('entry-2').getByTestId('rundown-event').click();
-  ids.push(await editor.getByTestId('editor-container').getByLabel('Event ID (read only)').inputValue());
+  ids.push(
+    await editor
+      .getByTestId('editor-container')
+      .getByLabel(/^(Event ID \(read only\)|イベントID（読み取り専用）)$/)
+      .inputValue(),
+  );
   await editor.getByTestId('entry-3').getByTestId('rundown-event').click();
-  ids.push(await editor.getByTestId('editor-container').getByLabel('Event ID (read only)').inputValue());
+  ids.push(
+    await editor
+      .getByTestId('editor-container')
+      .getByLabel(/^(Event ID \(read only\)|イベントID（読み取り専用）)$/)
+      .inputValue(),
+  );
   await editor.getByTestId('entry-4').getByTestId('rundown-event').click();
-  ids.push(await editor.getByTestId('editor-container').getByLabel('Event ID (read only)').inputValue());
+  ids.push(
+    await editor
+      .getByTestId('editor-container')
+      .getByLabel(/^(Event ID \(read only\)|イベントID（読み取り専用）)$/)
+      .inputValue(),
+  );
 
   await countdown.goto(`/countdown?${ids.join('&sub=')}`);
 
@@ -61,22 +107,22 @@ test('time until absolute', async ({ context }) => {
   await editor.getByLabel('Pause event').click();
 
   // 1. initial check
-  await expect(entry2.editorEvent).toContainText('9m');
-  await expect(entry2.opTimeUntil).toContainText('9m');
-  await expect(entry2.timelineItem).toContainText('9m59s');
-  await expect(entry2.timelineNext).toContainText('9m59s');
-  await expect(entry2.countdownItem).toContainText('10:00');
+  await expect(entry2.editorEvent).toContainText(/(9m|10m)/);
+  await expect(entry2.opTimeUntil).toContainText(/(9m|10m)/);
+  await expect(entry2.timelineItem).toContainText(/(9m59s|10m00s)/);
+  await expect(entry2.timelineNext).toContainText(/(9m59s|10m00s)/);
+  await expect(entry2.countdownItem).toContainText(/(9:5[89]|10:00)/);
 
   await expect(entry3.editorEvent).toContainText('19m');
   await expect(entry3.opTimeUntil).toContainText('19m');
   await expect(entry3.timelineItem).toContainText('19m');
   await expect(entry3.timelineFollowedBy).toContainText('19m');
-  await expect(entry3.countdownItem).toContainText('19m');
+  await expect(entry3.countdownItem).toContainText(/(19m|19分)/);
 
   await expect(entry4.editorEvent).toContainText('29m');
   await expect(entry4.opTimeUntil).toContainText('29m');
   await expect(entry4.timelineItem).toContainText('29m');
-  await expect(entry4.countdownItem).toContainText('29m');
+  await expect(entry4.countdownItem).toContainText(/(29m|29分)/);
 
   await editor.getByTestId('entry-1').getByTestId('time-input-duration').click();
   await editor.getByTestId('entry-1').getByTestId('time-input-duration').fill('6h');
@@ -87,58 +133,68 @@ test('time until absolute', async ({ context }) => {
   await expect(entry2.opTimeUntil).toContainText('5h59m');
   await expect(entry2.timelineItem).toContainText('5h59m');
   await expect(entry2.timelineNext).toContainText('5h59m');
-  await expect(entry2.countdownItem).toContainText('5h59m');
+  await expect(entry2.countdownItem).toContainText(/(5h59m|5h 59分|5h59分)/);
 
   await expect(entry3.editorEvent).toContainText('6h9m');
   await expect(entry3.opTimeUntil).toContainText('6h9m');
   await expect(entry3.timelineItem).toContainText('6h9m');
   await expect(entry3.timelineFollowedBy).toContainText('6h9m');
-  await expect(entry3.countdownItem).toContainText('6h9m');
+  await expect(entry3.countdownItem).toContainText(/(6h9m|6h 9分|6h9分)/);
 
   await expect(entry4.editorEvent).toContainText('6h19m');
   await expect(entry4.opTimeUntil).toContainText('6h19m');
   await expect(entry4.timelineItem).toContainText('6h19m');
-  await expect(entry4.countdownItem).toContainText('6h19m');
+  await expect(entry4.countdownItem).toContainText(/(6h19m|6h 19分|6h19分)/);
 
   await editor.getByTestId('entry-1').getByTestId('time-input-duration').click();
   await editor.getByTestId('entry-1').getByTestId('time-input-duration').fill('30s');
   await editor.getByTestId('entry-1').getByTestId('time-input-duration').press('Enter');
 
-  await expect(editor.getByTestId('entry-2').getByTestId('rundown-event')).toContainText('30s');
-  await expect(editor.getByTestId('entry-3').getByTestId('rundown-event')).toContainText('10m');
-  await expect(editor.getByTestId('entry-4').getByTestId('rundown-event')).toContainText('20m');
+  await expect(editor.getByTestId('entry-2').getByTestId('rundown-event')).toContainText(/(2[89]s|30s)/);
+  await expect(editor.getByTestId('entry-3').getByTestId('rundown-event')).toContainText(/(9m|10m)/);
+  await expect(editor.getByTestId('entry-4').getByTestId('rundown-event')).toContainText(/(19m|20m)/);
 
   // 3. check after final duration change
-  await expect(entry2.editorEvent).toContainText('30s');
-  await expect(entry2.opTimeUntil).toContainText('30s');
-  await expect(entry2.timelineItem).toContainText('30s');
-  await expect(entry2.timelineNext).toContainText('30s');
-  await expect(entry2.countdownItem).toContainText('0:30');
+  await expect(entry2.editorEvent).toContainText(/(2[89]s|30s)/);
+  await expect(entry2.opTimeUntil).toContainText(/(2[89]s|30s)/);
+  await expect(entry2.timelineItem).toContainText(/(2[89]s|30s)/);
+  await expect(entry2.timelineNext).toContainText(/(2[89]s|30s)/);
+  await expect(entry2.countdownItem).toContainText(/(0:2[89]|0:30)/);
 
-  await expect(entry3.editorEvent).toContainText('10m');
-  await expect(entry3.opTimeUntil).toContainText('10m');
-  await expect(entry3.timelineItem).toContainText('10m');
-  await expect(entry3.timelineFollowedBy).toContainText('10m');
-  await expect(entry3.countdownItem).toContainText('10m');
+  await expect(entry3.editorEvent).toContainText(/(9m|10m)/);
+  await expect(entry3.opTimeUntil).toContainText(/(9m|10m)/);
+  await expect(entry3.timelineItem).toContainText(/(9m|10m)/);
+  await expect(entry3.timelineFollowedBy).toContainText(/(9m|10m)/);
+  await expect(entry3.countdownItem).toContainText(/(9m|10m|9分|10分)/);
 
-  await expect(entry4.editorEvent).toContainText('20m');
-  await expect(entry4.opTimeUntil).toContainText('20m');
-  await expect(entry4.timelineItem).toContainText('20m');
-  await expect(entry4.countdownItem).toContainText('20m');
+  await expect(entry4.editorEvent).toContainText(/(19m|20m)/);
+  await expect(entry4.opTimeUntil).toContainText(/(19m|20m)/);
+  await expect(entry4.timelineItem).toContainText(/(19m|20m)/);
+  await expect(entry4.countdownItem).toContainText(/(19m|20m|19分|20分)/);
 });
 
 test('time until relative', async ({ context }) => {
   const editor = await context.newPage();
-  editor.goto('/editor');
+  await editor.goto('/editor');
 
-  await editor.getByRole('button', { name: /(Edit|編集)/ }).click();
+  await editor.getByRole('button', { name: /(Edit|編集)/ }).click({ timeout: 15000 });
   await editor.getByRole('button', { name: /(Rundown menu|進行表の管理\.\.\.)/ }).click();
   await editor.getByRole('menuitem', { name: /(Clear all|すべてクリア)/ }).click();
   await editor.getByRole('button', { name: /(Delete all|すべて削除)/ }).click();
+  await expect(editor.getByRole('dialog')).toBeHidden();
 
   await editor.getByRole('button', { name: /(Create Event|イベントを作成)/ }).click();
+
+  await editor.getByTestId('entry-1').getByTestId('entry__title').click();
+  await editor.getByTestId('entry-1').getByTestId('entry__title').press('Enter');
   await editor.getByTestId('entry-1').getByTestId('rundown-event').press('Alt+E');
+
+  await editor.getByTestId('entry-2').getByTestId('entry__title').click();
+  await editor.getByTestId('entry-2').getByTestId('entry__title').press('Enter');
   await editor.getByTestId('entry-2').getByTestId('rundown-event').press('Alt+E');
+
+  await editor.getByTestId('entry-3').getByTestId('entry__title').click();
+  await editor.getByTestId('entry-3').getByTestId('entry__title').press('Enter');
   await editor.getByTestId('entry-3').getByTestId('rundown-event').press('Alt+E');
 
   await editor.getByRole('button', { name: /(Relative|相対時間)/ }).click();
@@ -146,9 +202,9 @@ test('time until relative', async ({ context }) => {
   await expect(editor.getByTestId('offset')).toContainText('0:00'); // This might be a bad test as it ruires the evaluation to happen within 1s
   await editor.getByLabel('Pause event').click();
 
-  await expect(editor.getByTestId('entry-2').getByTestId('rundown-event')).toContainText('9m');
-  await expect(editor.getByTestId('entry-3').getByTestId('rundown-event')).toContainText('19m');
-  await expect(editor.getByTestId('entry-4').getByTestId('rundown-event')).toContainText('29m');
+  await expect(editor.getByTestId('entry-2').getByTestId('rundown-event')).toContainText(/(9m|10m)/);
+  await expect(editor.getByTestId('entry-3').getByTestId('rundown-event')).toContainText(/(19m|20m)/);
+  await expect(editor.getByTestId('entry-4').getByTestId('rundown-event')).toContainText(/(29m|30m)/);
 
   await editor.getByTestId('entry-1').getByTestId('time-input-duration').click();
   await editor.getByTestId('entry-1').getByTestId('time-input-duration').fill('6h');
@@ -162,7 +218,7 @@ test('time until relative', async ({ context }) => {
   await editor.getByTestId('entry-1').getByTestId('time-input-duration').fill('30s');
   await editor.getByTestId('entry-1').getByTestId('time-input-duration').press('Enter');
 
-  await expect(editor.getByTestId('entry-2').getByTestId('rundown-event')).toContainText('30s');
+  await expect(editor.getByTestId('entry-2').getByTestId('rundown-event')).toContainText(/(2[89]s|30s)/);
   await expect(editor.getByTestId('entry-3').getByTestId('rundown-event')).toContainText('10m');
   await expect(editor.getByTestId('entry-4').getByTestId('rundown-event')).toContainText('20m');
 

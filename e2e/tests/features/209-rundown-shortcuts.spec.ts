@@ -8,6 +8,7 @@ test('Copy-paste', async ({ page }) => {
   await page.getByRole('button', { name: /(Rundown menu|進行表の管理\.\.\.)/ }).click();
   await page.getByRole('menuitem', { name: /(Clear all|すべてクリア)/ }).click();
   await page.getByRole('button', { name: /(Delete all|すべて削除)/ }).click();
+  await expect(page.getByRole('dialog')).toBeHidden();
   await expect(page.getByTestId('rundown-event')).toHaveCount(0);
 
   // create event
@@ -40,6 +41,7 @@ test('Cut-paste', async ({ page }) => {
   await page.getByRole('button', { name: /(Rundown menu|進行表の管理\.\.\.)/ }).click();
   await page.getByRole('menuitem', { name: /(Clear all|すべてクリア)/ }).click();
   await page.getByRole('button', { name: /(Delete all|すべて削除)/ }).click();
+  await expect(page.getByRole('dialog')).toBeHidden();
   await expect(page.getByTestId('rundown-event')).toHaveCount(0);
 
   // create events
@@ -73,14 +75,17 @@ test('Move', async ({ page }) => {
   await page.getByRole('button', { name: /(Rundown menu|進行表の管理\.\.\.)/ }).click();
   await page.getByRole('menuitem', { name: /(Clear all|すべてクリア)/ }).click();
   await page.getByRole('button', { name: /(Delete all|すべて削除)/ }).click();
+  await expect(page.getByRole('dialog')).toBeHidden();
   await expect(page.getByTestId('rundown-event')).toHaveCount(0);
 
   // create events
   await page.getByRole('button', { name: /(Create Event|イベントを作成)/ }).click();
   await page.getByTestId('entry-1').getByTestId('rundown-event').getByText('1', { exact: true }).click();
   await page.getByTestId('entry-1').getByTestId('rundown-event').press('Alt+E');
+  await expect(page.getByTestId('entry-2')).toBeVisible();
   await page.getByTestId('entry-2').getByTestId('rundown-event').getByText('2', { exact: true }).click();
   await page.getByTestId('entry-2').getByTestId('rundown-event').press('Alt+E');
+  await expect(page.getByTestId('entry-3')).toBeVisible();
 
   // copy move down
   await page.getByTestId('entry-1').getByTestId('rundown-event').getByText('1').click();
@@ -114,6 +119,7 @@ test('Add group', async ({ page }) => {
   await page.getByRole('button', { name: /(Rundown menu|進行表の管理\.\.\.)/ }).click();
   await page.getByRole('menuitem', { name: /(Clear all|すべてクリア)/ }).click();
   await page.getByRole('button', { name: /(Delete all|すべて削除)/ }).click();
+  await expect(page.getByRole('dialog')).toBeHidden();
   await expect(page.getByTestId('rundown-event')).toHaveCount(0);
   await expect(page.getByTestId('rundown-group')).toHaveCount(0);
 
@@ -152,6 +158,7 @@ test('Add delay', async ({ page }) => {
   await page.getByRole('button', { name: /(Rundown menu|進行表の管理\.\.\.)/ }).click();
   await page.getByRole('menuitem', { name: /(Clear all|すべてクリア)/ }).click();
   await page.getByRole('button', { name: /(Delete all|すべて削除)/ }).click();
+  await expect(page.getByRole('dialog')).toBeHidden();
   await expect(page.getByTestId('rundown-event')).toHaveCount(0);
   await expect(page.getByTestId('rundown-delay')).toHaveCount(0);
 
@@ -183,6 +190,7 @@ test('Add event', async ({ page }) => {
   await page.getByRole('button', { name: /(Rundown menu|進行表の管理\.\.\.)/ }).click();
   await page.getByRole('menuitem', { name: /(Clear all|すべてクリア)/ }).click();
   await page.getByRole('button', { name: /(Delete all|すべて削除)/ }).click();
+  await expect(page.getByRole('dialog')).toBeHidden();
   await expect(page.getByTestId('rundown-event')).toHaveCount(0);
 
   // create events
@@ -210,6 +218,7 @@ test('Delete event', async ({ page }) => {
   await page.getByRole('button', { name: /(Rundown menu|進行表の管理\.\.\.)/ }).click();
   await page.getByRole('menuitem', { name: /(Clear all|すべてクリア)/ }).click();
   await page.getByRole('button', { name: /(Delete all|すべて削除)/ }).click();
+  await expect(page.getByRole('dialog')).toBeHidden();
   await expect(page.getByTestId('rundown-event')).toHaveCount(0);
 
   // create event

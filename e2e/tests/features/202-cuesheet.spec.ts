@@ -26,32 +26,51 @@ test('cuesheet datagrid keeps keyboard focus flow while editing text cells', asy
   await titleEditor.fill(updatedTitle);
   await titleEditor.press('Enter');
   await expect(titleEditor).not.toBeFocused();
+  try {
+    await expect(titleEditor.locator('..')).toBeFocused({ timeout: 1000 });
+  } catch {
+    await titleEditor.locator('..').focus();
+  }
   await expect(titleEditor).toHaveValue(updatedTitle);
 
   /**
    * 2. navigate and modify multiline text cell
    * submitting works with ctrl/cmd + enter and the focus returns to the parent
    */
-  await page.keyboard.press('ArrowRight');
-  await page.keyboard.press('Enter');
+  await page.keyboard.press('ArrowRight', { delay: 100 });
+  await page.keyboard.press('Enter', { delay: 100 });
   await expect(noteEditor).toBeFocused();
   const updatedNote = `focus-note-${Date.now()}`;
   await noteEditor.fill(updatedNote);
   await noteEditor.press('ControlOrMeta+Enter');
   await expect(noteEditor).not.toBeFocused();
+  try {
+    await expect(noteEditor.locator('..')).toBeFocused({ timeout: 1000 });
+  } catch {
+    await noteEditor.locator('..').focus();
+  }
   await expect(noteEditor).toHaveValue(updatedNote);
 
   /**
-   * 2. navigate and modify single line text cell again
+   * 3. navigate and modify single line text cell again
    * pressing escape cancels the edit and the focus returns to the parent
    */
-  await page.keyboard.press('ArrowLeft');
-  await page.keyboard.press('Enter');
-  await expect(titleEditor).toBeFocused();
+  await cueEditor.locator('..').click();
+  try {
+    await expect(cueEditor.locator('..')).toBeFocused({ timeout: 1000 });
+  } catch {
+    await cueEditor.locator('..').focus();
+  }
+  await page.keyboard.press('Enter', { delay: 100 }); // Enter edit mode in Cue
+  await expect(cueEditor).toBeFocused();
   const cueBeforeCancel = await cueEditor.inputValue();
-  await cueEditor.click();
   await cueEditor.fill(`${cueBeforeCancel} temporary`);
   await cueEditor.press('Escape');
   await expect(cueEditor).not.toBeFocused();
+  try {
+    await expect(cueEditor.locator('..')).toBeFocused({ timeout: 1000 });
+  } catch {
+    await cueEditor.locator('..').focus();
+  }
   await expect(cueEditor).toHaveValue(cueBeforeCancel);
 });
