@@ -46,14 +46,14 @@ test('delays add time to events', async ({ page }) => {
   await page.getByTestId('delay-input').click();
   await page.getByTestId('delay-input').fill('2m');
   await page.getByTestId('delay-input').press('Enter');
-  await page.getByText(/00:12/).click();
+  await page.getByText(/(New start|新しい開始時間).*00:12/).click();
 
   // make negative delay
   await page.getByText(/(Subtract time|時間を減らす)/).click();
-  await page.getByText(/00:08/).click();
+  await page.getByText(/(New start|新しい開始時間).*00:08/).click();
 
   // apply delay
-  await page.getByRole('button', { name: /(Make permanent|永続化)/ }).click();
+  await page.getByRole('button', { name: /(Make permanent|反映する)/ }).click();
   await expect(page.getByTestId('rundown').getByTestId('time-input-timeStart')).toHaveValue('00:08:00');
 
   // add new delay
@@ -68,12 +68,12 @@ test('delays add time to events', async ({ page }) => {
   await page.getByTestId('delay-input').click();
   await page.getByTestId('delay-input').fill('10m');
   await page.getByTestId('delay-input').press('Enter');
-  await page.getByText(/00:18/).click();
+  await page.getByText(/(New start|新しい開始時間).*00:18/).click();
 
   // cancel delay
   await page.getByRole('button', { name: /(Cancel|キャンセル)/ }).click();
   await expect(page.getByTestId('rundown').getByTestId('time-input-timeStart')).toHaveValue('00:08:00');
-  await expect(page.getByText(/00:18/)).toHaveCount(0);
+  await expect(page.getByText(/(New start|新しい開始時間).*00:18/)).toHaveCount(0);
 });
 
 test('delays are show correctly', async ({ page }) => {
@@ -108,7 +108,7 @@ test('delays are show correctly', async ({ page }) => {
   await page.getByTestId('delay-input').press('Enter');
 
   // delay is shown in the editor
-  await page.getByText(/00:11/).click();
+  await page.getByText(/(New start|新しい開始時間).*00:11/).click();
 
   // delay is shown in the cuesheet
   await page.goto('/cuesheet');
