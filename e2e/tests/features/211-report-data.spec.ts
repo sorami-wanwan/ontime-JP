@@ -45,5 +45,5 @@ test('show warning when event starts next day midnight', async ({ page }) => {
   await page.getByTestId('entry-2').getByTestId('time-input-timeEnd').press('Enter');
   await page.getByTestId('entry-2').getByTestId('rundown-event').press('Alt+E');
 
-  await expect(page.getByText('(next day)')).toBeVisible();
+  await expect(page.getByText(/(\(next day\)|\(翌日\))/)).toBeVisible();
 });

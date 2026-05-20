@@ -88,13 +88,13 @@ async function expectGroupSummary(
   const group = page.getByTestId('rundown-group').filter({ has: page.locator(`input[value="${title}"]`) });
 
   await expect(group).toHaveCount(1);
-  await expect(group).toContainText('Entries');
+  await expect(group).toContainText(/(Entries|エントリー数)/);
   await expect(group).toContainText(entries);
-  await expect(group).toContainText('Start');
+  await expect(group).toContainText(/(Start|開始)/);
   await expect(group).toContainText(start);
-  await expect(group).toContainText('End');
+  await expect(group).toContainText(/(End|終了)/);
   await expect(group).toContainText(end);
-  await expect(group).toContainText('Duration');
+  await expect(group).toContainText(/(Duration|所要時間)/);
   await expect(group).toContainText(duration);
 }
 

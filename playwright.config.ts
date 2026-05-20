@@ -32,13 +32,13 @@ const config: PlaywrightTestConfig = {
         timeout: 60 * 1000,
       },
   use: {
-    screenshot: 'off',
-    video: 'off',
+    screenshot: 'only-on-failure',
+    video: 'retain-on-failure',
     viewport: { width: 1920, height: 1080 },
     actionTimeout: 5000,
     baseURL: isDevMode ? 'http://localhost:3000' : 'http://localhost:4001',
     ignoreHTTPSErrors: true,
-    trace: 'off',
+    trace: 'on-first-retry',
     launchOptions: {
       slowMo: process.env.CI ? undefined : 250,
     },
@@ -48,7 +48,7 @@ const config: PlaywrightTestConfig = {
       name: 'chromium',
       use: {
         ...devices['Desktop Chrome'],
-        channel: 'chrome',
+        channel: process.env.CI ? undefined : 'chrome',
       },
     },
 

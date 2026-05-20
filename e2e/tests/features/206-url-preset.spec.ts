@@ -62,7 +62,7 @@ test.describe('URL Preset', () => {
 
     // open settings
     await page.getByTestId('navigation__toggle-settings').click();
-    await page.getByRole('button', { name: 'Share link' }).click();
+    await page.getByRole('button', { name: /(Share link|リンクの共有)/ }).click();
 
     // select options
     await page.getByRole('combobox').filter({ hasText: 'Timer' }).click();
@@ -93,7 +93,7 @@ test.describe('URL Preset', () => {
 
     // open settings
     await page.getByTestId('navigation__toggle-settings').click();
-    await page.getByRole('button', { name: 'Share link' }).click();
+    await page.getByRole('button', { name: /(Share link|リンクの共有)/ }).click();
 
     // select options
     await page.getByRole('combobox').filter({ hasText: 'Timer' }).click();

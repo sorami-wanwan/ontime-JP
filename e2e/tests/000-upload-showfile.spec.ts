@@ -40,7 +40,7 @@ test('project file upload', async ({ page }) => {
   // Wait for rundown to be cleared completely in the UI (synchronizing client & server state)
   await expect(page.getByTestId('entry-1')).toBeHidden();
 
-  await page.getByRole('button', { name: 'toggle settings' }).click();
+  await page.getByTestId('navigation__toggle-settings').click();
   await page.getByRole('button', { name: /(Manage projects|プロジェクトの管理)/ }).click();
 
   // workaround to upload file on hidden input
@@ -55,7 +55,7 @@ test('project file upload', async ({ page }) => {
   await fileChooser.setFiles(fileToUpload);
 
   // Note: The modal close button is hardcoded in English ('Close settings')
-  await page.getByRole('button', { name: 'Close settings' }).click();
+  await page.getByRole('button', { name: /(Close settings|設定を閉じる)/ }).click();
 
   // Wait for the newly uploaded project data to load and render completely
   try {
