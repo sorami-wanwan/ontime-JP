@@ -25,19 +25,19 @@ const config: PlaywrightTestConfig = {
         timeout: 60 * 1000,
       }
     : {
-        command: 'cross-env PORT=4001 turbo run dev --filter=ontime-server',
+        command: 'cross-env E2E_SKIP_WELCOME=true PORT=4001 turbo run dev --filter=ontime-server',
         port: 4001,
         reuseExistingServer: !process.env.CI,
         timeout: 60 * 1000,
       },
   use: {
-    screenshot: 'only-on-failure',
-    video: 'retain-on-failure',
+    screenshot: 'off',
+    video: 'off',
     viewport: { width: 1920, height: 1080 },
     actionTimeout: 5000,
     baseURL: isDevMode ? 'http://localhost:3000' : 'http://localhost:4001',
     ignoreHTTPSErrors: true,
-    trace: 'on-first-retry',
+    trace: 'off',
     launchOptions: {
       slowMo: process.env.CI ? undefined : 250,
     },
@@ -47,6 +47,7 @@ const config: PlaywrightTestConfig = {
       name: 'chromium',
       use: {
         ...devices['Desktop Chrome'],
+        channel: 'chrome',
       },
     },
 
@@ -58,7 +59,7 @@ const config: PlaywrightTestConfig = {
       },
     },
   ],
-  outputDir: 'test-results/',
+  outputDir: 'test-results-local/',
 };
 
 export default config;

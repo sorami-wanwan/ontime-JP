@@ -137,6 +137,7 @@ export async function postProjectFile(req: Request, res: Response<MessageRespons
 
   try {
     const { filename, path } = req.file;
+    await projectService.flushPendingWrites();
     await handleProjectUploaded(path, filename);
     await projectService.loadProjectFile(filename);
 

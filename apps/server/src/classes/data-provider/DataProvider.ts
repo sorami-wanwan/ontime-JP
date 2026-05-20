@@ -231,5 +231,7 @@ export async function flushPendingWrites() {
     await activeWrite;
   }
 
-  await db.write();
+  if (db && typeof db.write === 'function') {
+    await db.write();
+  }
 }

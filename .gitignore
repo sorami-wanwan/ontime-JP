@@ -25,6 +25,7 @@ ontime.code-workspace
 
 # testing
 test-results
+test-results-local
 playwright-report
 /playwright/.cache/
 automated-screenshots

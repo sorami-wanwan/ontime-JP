@@ -1,3 +1,5 @@
+import { join } from 'path';
+import { homedir } from 'os';
 import { randomUUID } from 'crypto';
 import { readFile, unlink } from 'fs/promises';
 
@@ -6,23 +8,19 @@ import { expect, test } from '@playwright/test';
 const fileToUpload = 'e2e/tests/fixtures/e2e-test-db.json';
 const fileToDownload = 'e2e/tests/fixtures/tmp/';
 
+test.beforeAll(async () => {
+  try {
+    const projectFilePath = join(homedir(), '.Ontime', 'projects', 'e2e-test-db.json');
+    await unlink(projectFilePath);
+  } catch (error) {
+    // Ignore if file doesn't exist
+  }
+});
+
 test('project file upload', async ({ page }) => {
   await page.goto('/editor');
 
-  // Try to close welcome modal if it appears (times out silently if not present)
-  // Note: modal text is in Japanese as the app defaults to 'ja' before the test DB is loaded.
-  // We use a 5000ms timeout (up from 1000ms) to handle slow WebSocket initialization in CI,
-  // where the server's 'welcome' dialog message can arrive later than expected.
-  // After closing, we wait for the modal to be fully hidden to prevent it from intercepting
-  // subsequent clicks (race condition with modal closing animation).
-  try {
-    const welcomeText = page.getByText(/(Welcome to Ontime|Ontimeへようこそ)/);
-    await welcomeText.waitFor({ state: 'visible', timeout: 5000 });
-    await page.getByRole('button', { name: /(close welcome modal|ウェルカムモーダルを閉じる)/i }).click();
-    await welcomeText.waitFor({ state: 'hidden', timeout: 5000 });
-  } catch {
-    // Modal wasn't shown, continue with the test
-  }
+  // Welcome modal is now disabled globally during E2E tests via E2E_SKIP_WELCOME
 
   // Note: UI is in Japanese (ja) until the test DB (language: en) is loaded below.
   // We use regex to support both English and Japanese environments.

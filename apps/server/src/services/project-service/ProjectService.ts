@@ -9,7 +9,7 @@ import { parseDatabaseModel } from '../../api-data/db/db.parser.js';
 import { getCurrentRundown } from '../../api-data/rundown/rundown.dao.js';
 import { parseRundowns } from '../../api-data/rundown/rundown.parser.js';
 import { initRundown } from '../../api-data/rundown/rundown.service.js';
-import { getDataProvider, initPersistence } from '../../classes/data-provider/DataProvider.js';
+import { getDataProvider, initPersistence, flushPendingWrites as dbFlushPendingWrites } from '../../classes/data-provider/DataProvider.js';
 import { safeMerge } from '../../classes/data-provider/DataProvider.utils.js';
 import { logger } from '../../classes/Logger.js';
 import { makeNewProject } from '../../models/dataModel.js';
@@ -63,6 +63,10 @@ function init() {
   ensureDirectory(publicDir.corruptDir);
   ensureDirectory(publicDir.logoDir);
   ensureDirectory(publicDir.migrateDir);
+}
+
+export async function flushPendingWrites(): Promise<void> {
+  await dbFlushPendingWrites();
 }
 
 export async function getCurrentProject(): Promise<{ filename: string; pathToFile: string }> {
@@ -212,6 +216,7 @@ export async function loadProjectFile(
   fileName: string,
   options?: { rundownId?: string; initialLoad?: boolean },
 ): Promise<string> {
+  await flushPendingWrites();
   const filePath = doesProjectExist(fileName);
   if (filePath === null) {
     throw new Error('Project file not found');
@@ -251,6 +256,7 @@ export async function getProjectList(): Promise<ProjectFileListResponse> {
  * Duplicates an existing project file
  */
 export async function duplicateProjectFile(originalFile: string, newFilename: string) {
+  await flushPendingWrites();
   const projectFilePath = doesProjectExist(originalFile);
   if (projectFilePath === null) {
     throw new Error('Project file not found');
@@ -271,6 +277,7 @@ export async function duplicateProjectFile(originalFile: string, newFilename: st
  * @throws
  */
 export async function renameProjectFile(originalFile: string, newFilename: string): Promise<string> {
+  await flushPendingWrites();
   const projectFilePath = doesProjectExist(originalFile);
   if (projectFilePath === null) {
     throw new Error('Project file not found');
@@ -302,6 +309,7 @@ export async function renameProjectFile(originalFile: string, newFilename: strin
  * @param initialData db to initialize the project with
  */
 export async function createProject(fileName: string, initialData: DatabaseModel): Promise<string> {
+  await flushPendingWrites();
   const fileNameWithExtension = generateUniqueFileName(publicDir.projectsDir, ensureJsonExtension(fileName));
   await loadProject(initialData, fileNameWithExtension);
   return fileNameWithExtension;
@@ -322,6 +330,7 @@ export async function createProjectWithPatch(fileName: string, initialData: Part
  * Deletes a project file
  */
 export async function deleteProjectFile(filename: string) {
+  await flushPendingWrites();
   if (filename === currentProjectState.currentProjectName) {
     throw new Error('Cannot delete currently loaded project');
   }
