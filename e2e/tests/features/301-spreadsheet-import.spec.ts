@@ -4,41 +4,49 @@ const fileToUpload = 'e2e/tests/fixtures/Ontime rundown template v4.xlsx';
 
 test('imports spreadsheet and applies imported rundown to editor', async ({ page }) => {
   await page.goto('/editor');
-  await page.getByRole('button', { name: 'Edit' }).click();
+  await page.getByRole('button', { name: /(Edit|編集)/ }).click();
 
   // clear the rundown
-  await page.getByRole('button', { name: 'Rundown menu' }).click();
-  await page.getByRole('menuitem', { name: 'Clear all' }).click();
-  await page.getByRole('button', { name: 'Delete all' }).click();
+  await page.getByRole('button', { name: /(Rundown menu|進行表の管理\.\.\.)/ }).click();
+  await page.getByRole('menuitem', { name: /(Clear all|すべてクリア)/ }).click();
+  await page.getByRole('button', { name: /(Delete all|すべて削除)/ }).click();
+  await expect(page.getByRole('dialog')).toBeHidden();
   await expect(page.getByTestId('rundown-event')).toHaveCount(0);
 
   // open the spreadsheet
-  await page.getByRole('button', { name: 'Toggle settings' }).click();
-  await page.getByRole('button', { name: 'Project settings' }).click();
-  await page.getByRole('button', { name: 'Import spreadsheet' }).first().click();
-  await expect(page.getByRole('heading', { name: 'Sources' })).toBeVisible();
+  await page.getByTestId('navigation__toggle-settings').click();
+  await page.getByRole('button', { name: /(Project settings|プロジェクト)/ }).click();
+  await page
+    .getByRole('button', { name: /(Import spreadsheet|スプレッドシートのインポート)/ })
+    .first()
+    .click();
+  await expect(page.getByRole('heading', { name: /(Sources|ソース)/ })).toBeVisible();
 
   // upload the spreadsheet
   const fileChooserPromise = page.waitForEvent('filechooser');
-  await page.getByRole('button', { name: 'Start import', exact: true }).click();
+  await page.getByRole('button', { name: /(Start import|インポートを開始)/, exact: true }).click();
   const fileChooser = await fileChooserPromise;
   await fileChooser.setFiles(fileToUpload);
-  const worksheetSelect = page.getByRole('combobox', { name: 'Worksheet', exact: true });
+  const worksheetSelect = page.getByRole('combobox', { name: /(Worksheet|ワークシート)/, exact: true });
   await expect(worksheetSelect).toBeVisible();
   await worksheetSelect.click();
   await page.getByRole('option', { name: 'Event schedule advanced' }).click();
   await expect(worksheetSelect).toContainText('Event schedule advanced');
 
   // apply import
-  await page.getByRole('button', { name: 'Preview import' }).click();
-  await page.getByRole('button', { name: 'Apply import' }).click();
-  await expect(page.getByText('Import complete!')).toBeVisible();
-  await expect(page.getByText('Your imported data has been applied to the current rundown.')).toBeVisible();
-  await page.getByRole('button', { name: 'Start new import' }).click();
+  await page.getByRole('button', { name: /(Preview import|インポートをプレビュー)/ }).click();
+  await page.getByRole('button', { name: /(Apply import|インポートを適用)/ }).click();
+  await expect(page.getByText(/(Import complete!|インポート完了！)/)).toBeVisible();
+  await expect(
+    page.getByText(
+      /(Your imported data has been applied to the current rundown\.|インポートしたデータが現在の進行表に適用されました\。)/,
+    ),
+  ).toBeVisible();
+  await page.getByRole('button', { name: /(Start new import|新しいインポートを開始)/ }).click();
 
   // verify the data in the rundown
-  await page.getByRole('button', { name: 'Close settings' }).scrollIntoViewIfNeeded();
-  await page.getByRole('button', { name: 'Close settings' }).click();
+  await page.getByRole('button', { name: /(Close settings|設定を閉じる)/ }).scrollIntoViewIfNeeded();
+  await page.getByRole('button', { name: /(Close settings|設定を閉じる)/ }).click();
 
   await expectGroupSummary(page, {
     title: 'Morning Sessions',
@@ -80,13 +88,13 @@ async function expectGroupSummary(
   const group = page.getByTestId('rundown-group').filter({ has: page.locator(`input[value="${title}"]`) });
 
   await expect(group).toHaveCount(1);
-  await expect(group).toContainText('Entries');
+  await expect(group).toContainText(/(Entries|エントリー数)/);
   await expect(group).toContainText(entries);
-  await expect(group).toContainText('Start');
+  await expect(group).toContainText(/(Start|開始)/);
   await expect(group).toContainText(start);
-  await expect(group).toContainText('End');
+  await expect(group).toContainText(/(End|終了)/);
   await expect(group).toContainText(end);
-  await expect(group).toContainText('Duration');
+  await expect(group).toContainText(/(Duration|所要時間)/);
   await expect(group).toContainText(duration);
 }
 

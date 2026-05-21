@@ -8,42 +8,42 @@ test.describe('test view navigation feature', () => {
 
   test('Timeline', async ({ page }) => {
     await openNavigationMenu(page);
-    await page.getByRole('button', { name: 'Timeline' }).click();
+    await page.getByRole('button', { name: /(Timeline|タイムライン)/ }).click();
     page.locator('data-testid=timeline-view');
     await expect(page).toHaveURL('/timeline');
   });
 
   test('Backstage', async ({ page }) => {
     await openNavigationMenu(page);
-    await page.getByRole('button', { name: 'Backstage' }).click();
+    await page.getByRole('button', { name: /(Backstage|バックステージ)/ }).click();
     page.locator('data-testid=backstage-view');
     await expect(page).toHaveURL('/backstage');
   });
 
   test('Studio Clock', async ({ page }) => {
     await openNavigationMenu(page);
-    await page.getByRole('button', { name: 'Studio Clock' }).click();
+    await page.getByRole('button', { name: /(Studio Clock|スタジオクロック)/ }).click();
     page.locator('data-testid=studio-view');
     await expect(page).toHaveURL('/studio');
   });
 
   test('Countdown', async ({ page }) => {
     await openNavigationMenu(page);
-    await page.getByRole('button', { name: 'Countdown' }).click();
+    await page.getByRole('button', { name: /(Countdown|カウントダウン)/ }).click();
     page.locator('data-testid=countdown-view');
     await expect(page).toHaveURL('/countdown');
   });
 
   test('Project Info', async ({ page }) => {
     await openNavigationMenu(page);
-    await page.getByRole('button', { name: 'Project Info' }).click();
+    await page.getByRole('button', { name: /(Project Info|プロジェクト情報)/ }).click();
     page.locator('data-testid=project-view');
     await expect(page).toHaveURL('/info');
   });
 
   test('Timer', async ({ page }) => {
     await openNavigationMenu(page);
-    await page.getByRole('button', { name: 'Timer', exact: true }).click();
+    await page.getByRole('button', { name: /(Timer|タイマー)/, exact: true }).click();
     page.locator('data-testid=timer-view');
     await expect(page).toHaveURL('/timer');
   });

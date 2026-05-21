@@ -3,7 +3,7 @@ import { test as base, expect } from '@playwright/test';
 // fail tests which contain errors
 export const test = base.extend({
   page: async ({ page }, use) => {
-    const messages = [];
+    const messages: Error[] = [];
     page.on('pageerror', (exception) => {
       console.log(`Uncaught exception: "${exception.message}"`);
       messages.push(exception);

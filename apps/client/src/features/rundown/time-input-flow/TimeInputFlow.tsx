@@ -87,6 +87,7 @@ function TimeInputFlow({
             text={getLocalizedString('rundown.editor.link_start')}
             onClick={() => handleLink(!linkStart)}
             render={<IconButton variant='subtle-white' className={linkStart ? style.active : style.inactive} />}
+            data-testid='lock__start'
           >
             <span className={style.fourtyfive}>{linkStart ? <IoLink /> : <IoUnlink />}</span>
           </Tooltip>

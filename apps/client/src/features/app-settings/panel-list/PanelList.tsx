@@ -3,6 +3,7 @@ import { Fragment } from 'react';
 import Tooltip from '../../../common/components/tooltip/Tooltip';
 import { isKeyEnter } from '../../../common/utils/keyEvent';
 import { cx } from '../../../common/utils/styleUtils';
+import { useTranslation } from '../../../translation/TranslationProvider';
 import { SettingsOption, SettingsOptionId, useAppSettingsMenu } from '../useAppSettingsMenu';
 import useAppSettingsNavigation from '../useAppSettingsNavigation';
 
@@ -45,6 +46,7 @@ interface PanelListItemProps {
 function PanelListItem(props: PanelListItemProps) {
   const { panel, isSelected, location } = props;
   const { setLocation } = useAppSettingsNavigation();
+  const { getLocalizedString } = useTranslation();
 
   const classes = cx([
     style.primary,
@@ -67,7 +69,7 @@ function PanelListItem(props: PanelListItemProps) {
         tabIndex={0}
         role='button'
       >
-        {panel.label}
+        {getLocalizedString(panel.labelKey)}
       </li>
       {panel.secondary?.map((secondary, index) => {
         const id = secondary.id.split('__')[1];
@@ -84,7 +86,7 @@ function PanelListItem(props: PanelListItemProps) {
             className={secondaryClasses}
             role='button'
           >
-            {secondary.label}
+            {getLocalizedString(secondary.labelKey)}
           </li>
         );
       })}

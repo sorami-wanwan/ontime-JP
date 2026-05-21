@@ -2,23 +2,25 @@ import { expect, test } from '@playwright/test';
 
 test('Copy-paste', async ({ page }) => {
   await page.goto('/rundown');
-  await page.getByRole('button', { name: 'Edit' }).click();
+  await page.getByRole('button', { name: /(Edit|編集)/ }).click();
 
   // clear rundown
-  await page.getByRole('button', { name: 'Rundown menu' }).click();
-  await page.getByRole('menuitem', { name: 'Clear all' }).click();
-  await page.getByRole('button', { name: 'Delete all' }).click();
+  await page.getByRole('button', { name: /(Rundown menu|進行表の管理\.\.\.)/ }).click();
+  await page.getByRole('menuitem', { name: /(Clear all|すべてクリア)/ }).click();
+  await page.getByRole('button', { name: /(Delete all|すべて削除)/ }).click();
+  await expect(page.getByRole('dialog')).toBeHidden();
+  await expect(page.getByTestId('rundown-event')).toHaveCount(0);
 
   // create event
-  await page.getByRole('button', { name: 'Create Event' }).click();
-  await page.getByTestId('entry-1').click();
-  await page.getByLabel('Cue', { exact: true }).click();
+  await page.getByRole('button', { name: /(Create Event|イベントを作成)/ }).click();
+  await expect(page.getByTestId('rundown-event')).toHaveCount(1);
+  await page.getByTestId('entry-1').getByTestId('rundown-event').getByText('1', { exact: true }).click();
   await page.getByLabel('Cue', { exact: true }).fill('4');
   await page.getByLabel('Cue', { exact: true }).press('Enter');
-  await page.getByTestId('entry-1').click();
-  await page.getByTestId('entry__title').click();
-  await page.getByTestId('entry__title').fill('test');
-  await page.getByTestId('entry__title').press('Enter');
+  await page.getByTestId('entry-1').getByTestId('entry__title').click();
+  await page.getByTestId('entry-1').getByTestId('entry__title').fill('test');
+  await page.getByTestId('entry-1').getByTestId('entry__title').press('Enter');
+  await page.getByTestId('entry-1').getByTestId('rundown-event').getByText('4', { exact: true }).click();
 
   // copy paste below
   await page.getByTestId('rundown-event').locator('div').filter({ hasText: '4' }).click();
@@ -33,20 +35,22 @@ test('Copy-paste', async ({ page }) => {
 
 test('Cut-paste', async ({ page }) => {
   await page.goto('/rundown');
-  await page.getByRole('button', { name: 'Edit' }).click();
+  await page.getByRole('button', { name: /(Edit|編集)/ }).click();
 
   // clear rundown
-  await page.getByRole('button', { name: 'Rundown menu' }).click();
-  await page.getByRole('menuitem', { name: 'Clear all' }).click();
-  await page.getByRole('button', { name: 'Delete all' }).click();
+  await page.getByRole('button', { name: /(Rundown menu|進行表の管理\.\.\.)/ }).click();
+  await page.getByRole('menuitem', { name: /(Clear all|すべてクリア)/ }).click();
+  await page.getByRole('button', { name: /(Delete all|すべて削除)/ }).click();
+  await expect(page.getByRole('dialog')).toBeHidden();
+  await expect(page.getByTestId('rundown-event')).toHaveCount(0);
 
   // create events
-  await page.getByRole('button', { name: 'Create Event' }).click();
+  await page.getByRole('button', { name: /(Create Event|イベントを作成)/ }).click();
   await page.getByTestId('entry-1').getByTestId('entry__title').click();
   await page.getByTestId('entry-1').getByTestId('entry__title').fill('first');
   await page.getByTestId('entry-1').getByTestId('entry__title').press('Enter');
 
-  await page.getByRole('button', { name: 'Event' }).nth(4).click();
+  await page.getByTestId('entry-1').getByTestId('rundown-event').press('Alt+E');
   await page.getByTestId('entry-2').getByTestId('entry__title').click();
   await page.getByTestId('entry-2').getByTestId('entry__title').fill('second');
   await page.getByTestId('entry-2').getByTestId('entry__title').press('Enter');
@@ -65,17 +69,23 @@ test('Cut-paste', async ({ page }) => {
 
 test('Move', async ({ page }) => {
   await page.goto('/rundown');
-  await page.getByRole('button', { name: 'Edit' }).click();
+  await page.getByRole('button', { name: /(Edit|編集)/ }).click();
 
   // clear rundown
-  await page.getByRole('button', { name: 'Rundown menu' }).click();
-  await page.getByRole('menuitem', { name: 'Clear all' }).click();
-  await page.getByRole('button', { name: 'Delete all' }).click();
+  await page.getByRole('button', { name: /(Rundown menu|進行表の管理\.\.\.)/ }).click();
+  await page.getByRole('menuitem', { name: /(Clear all|すべてクリア)/ }).click();
+  await page.getByRole('button', { name: /(Delete all|すべて削除)/ }).click();
+  await expect(page.getByRole('dialog')).toBeHidden();
+  await expect(page.getByTestId('rundown-event')).toHaveCount(0);
 
   // create events
-  await page.getByRole('button', { name: 'Create Event' }).click();
-  await page.getByRole('button', { name: 'Event' }).nth(4).click();
-  await page.getByRole('button', { name: 'Event', exact: true }).nth(1).click();
+  await page.getByRole('button', { name: /(Create Event|イベントを作成)/ }).click();
+  await page.getByTestId('entry-1').getByTestId('rundown-event').getByText('1', { exact: true }).click();
+  await page.getByTestId('entry-1').getByTestId('rundown-event').press('Alt+E');
+  await expect(page.getByTestId('entry-2')).toBeVisible();
+  await page.getByTestId('entry-2').getByTestId('rundown-event').getByText('2', { exact: true }).click();
+  await page.getByTestId('entry-2').getByTestId('rundown-event').press('Alt+E');
+  await expect(page.getByTestId('entry-3')).toBeVisible();
 
   // copy move down
   await page.getByTestId('entry-1').getByTestId('rundown-event').getByText('1').click();
@@ -103,30 +113,34 @@ test('Move', async ({ page }) => {
 
 test('Add group', async ({ page }) => {
   await page.goto('/rundown');
-  await page.getByRole('button', { name: 'Edit' }).click();
+  await page.getByRole('button', { name: /(Edit|編集)/ }).click();
 
   // clear rundown
-  await page.getByRole('button', { name: 'Rundown menu' }).click();
-  await page.getByRole('menuitem', { name: 'Clear all' }).click();
-  await page.getByRole('button', { name: 'Delete all' }).click();
+  await page.getByRole('button', { name: /(Rundown menu|進行表の管理\.\.\.)/ }).click();
+  await page.getByRole('menuitem', { name: /(Clear all|すべてクリア)/ }).click();
+  await page.getByRole('button', { name: /(Delete all|すべて削除)/ }).click();
+  await expect(page.getByRole('dialog')).toBeHidden();
   await expect(page.getByTestId('rundown-event')).toHaveCount(0);
   await expect(page.getByTestId('rundown-group')).toHaveCount(0);
 
   // create events
-  await page.getByRole('button', { name: 'Create Event' }).click();
+  await page.getByRole('button', { name: /(Create Event|イベントを作成)/ }).click();
   await expect(page.getByTestId('rundown-event')).toHaveCount(1);
   await expect(page.getByTestId('rundown-group')).toHaveCount(0);
-  await page.getByPlaceholder(/event title/i).fill('test');
-  await page.getByTestId('entry-1').click();
+  await page.getByTestId('entry-1').getByTestId('entry__title').fill('test');
+  await page.getByTestId('entry-1').getByTestId('entry__title').press('Enter');
+  await page.getByTestId('entry-1').getByTestId('rundown-event').getByText('1', { exact: true }).click();
 
   // add group below
-  await page.getByTestId('rundown-event').locator('div').filter({ hasText: '1' }).press('Alt+G');
+  await page.getByTestId('entry-1').getByTestId('rundown-event').press('Alt+G');
   await expect(page.getByTestId('rundown-event')).toHaveCount(1);
   await expect(page.getByTestId('rundown-group')).toHaveCount(1);
   await page.getByTestId('rundown-group').getByTestId('entry__title').fill('group below');
+  await page.getByTestId('rundown-group').getByTestId('entry__title').press('Enter');
 
   // add group above
-  await page.getByTestId('rundown-event').locator('div').filter({ hasText: '1' }).press('Alt+Shift+G');
+  await page.getByTestId('entry-1').getByTestId('rundown-event').getByText('1', { exact: true }).click();
+  await page.getByTestId('entry-1').getByTestId('rundown-event').press('Alt+Shift+G');
   await expect(page.getByTestId('rundown-event')).toHaveCount(1);
   await expect(page.getByTestId('rundown-group')).toHaveCount(2);
   await page.getByTestId('entry__title').first().fill('group above');
@@ -138,30 +152,31 @@ test('Add group', async ({ page }) => {
 
 test('Add delay', async ({ page }) => {
   await page.goto('/rundown');
-  await page.getByRole('button', { name: 'Edit' }).click();
+  await page.getByRole('button', { name: /(Edit|編集)/ }).click();
 
   // clear rundown
-  await page.getByRole('button', { name: 'Rundown menu' }).click();
-  await page.getByRole('menuitem', { name: 'Clear all' }).click();
-  await page.getByRole('button', { name: 'Delete all' }).click();
+  await page.getByRole('button', { name: /(Rundown menu|進行表の管理\.\.\.)/ }).click();
+  await page.getByRole('menuitem', { name: /(Clear all|すべてクリア)/ }).click();
+  await page.getByRole('button', { name: /(Delete all|すべて削除)/ }).click();
+  await expect(page.getByRole('dialog')).toBeHidden();
   await expect(page.getByTestId('rundown-event')).toHaveCount(0);
   await expect(page.getByTestId('rundown-delay')).toHaveCount(0);
 
   // create events
-  await page.getByRole('button', { name: 'Create Event' }).click();
+  await page.getByRole('button', { name: /(Create Event|イベントを作成)/ }).click();
   await expect(page.getByTestId('rundown-event')).toHaveCount(1);
   await expect(page.getByTestId('rundown-delay')).toHaveCount(0);
-  await page.getByTestId('entry-1').click();
-  await page.getByTestId('entry__title').press('Escape');
+  await page.getByTestId('entry-1').getByTestId('rundown-event').getByText('1', { exact: true }).click();
 
   // add delay below
-  await page.getByTestId('rundown-event').locator('div').filter({ hasText: '1' }).press('Alt+D');
+  await page.getByTestId('entry-1').getByTestId('rundown-event').press('Alt+D');
   await expect(page.getByTestId('rundown-event')).toHaveCount(1);
   await expect(page.getByTestId('rundown-delay')).toHaveCount(1);
   await expect(page.getByTestId('delay-input')).toBeVisible();
 
   // add delay above
-  await page.getByTestId('rundown-event').locator('div').filter({ hasText: '1' }).press('Alt+Shift+D');
+  await page.getByTestId('entry-1').getByTestId('rundown-event').getByText('1', { exact: true }).click();
+  await page.getByTestId('entry-1').getByTestId('rundown-event').press('Alt+Shift+D');
   await expect(page.getByTestId('rundown-event')).toHaveCount(1);
   await expect(page.getByTestId('rundown-delay')).toHaveCount(2);
   await expect(page.getByTestId('entry-0').getByTestId('delay-input')).toBeVisible();
@@ -169,52 +184,53 @@ test('Add delay', async ({ page }) => {
 
 test('Add event', async ({ page }) => {
   await page.goto('/rundown');
-  await page.getByRole('button', { name: 'Edit' }).click();
+  await page.getByRole('button', { name: /(Edit|編集)/ }).click();
 
   // clear rundown
-  await page.getByRole('button', { name: 'Rundown menu' }).click();
-  await page.getByRole('menuitem', { name: 'Clear all' }).click();
-  await page.getByRole('button', { name: 'Delete all' }).click();
+  await page.getByRole('button', { name: /(Rundown menu|進行表の管理\.\.\.)/ }).click();
+  await page.getByRole('menuitem', { name: /(Clear all|すべてクリア)/ }).click();
+  await page.getByRole('button', { name: /(Delete all|すべて削除)/ }).click();
+  await expect(page.getByRole('dialog')).toBeHidden();
   await expect(page.getByTestId('rundown-event')).toHaveCount(0);
 
   // create events
-  await page.getByRole('button', { name: 'Create Event' }).click();
+  await page.getByRole('button', { name: /(Create Event|イベントを作成)/ }).click();
   await expect(page.getByTestId('rundown-event')).toHaveCount(1);
-  await page.getByTestId('entry-1').click();
-  await page.getByTestId('entry__title').press('Escape');
+  await page.getByTestId('entry-1').getByTestId('rundown-event').getByText('1', { exact: true }).click();
 
   // add event below
-  await page.getByTestId('rundown-event').locator('div').filter({ hasText: '1' }).press('Alt+E');
+  await page.getByTestId('entry-1').getByTestId('rundown-event').press('Alt+E');
   await expect(page.getByTestId('rundown-event')).toHaveCount(2);
   await expect(page.getByTestId('entry-2').getByTestId('rundown-event').getByText('2')).toBeVisible();
 
   // add event above
-  await page.getByTestId('rundown-event').locator('div').filter({ hasText: '1' }).press('Alt+Shift+E');
+  await page.getByTestId('entry-1').getByTestId('rundown-event').getByText('1', { exact: true }).click();
+  await page.getByTestId('entry-1').getByTestId('rundown-event').press('Alt+Shift+E');
   await expect(page.getByTestId('rundown-event')).toHaveCount(3);
   await expect(page.getByTestId('entry-1').getByTestId('rundown-event')).toContainText('1');
 });
 
 test('Delete event', async ({ page }) => {
   await page.goto('/rundown');
-  await page.getByRole('button', { name: 'Edit' }).click();
+  await page.getByRole('button', { name: /(Edit|編集)/ }).click();
 
   // clear rundown
-  await page.goto('/rundown');
-  await page.getByRole('button', { name: 'Rundown menu' }).click();
-  await page.getByRole('menuitem', { name: 'Clear all' }).click();
-  await page.getByRole('button', { name: 'Delete all' }).click();
+  await page.getByRole('button', { name: /(Rundown menu|進行表の管理\.\.\.)/ }).click();
+  await page.getByRole('menuitem', { name: /(Clear all|すべてクリア)/ }).click();
+  await page.getByRole('button', { name: /(Delete all|すべて削除)/ }).click();
+  await expect(page.getByRole('dialog')).toBeHidden();
   await expect(page.getByTestId('rundown-event')).toHaveCount(0);
 
   // create event
-  await page.getByRole('button', { name: 'Create Event' }).click();
+  await page.getByRole('button', { name: /(Create Event|イベントを作成)/ }).click();
   await expect(page.getByTestId('rundown-event')).toHaveCount(1);
 
   // delete event
-  await page.getByTestId('rundown-event').locator('div').filter({ hasText: '1' }).click();
-  await page.getByTestId('rundown-event').locator('div').filter({ hasText: '1' }).press('Alt+Backspace');
+  await page.getByTestId('entry-1').getByTestId('rundown-event').getByText('1', { exact: true }).click();
+  await page.getByTestId('entry-1').getByTestId('rundown-event').press('Alt+Backspace');
   await expect(page.getByTestId('rundown-event')).toHaveCount(0);
-  await expect(page.getByRole('button', { name: 'Create Event' })).toBeVisible();
-  await expect(page.getByRole('button', { name: 'Create Group' })).toBeVisible();
+  await expect(page.getByRole('button', { name: /(Create Event|イベントを作成)/ })).toBeVisible();
+  await expect(page.getByRole('button', { name: /(Create Group|グループを作成)/ })).toBeVisible();
 });
 
 test('Find in rundown', async ({ page }) => {
@@ -222,10 +238,10 @@ test('Find in rundown', async ({ page }) => {
   await expect(page.getByTestId('panel-rundown')).toBeVisible();
 
   await page.keyboard.press('ControlOrMeta+f');
-  await expect(page.getByPlaceholder('Search...')).toBeVisible();
+  await expect(page.getByPlaceholder(/Search\.\.\.|検索\.\.\./)).toBeVisible();
 
   await page.keyboard.press('Escape');
-  await expect(page.getByPlaceholder('Search...')).toBeHidden();
+  await expect(page.getByPlaceholder(/Search\.\.\.|検索\.\.\./)).toBeHidden();
 });
 
 test('Open settings', async ({ page }) => {
@@ -233,8 +249,8 @@ test('Open settings', async ({ page }) => {
   await expect(page.getByTestId('editor-container')).toBeVisible();
 
   await page.keyboard.press('ControlOrMeta+,');
-  await expect(page.getByRole('button', { name: 'Close settings' })).toBeVisible();
+  await expect(page.getByRole('button', { name: /(Close settings|設定を閉じる)/ })).toBeVisible();
 
   await page.keyboard.press('Escape');
-  await expect(page.getByRole('button', { name: 'Close settings' })).toBeHidden();
+  await expect(page.getByRole('button', { name: /(Close settings|設定を閉じる)/ })).toBeHidden();
 });

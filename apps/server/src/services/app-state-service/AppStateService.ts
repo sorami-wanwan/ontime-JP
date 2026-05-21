@@ -49,7 +49,7 @@ export async function setLastLoadedRundown(rundownKey: string): Promise<void> {
 
 export async function getShowWelcomeDialog(restorePointExists: boolean): Promise<boolean> {
   // in test environment, we do not want the dialog
-  if (isTest) return false;
+  if (isTest || process.env.E2E_SKIP_WELCOME === 'true') return false;
 
   if (restorePointExists) return false;
 

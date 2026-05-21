@@ -1,11 +1,13 @@
+import { TranslationObject } from 'ontime-types';
 import { useMemo } from 'react';
 
 import useAppVersion from '../../common/hooks-query/useAppVersion';
 import { isDocker } from '../../externals';
+import { useTranslation } from '../../translation/useTranslation';
 
 export type SettingsOption = {
   id: string;
-  label: string;
+  labelKey: keyof TranslationObject;
   secondary?: Readonly<SettingsOption[]>;
   split?: boolean;
   highlight?: string;
@@ -14,81 +16,81 @@ export type SettingsOption = {
 const staticOptions = [
   {
     id: 'settings',
-    label: 'Settings',
+    labelKey: 'settings.title',
     secondary: [
-      { id: 'settings__data', label: 'Project data' },
-      { id: 'settings__general', label: 'General settings' },
-      { id: 'settings__view', label: 'View settings' },
-      { id: 'settings__custom-views', label: 'Custom views' },
-      { id: 'settings__port', label: 'Server port' },
+      { id: 'settings__data', labelKey: 'settings.menu.project_data' },
+      { id: 'settings__general', labelKey: 'settings.menu.general_settings' },
+      { id: 'settings__view', labelKey: 'settings.menu.view_settings' },
+      { id: 'settings__custom-views', labelKey: 'settings.menu.custom_views' },
+      { id: 'settings__port', labelKey: 'settings.menu.server_port' },
     ],
   },
   {
     id: 'project',
-    label: 'Project',
+    labelKey: 'settings.menu.project',
     split: true,
     secondary: [
-      { id: 'project__create', label: 'Create...' },
-      { id: 'project__list', label: 'Manage projects' },
+      { id: 'project__create', labelKey: 'settings.menu.create' },
+      { id: 'project__list', labelKey: 'settings.menu.manage_projects' },
     ],
   },
   {
     id: 'manage',
-    label: 'Project settings',
+    labelKey: 'settings.menu.manage',
     secondary: [
-      { id: 'manage__defaults', label: 'Rundown defaults' },
-      { id: 'manage__custom', label: 'Custom fields' },
-      { id: 'manage__rundowns', label: 'Manage rundowns' },
-      { id: 'manage__sheets', label: 'Import spreadsheet' },
-      { id: 'manage__sheets', label: 'Sync with Google Sheet' },
+      { id: 'manage__defaults', labelKey: 'settings.menu.rundown_defaults' },
+      { id: 'manage__custom', labelKey: 'settings.menu.custom_fields' },
+      { id: 'manage__rundowns', labelKey: 'settings.menu.manage_rundowns' },
+      { id: 'manage__sheets', labelKey: 'settings.menu.import_spreadsheet' },
+      { id: 'manage__sheets', labelKey: 'settings.menu.sync_google_sheet' },
     ],
   },
   {
     id: 'automation',
-    label: 'Automation',
+    labelKey: 'settings.menu.automation',
     split: true,
     secondary: [
-      { id: 'automation__settings', label: 'Automation settings' },
-      { id: 'automation__automations', label: 'Manage automations' },
-      { id: 'automation__triggers', label: 'Manage triggers' },
+      { id: 'automation__settings', labelKey: 'settings.menu.automation_settings' },
+      { id: 'automation__automations', labelKey: 'settings.menu.manage_automations' },
+      { id: 'automation__triggers', labelKey: 'settings.menu.manage_triggers' },
     ],
   },
   {
     id: 'sharing',
-    label: 'Sharing and reporting',
+    labelKey: 'settings.menu.sharing',
     split: true,
     secondary: [
-      { id: 'sharing__presets', label: 'URL Presets' },
+      { id: 'sharing__presets', labelKey: 'settings.menu.url_presets' },
       {
         id: 'sharing__link',
-        label: 'Share link',
+        labelKey: 'settings.menu.share_link',
       },
-      { id: 'sharing__report', label: 'Runtime report' },
+      { id: 'sharing__report', labelKey: 'settings.menu.runtime_report' },
     ],
   },
   {
     id: 'network',
-    label: 'Network',
+    labelKey: 'settings.menu.network',
     split: true,
     secondary: [
       {
         id: 'network__log',
-        label: 'Event log',
+        labelKey: 'settings.menu.event_log',
       },
       {
         id: 'network__clients',
-        label: 'Manage clients',
+        labelKey: 'settings.menu.manage_clients',
       },
     ],
   },
   {
     id: 'about',
-    label: 'About',
+    labelKey: 'settings.menu.about',
     split: true,
   },
   {
     id: 'shutdown',
-    label: 'Shutdown',
+    labelKey: 'settings.menu.shutdown',
     split: true,
   },
 ] as const;
@@ -100,22 +102,27 @@ export type SettingsOptionId =
 
 export function useAppSettingsMenu() {
   const { data } = useAppVersion();
+  const { getLocalizedString } = useTranslation();
 
-  const options: Readonly<SettingsOption[]> = useMemo(
+  const options = useMemo(
     () =>
       staticOptions.map((option) => ({
         ...option,
+        label: getLocalizedString(option.labelKey as any),
         // if we are in docker don't show the port option
         secondary:
           'secondary' in option
             ? isDocker && option.id === 'settings'
-              ? [...option.secondary.filter(({ id }) => id !== 'settings__port')]
-              : [...option.secondary]
+              ? option.secondary
+                  .filter(({ id }) => id !== 'settings__port')
+                  .map((sec) => ({ ...sec, label: getLocalizedString(sec.labelKey as any) }))
+              : option.secondary.map((sec) => ({ ...sec, label: getLocalizedString(sec.labelKey as any) }))
             : undefined,
         // if there is an update then highlight the about setting
-        highlight: option.id === 'about' && data.hasUpdates ? 'New version available' : undefined,
+        highlight:
+          option.id === 'about' && data.hasUpdates ? getLocalizedString('settings.menu.new_version') : undefined,
       })),
-    [data],
+    [data, getLocalizedString],
   );
 
   return { options };

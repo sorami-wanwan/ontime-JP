@@ -41,13 +41,13 @@ export const usePersistedCuesheetOptions = create<CuesheetOptions>()(
 );
 
 export const cuesheetDefaultColumns = [
-  { value: 'flag', label: 'Flag' },
-  { value: 'cue', label: 'Cue' },
-  { value: 'title', label: 'Title' },
-  { value: 'timeStart', label: 'Time start' },
-  { value: 'timeEnd', label: 'Time end' },
-  { value: 'duration', label: 'Duration' },
-  { value: 'note', label: 'Note' },
+  { value: 'flag', label: 'Flag', labelKey: 'common.flag' as const },
+  { value: 'cue', label: 'Cue', labelKey: 'common.cue' as const },
+  { value: 'title', label: 'Title', labelKey: 'common.title' as const },
+  { value: 'timeStart', label: 'Time start', labelKey: 'common.time_start' as const },
+  { value: 'timeEnd', label: 'Time end', labelKey: 'common.time_end' as const },
+  { value: 'duration', label: 'Duration', labelKey: 'common.duration' as const },
+  { value: 'note', label: 'Note', labelKey: 'common.note' as const },
 ];
 
 export function makeCuesheetCustomColumns(customFields: CustomFields) {

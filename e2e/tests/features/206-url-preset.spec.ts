@@ -11,21 +11,27 @@ test.describe('URL Preset', () => {
     await page.goto('/editor');
 
     // Create the preset that will be used by other tests
-    await page.getByRole('button', { name: 'Toggle settings' }).click();
-    await page.getByRole('button', { name: 'URL Presets' }).click();
+    await page.getByTestId('navigation__toggle-settings').click();
+    await page.getByRole('button', { name: /(URL Presets|URLプリセット)/ }).click();
 
-    await page.getByRole('heading', { name: 'URL presets New' }).getByRole('button').scrollIntoViewIfNeeded();
-    await page.getByRole('heading', { name: 'URL presets New' }).getByRole('button').click();
+    await page
+      .getByRole('heading', { name: /(URL presets New|URLプリセット 新規)/ })
+      .getByRole('button')
+      .scrollIntoViewIfNeeded();
+    await page
+      .getByRole('heading', { name: /(URL presets New|URLプリセット 新規)/ })
+      .getByRole('button')
+      .click();
 
     await page.locator('input[name="alias"]').click();
     await page.locator('input[name="alias"]').fill(aliasName);
 
-    await page.getByRole('textbox', { name: 'Paste URL' }).click();
-    await page.getByRole('textbox', { name: 'Paste URL' }).fill(aliasUrl);
-    await page.getByRole('button', { name: 'Generate' }).click();
+    await page.getByRole('textbox', { name: /(Paste URL|URLを貼り付け)/ }).click();
+    await page.getByRole('textbox', { name: /(Paste URL|URLを貼り付け)/ }).fill(aliasUrl);
+    await page.getByRole('button', { name: /(Generate|生成)/ }).click();
 
     await page.getByRole('combobox').filter({ hasText: 'Timer' });
-    await page.getByRole('button', { name: 'Save' }).click();
+    await page.getByRole('button', { name: /(Save|保存)/ }).click();
 
     await page.close();
   });
@@ -38,7 +44,7 @@ test.describe('URL Preset', () => {
     expect(page.url().includes('alias=testing')).not.toBeTruthy();
 
     // open settings
-    await page.getByRole('button', { name: 'Toggle settings' }).click();
+    await page.getByTestId('navigation__toggle-settings').click();
     await page
       .locator('div')
       .filter({ hasText: /^testingApply$/ })
@@ -55,21 +61,21 @@ test.describe('URL Preset', () => {
     await page.goto('/editor');
 
     // open settings
-    await page.getByRole('button', { name: 'Toggle settings' }).click();
-    await page.getByRole('button', { name: 'Share link' }).click();
+    await page.getByTestId('navigation__toggle-settings').click();
+    await page.getByRole('button', { name: /(Share link|リンクの共有)/ }).click();
 
     // select options
     await page.getByRole('combobox').filter({ hasText: 'Timer' }).click();
     await page.getByText('URL Preset: testing').click();
 
     // create and verify link
-    await page.getByRole('button', { name: 'Create share link' }).click();
+    await page.getByRole('button', { name: /(Create share link|共有リンクの作成)/ }).click();
     await expect(page.getByTestId('copy-link')).toContainText('testing');
     await expect(page.getByTestId('copy-link')).not.toContainText('n=1');
 
     // verify the preset
     const generatedUrl = await page.getByTestId('copy-link').textContent();
-    await page.goto(generatedUrl);
+    await page.goto(generatedUrl as string);
 
     // make sure preset works in mask mode
     await expect(page.getByTestId('timer-view')).toBeVisible();
@@ -86,8 +92,8 @@ test.describe('URL Preset', () => {
     await page.goto('/editor');
 
     // open settings
-    await page.getByRole('button', { name: 'Toggle settings' }).click();
-    await page.getByRole('button', { name: 'Share link' }).click();
+    await page.getByTestId('navigation__toggle-settings').click();
+    await page.getByRole('button', { name: /(Share link|リンクの共有)/ }).click();
 
     // select options
     await page.getByRole('combobox').filter({ hasText: 'Timer' }).click();
@@ -96,14 +102,14 @@ test.describe('URL Preset', () => {
     await page.getByTestId('lockConfig').click();
 
     // create and verify link
-    await page.getByRole('button', { name: 'Create share link' }).click();
+    await page.getByRole('button', { name: /(Create share link|共有リンクの作成)/ }).click();
     await expect(page.getByTestId('copy-link')).toContainText('/preset/testing');
     await expect(page.getByTestId('copy-link')).toContainText('/preset/testing');
     await expect(page.getByTestId('copy-link')).toContainText('n=1');
 
     // verify the preset
     const generatedUrl = await page.getByTestId('copy-link').textContent();
-    await page.goto(generatedUrl);
+    await page.goto(generatedUrl as string);
 
     // make sure preset works in mask mode
     await expect(page.getByTestId('timer-view')).toBeVisible();
@@ -121,10 +127,10 @@ test.describe('Sharing from cuesheet', () => {
     await page.goto('/editor');
 
     // we create some elements to test with
-    await page.getByRole('button', { name: 'Rundown menu' }).click();
-    await page.getByRole('menuitem', { name: 'Clear all' }).click();
-    await page.getByRole('button', { name: 'Delete all' }).click();
-    await page.getByRole('button', { name: 'Create Event' }).click();
+    await page.getByRole('button', { name: /(Rundown menu|進行表の管理\.\.\.)/ }).click();
+    await page.getByRole('menuitem', { name: /(Clear all|すべてクリア)/ }).click();
+    await page.getByRole('button', { name: /(Delete all|すべて削除)/ }).click();
+    await page.getByRole('button', { name: /(Create Event|イベントを作成)/ }).click();
     await page.getByTestId('entry-1').getByTestId('entry__title').click();
     await page.getByTestId('entry-1').getByTestId('entry__title').fill('title 1');
     await page.getByTestId('entry-1').getByTestId('entry__title').press('Enter');
@@ -138,12 +144,12 @@ test.describe('Sharing from cuesheet', () => {
     await page.goto('/cuesheet');
     await expect(page.getByTestId('cuesheet')).toBeVisible();
 
-    await page.getByRole('button', { name: 'Share...' }).click();
+    await page.getByRole('button', { name: /(Share\.\.\.|共有\.\.\.)/ }).click();
 
     // configure share for readonly
     await page.locator('input[name="alias"]').fill(alias);
-    await page.getByText('Custom write').click();
-    await page.getByText('Custom read').click();
+    await page.getByText(/(Custom write|カスタム書込)/).click();
+    await page.getByText(/(Custom read|カスタム読込)/).click();
     await page.getByTestId('lockNav').click();
     await page.getByTestId('write-flag').click();
     await page.getByTestId('write-cue').click();
@@ -161,22 +167,22 @@ test.describe('Sharing from cuesheet', () => {
     }
 
     // create and verify link
-    await page.getByRole('button', { name: 'Create share link' }).click();
+    await page.getByRole('button', { name: /(Create share link|共有リンクの作成)/ }).click();
     await expect(page.getByTestId('copy-link')).toContainText(`preset/${alias}`);
     await expect(page.getByTestId('copy-link')).toContainText('n=1');
 
     // verify the preset
     const generatedUrl = await page.getByTestId('copy-link').textContent();
-    await page.goto(generatedUrl);
+    await page.goto(generatedUrl as string);
 
     // the menu is locked and we cant make shares
     await expect(page.getByTestId('cuesheet')).toBeVisible();
     await expect(page.getByTestId('navigation__toggle-settings')).toBeHidden();
-    await expect(page.getByRole('button', { name: 'Share...' })).toBeHidden();
+    await expect(page.getByRole('button', { name: /(Share\.\.\.|共有\.\.\.)/ })).toBeHidden();
 
     // mode toggle should not be rendered for readonly users
-    await expect(page.getByRole('button', { name: 'Edit' })).toHaveCount(0);
-    await expect(page.getByRole('button', { name: 'Run' })).toHaveCount(0);
+    await expect(page.getByRole('button', { name: /(Edit|編集)/ })).toHaveCount(0);
+    await expect(page.getByRole('button', { name: /(Run|実行)/ })).toHaveCount(0);
 
     // Verify that the title is visible but not editable
     await expect(page.getByTestId('cuesheet-event').getByText('title 1')).toBeVisible();
@@ -192,12 +198,12 @@ test.describe('Sharing from cuesheet', () => {
     await page.goto('/cuesheet');
     await expect(page.getByTestId('cuesheet')).toBeVisible();
 
-    await page.getByRole('button', { name: 'Share...' }).click();
+    await page.getByRole('button', { name: /(Share\.\.\.|共有\.\.\.)/ }).click();
 
     // configure share for readonly
     await page.locator('input[name="alias"]').fill(alias);
-    await page.getByText('Custom write').click();
-    await page.getByText('Custom read').click();
+    await page.getByText(/(Custom write|カスタム書込)/).click();
+    await page.getByText(/(Custom read|カスタム読込)/).click();
     await page.getByTestId('lockNav').click();
     await page.getByTestId('write-flag').click();
     await page.getByTestId('write-cue').click();
@@ -213,21 +219,21 @@ test.describe('Sharing from cuesheet', () => {
     await page.getByTestId('read-note').click();
 
     // create and verify link
-    await page.getByRole('button', { name: 'Create share link' }).click();
+    await page.getByRole('button', { name: /(Create share link|共有リンクの作成)/ }).click();
     await expect(page.getByTestId('copy-link')).toContainText(`preset/${alias}`);
     await expect(page.getByTestId('copy-link')).toContainText('n=1');
 
     // verify the preset
     const generatedUrl = await page.getByTestId('copy-link').textContent();
-    await page.goto(generatedUrl);
+    await page.goto(generatedUrl as string);
 
     // the menu is locked and we cant make shares
     await expect(page.getByTestId('cuesheet')).toBeVisible();
     await expect(page.getByTestId('navigation__toggle-settings')).toBeHidden();
-    await expect(page.getByRole('button', { name: 'Share...' })).toBeHidden();
+    await expect(page.getByRole('button', { name: /(Share\.\.\.|共有\.\.\.)/ })).toBeHidden();
 
     // check that we are locked and cannot edit
-    await page.getByRole('button', { name: 'Edit' }).click();
+    await page.getByRole('button', { name: /(Edit|編集)/ }).click();
 
     // Verify that the title is visible and editable
     await expect(page.getByTestId('cuesheet-event').getByRole('cell', { name: 'title' })).toBeVisible();

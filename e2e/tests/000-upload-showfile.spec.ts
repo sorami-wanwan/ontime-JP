@@ -1,51 +1,70 @@
 import { randomUUID } from 'crypto';
 import { readFile, unlink } from 'fs/promises';
+import { homedir } from 'os';
+import { join } from 'path';
 
 import { expect, test } from '@playwright/test';
 
 const fileToUpload = 'e2e/tests/fixtures/e2e-test-db.json';
 const fileToDownload = 'e2e/tests/fixtures/tmp/';
 
+test.beforeAll(async () => {
+  const filesToDelete = [
+    join(homedir(), '.Ontime', 'projects', 'e2e-test-db.json'),
+    join(homedir(), '.Ontime', 'projects', 'e2e-test-db (1).json'),
+    join(homedir(), '.Ontime', 'uploads', 'e2e-test-db.json'),
+    join(homedir(), '.Ontime', 'uploads', 'e2e-test-db (1).json'),
+  ];
+  for (const file of filesToDelete) {
+    await unlink(file).catch(() => {});
+  }
+});
+
 test('project file upload', async ({ page }) => {
+  page.on('console', (msg) => console.log('PAGE LOG:', msg.text()));
+  page.on('pageerror', (err) => console.log('PAGE ERROR:', err.message));
+  page.on('request', (req) => console.log('PAGE REQUEST:', req.method(), req.url()));
+  page.on('response', (res) => console.log('PAGE RESPONSE:', res.status(), res.url()));
+
   await page.goto('/editor');
 
-  // Try to close welcome modal if it appears (times out silently if not present)
-  // Note: modal text is in Japanese as the app defaults to 'ja' before the test DB is loaded.
-  // We use a 5000ms timeout (up from 1000ms) to handle slow WebSocket initialization in CI,
-  // where the server's 'welcome' dialog message can arrive later than expected.
-  // After closing, we wait for the modal to be fully hidden to prevent it from intercepting
-  // subsequent clicks (race condition with modal closing animation).
-  try {
-    const welcomeText = page.getByText('Ontimeへようこそ');
-    await welcomeText.waitFor({ state: 'visible', timeout: 5000 });
-    await page.getByRole('button', { name: 'ウェルカムモーダルを閉じる' }).click();
-    await welcomeText.waitFor({ state: 'hidden', timeout: 5000 });
-  } catch {
-    // Modal wasn't shown, continue with the test
-  }
+  // Welcome modal is now disabled globally during E2E tests via E2E_SKIP_WELCOME
 
   // Note: UI is in Japanese (ja) until the test DB (language: en) is loaded below.
-  // 'Rundown menu' and 'toggle settings' are hardcoded English aria-labels in the source — no change needed.
-  await page.getByRole('button', { name: '編集' }).click();
-  await page.getByRole('button', { name: 'Rundown menu' }).click();
-  await page.getByRole('menuitem', { name: 'すべてクリア' }).click();
-  await page.getByRole('button', { name: 'すべて削除' }).click();
+  // We use regex to support both English and Japanese environments.
+  await page.getByRole('button', { name: /(Edit|編集)/ }).click();
+  await page.getByRole('button', { name: /(Rundown menu|進行表の管理\.\.\.)/ }).click();
+  await page.getByRole('menuitem', { name: /(Clear all|すべてクリア)/ }).click();
+  await page.getByRole('button', { name: /(Delete all|すべて削除)/ }).click();
 
-  await page.getByRole('button', { name: 'toggle settings' }).click();
-  // Note: The settings sidebar navigation is hardcoded in English ('Manage projects')
-  // even when the rest of the UI is in Japanese.
-  await page.getByRole('button', { name: 'Manage projects' }).click();
+  // Wait for rundown to be cleared completely in the UI (synchronizing client & server state)
+  await expect(page.getByTestId('entry-1')).toBeHidden();
+
+  await page.getByTestId('navigation__toggle-settings').click();
+  await page.getByRole('button', { name: /(Manage projects|プロジェクトの管理)/ }).click();
 
   // workaround to upload file on hidden input
   // https://playwright.dev/docs/api/class-filechooser
   const fileChooserPromise = page.waitForEvent('filechooser');
   // 'インポート' is correctly translated via 'settings.project.import'
-  await page.getByRole('button', { name: 'インポート', exact: true }).click();
+  await page
+    .locator('button')
+    .filter({ hasText: /^(Import|インポート)$/ })
+    .click();
   const fileChooser = await fileChooserPromise;
   await fileChooser.setFiles(fileToUpload);
 
   // Note: The modal close button is hardcoded in English ('Close settings')
-  await page.getByRole('button', { name: 'Close settings' }).click();
+  await page.getByRole('button', { name: /(Close settings|設定を閉じる)/ }).click();
+
+  // Wait for the newly uploaded project data to load and render completely
+  try {
+    await expect(page.getByTestId('entry-1').getByTestId('entry__title')).toHaveValue('Albania', { timeout: 10000 });
+  } catch (err) {
+    await page.screenshot({ path: 'e2e-debug-screenshot.png' });
+    console.log('PAGE HTML CONTENT:', await page.content());
+    throw err;
+  }
 
   // asset test events
   const firstTitle = page.getByTestId('entry-1').getByTestId('entry__title');

@@ -1,3 +1,5 @@
+import { unlink } from 'fs/promises';
+
 import type { Request, Response } from 'express';
 import {
   DatabaseModel,
@@ -137,8 +139,17 @@ export async function postProjectFile(req: Request, res: Response<MessageRespons
 
   try {
     const { filename, path } = req.file;
+    await projectService.flushPendingWrites();
+
+    const existingPath = doesProjectExist(filename);
+    if (existingPath) {
+      await unlink(existingPath).catch((err) => {
+        console.error(`Failed to delete existing project file: ${err}`);
+      });
+    }
+
     await handleProjectUploaded(path, filename);
-    await projectService.loadProjectFile(filename);
+    await projectService.loadProjectFile(filename, { skipFlush: true });
 
     res.status(201).send({
       message: `Loaded project ${filename}`,
