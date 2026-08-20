@@ -9,7 +9,7 @@ const electronConfig = require('./electron.config.js');
 
 // external links
 const linkToDocs = 'https://docs.getontime.no/';
-const linkToGitHub = 'https://github.com/cpvalente/ontime';
+const linkToGitHub = 'https://github.com/sorami-wanwan/ontime-JP';
 const linkToDiscord = 'https://discord.com/invite/eje3CSUEXm';
 
 // environment and platform constants
