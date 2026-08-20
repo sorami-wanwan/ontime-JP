@@ -5,9 +5,12 @@ on:
     tags: ['*']
   workflow_dispatch:
 
+permissions:
+  contents: write
+
 jobs:
   build_macos:
-    runs-on: macOS-26
+    runs-on: macos-latest
 
     steps:
       - uses: actions/checkout@v6
@@ -40,6 +43,7 @@ jobs:
           APPLE_TEAM_ID: ${{ secrets.TEAMID }}
           CSC_KEY_PASSWORD: ${{ secrets.CSC_KEY_PASSWORD }}
           CSC_LINK: ${{ secrets.CSC_LINK }}
+          CSC_IDENTITY_AUTO_DISCOVERY: false
         run: pnpm dist-mac --env-mode=loose
         timeout-minutes: 60
 
@@ -57,6 +61,7 @@ jobs:
         uses: softprops/action-gh-release@v2
         if: github.ref_type == 'tag'
         with:
+          generate_release_notes: true
           files: |
             ./apps/electron/dist/ontime-macOS-x64.dmg
             ./apps/electron/dist/ontime-macOS-arm64.dmg
@@ -80,6 +85,8 @@ jobs:
         run: pnpm install --frozen-lockfile
 
       - name: Electron - Build app
+        env:
+          CSC_IDENTITY_AUTO_DISCOVERY: false
         run: pnpm dist-win
 
       - name: Upload Windows build artifacts
@@ -96,6 +103,7 @@ jobs:
         uses: softprops/action-gh-release@v2
         if: github.ref_type == 'tag'
         with:
+          generate_release_notes: true
           files: './apps/electron/dist/ontime-win64.exe'
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -117,6 +125,8 @@ jobs:
         run: pnpm install --frozen-lockfile
 
       - name: Electron - Build app
+        env:
+          CSC_IDENTITY_AUTO_DISCOVERY: false
         run: pnpm dist-linux
 
       - name: Upload Linux build artifacts
@@ -134,6 +144,7 @@ jobs:
         uses: softprops/action-gh-release@v2
         if: github.ref_type == 'tag'
         with:
+          generate_release_notes: true
           files: |
             ./apps/electron/dist/ontime-linux-x86_64.AppImage
             ./apps/electron/dist/ontime-linux-arm64.AppImage

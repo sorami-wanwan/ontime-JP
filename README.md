@@ -61,22 +61,51 @@ Docker イメージを利用すれば、IT インフラを活用してチーム�
 
 ## ダウンロード
 
+ontime-JP の最新インストーラは [Releases ページ](https://github.com/sorami-wanwan/ontime-JP/releases) からダウンロードできます。
+
+- <a href="https://github.com/sorami-wanwan/ontime-JP/releases/latest/download/ontime-win64.exe">Windows (.exe)</a>
+- <a href="https://github.com/sorami-wanwan/ontime-JP/releases/latest/download/ontime-macOS-arm64.dmg">macOS Apple Silicon (.dmg)</a>
+- <a href="https://github.com/sorami-wanwan/ontime-JP/releases/latest/download/ontime-macOS-x64.dmg">macOS Intel (.dmg)</a>
+- <a href="https://github.com/sorami-wanwan/ontime-JP/releases/latest/download/ontime-linux-x86_64.AppImage">Linux x86_64 (.AppImage)</a>
+- <a href="https://github.com/sorami-wanwan/ontime-JP/releases/latest/download/ontime-linux-arm64.AppImage">Linux ARM64 (.AppImage)</a>
+- <a href="https://github.com/sorami-wanwan/ontime-JP/releases/latest/download/ontime-linux-armv7l.AppImage">Linux ARMv7l (.AppImage)</a>
+
 > [!NOTE]
-> 以下は上流プロジェクト (cpvalente/ontime) の公式リリースへのリンクです。
-> ontime-JP の独自ビルドについては、今後 [Releases](https://github.com/sorami-wanwan/ontime-JP/releases) ページで提供予定です。
+> 上流プロジェクト（公式英語版）のその他のインストール方法：
+>
+> - <a href="https://hub.docker.com/r/getontime/ontime">Docker Hub</a>
+> - <a href="https://www.npmjs.com/package/@getontime/cli">NPM</a>
+> - <a href="https://formulae.brew.sh/cask/ontime">Homebrew</a>
 
-- <a href="https://github.com/cpvalente/ontime/releases/latest/download/ontime-win64.exe">Windows</a>
-- <a href="https://github.com/cpvalente/ontime/releases/latest/download/ontime-macOS-arm64.dmg">macOS (Apple Silicon)</a>
-- <a href="https://github.com/cpvalente/ontime/releases/latest/download/ontime-macOS-x64.dmg">macOS (Intel)</a>
-- <a href="https://github.com/cpvalente/ontime/releases/latest/download/ontime-linux-x86_64.AppImage">Linux (Intel / AMD 64-bit)</a>
-- <a href="https://github.com/cpvalente/ontime/releases/latest/download/ontime-linux-arm64.AppImage">Linux (ARM 64-bit, Raspberry Pi 4+)</a>
-- <a href="https://github.com/cpvalente/ontime/releases/latest/download/ontime-linux-armv7l.AppImage">Linux (ARM 32-bit, 旧 Raspberry Pi)</a>
+### 初回起動時のセキュリティ警告について
 
-その他のインストール方法：
+ontime-JP の独自ビルドはオープンソースコミュニティ版のため、有償のコード署名を行っていません。そのため、初回起動時に各 OS で警告が表示される場合があります。以下の手順で起動してください。
 
-- <a href="https://hub.docker.com/r/getontime/ontime">Docker Hub</a>
-- <a href="https://www.npmjs.com/package/@getontime/cli">NPM</a>
-- <a href="https://formulae.brew.sh/cask/ontime">Homebrew</a>
+- **macOS の場合**:
+  - 「開発元を検証できないため開けません」または「悪質なソフトウェアかどうかを検証できないため開けません」と表示された場合：
+    1. Finder でアプリケーションフォルダを開きます。
+    2. `ontime` を **Control キーを押しながらクリック（または右クリック）** し、メニューから **「開く」** を選択します。
+    3. 確認ダイアログで **「開く」** をクリックすると、次回以降は通常通り起動できます。
+    4. それでも起動しない場合は、ターミナルで `xattr -cr /Applications/ontime.app` を実行してください。
+- **Windows の場合**:
+  - Microsoft Defender SmartScreen により「Windows によって PC が保護されました」という青い画面が表示された場合：
+    1. 画面内の **「詳細情報」** をクリックします。
+    2. 右下に表示される **「実行」** ボタンをクリックします。
+- **Linux の場合**:
+  - ダウンロードした `.AppImage` ファイルに実行権限を付与してください：
+    ```bash
+    chmod +x ontime-linux-*.AppImage
+    ./ontime-linux-*.AppImage
+    ```
+  - ※ Ubuntu 22.04 以降で AppImage が起動しない場合は、`sudo apt install libfuse2` が必要になる場合があります。
+
+---
+
+## データ互換性と移行について
+
+- ontime-JP は、公式版 Ontime と同一のデータ保存場所（プロジェクト設定やデータベース）を使用します。
+- 公式版から ontime-JP への移行時は、既存のプロジェクトデータがそのまま読み込まれます。
+- 大切な本番イベントデータをお持ちの場合は、念のため導入前に設定画面からプロジェクトデータのバックアップ（エクスポート）を行ってください。
 
 ---
 
@@ -96,11 +125,15 @@ Docker イメージを利用すれば、IT インフラを活用してチーム�
 
 ## ヘルプ・サポート
 
-ほとんどの内容は公式ドキュメントでカバーされていますが、それでも解決しない場合は以下をご利用ください：
+- **ontime-JP（日本語版）固有の問題（翻訳ミス・文字化け・UI崩れ・独自ビルドの不具合）**:
+  - [ontime-JP GitHub Issues](https://github.com/sorami-wanwan/ontime-JP/issues) で報告してください。
+- **Ontime 本体の基本機能・操作方法・API 連携に関する質問**:
+  - [GitHub Discussions](https://github.com/cpvalente/ontime/discussions)（公式・英語）
+  - [Discord サーバー](https://discord.com/invite/eje3CSUEXm)（公式・英語）
 
-- [GitHub Issue でバグ報告](https://github.com/sorami-wanwan/ontime-JP/issues)
-- [GitHub Discussions で質問](https://github.com/cpvalente/ontime/discussions)（上流プロジェクト・英語）
-- [Discord サーバー](https://discord.com/invite/eje3CSUEXm)でチャット（上流プロジェクト・英語）
+> [!IMPORTANT]
+> **本番運用におけるご注意**  
+> ライブイベントや放送等の本番現場で使用される場合は、事前にリハーサル環境にて十分な動作確認およびバックアップを行ってからご利用ください。
 
 ---
 
