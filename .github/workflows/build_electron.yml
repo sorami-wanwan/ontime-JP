@@ -43,12 +43,8 @@ jobs:
           APPLE_TEAM_ID: ${{ secrets.TEAMID }}
           CSC_KEY_PASSWORD: ${{ secrets.CSC_KEY_PASSWORD }}
           CSC_LINK: ${{ secrets.CSC_LINK }}
-        run: |
-          if [ -n "$CSC_LINK" ] && [ -n "$APPLE_ID" ]; then
-            pnpm dist-mac --env-mode=loose
-          else
-            CSC_IDENTITY_AUTO_DISCOVERY=false pnpm dist-mac --env-mode=loose -c.mac.identity=null -c.mac.notarize=false
-          fi
+          CSC_IDENTITY_AUTO_DISCOVERY: false
+        run: pnpm dist-mac --env-mode=loose
         timeout-minutes: 60
 
       - name: Upload macOS build artifacts

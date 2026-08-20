@@ -21,7 +21,7 @@
     "dev:electron": "wait-on http://localhost:3000 && cross-env NODE_ENV=development electron .",
     "lint": "oxlint --quiet --type-aware",
     "dist-win": "electron-builder --publish=never --x64 --win",
-    "dist-mac": "electron-builder --publish=never --mac",
+    "dist-mac": "electron-builder --publish=never --mac -c.mac.identity=null",
     "dist-linux": "electron-builder --publish=never --linux"
   },
   "build": {
@@ -32,8 +32,8 @@
       "artifactName": "ontime-macOS-${arch}.dmg"
     },
     "mac": {
-      "notarize": true,
-      "hardenedRuntime": true,
+      "notarize": false,
+      "hardenedRuntime": false,
       "gatekeeperAssess": false,
       "entitlements": "./entitlements.plist",
       "entitlementsInherit": "./entitlements.plist",
