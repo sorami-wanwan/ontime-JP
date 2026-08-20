@@ -5,6 +5,7 @@ on:
 
 jobs:
   build_resolver:
+    if: github.repository == 'cpvalente/ontime'
     permissions:
       id-token: write
     runs-on: ubuntu-latest
